@@ -12,7 +12,7 @@ title: Julia Syntax
 - containers: arrays, dictionary, set
 - primitive types
 - strings (inc interpolation)
-- scoping
+- scoping and do syntax
 :::
 
 ---
