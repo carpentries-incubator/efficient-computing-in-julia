@@ -1,45 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/404.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/404.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/CODE_OF_CONDUCT.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/CODE_OF_CONDUCT.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/LICENSE.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/index.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/aio.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/instructor/404.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/images.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/instructor/CODE_OF_CONDUCT.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/index.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/instructor/LICENSE.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/404.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/instructor/index.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/CODE_OF_CONDUCT.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/instructor/introduction.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/instructor/profiles.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/aio.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/instructor/reference.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/images.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/introduction.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/index.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/profiles.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/instructor-notes.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/reference.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/introduction.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/key-points.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/profiles.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/reference.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/resources.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor-notes.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/introduction.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/key-points.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/profiles.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/reference.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/resources.html</loc>
   </url>
 </urlset>
