@@ -27,16 +27,17 @@ Create new Julia advocates. Win them over by showing technical superiority. Worl
         - Plotting with Makie: 1h
     - mis-en-place: 3h
         - creating a package
-        - best practices:
-            - use modules
-            - use functions
-            - only globals when const
-            - ...
+        - best practices in package development
         - testing
         - Revise
         - VSCode
 
 - Efficient computing: 2nd day
+    - Best practices for code efficiency:
+        - use modules
+        - use functions
+        - only globals when const
+        - ...
     - Performance analysis: 2h
         - The compiler is slow
         - BenchmarkTools
