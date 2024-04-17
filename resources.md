@@ -11,3 +11,5 @@ title: Resources
 - https://www.matecdev.com/posts/julia-numerical-computing.html 
 - https://www.matecdev.com/posts/julia-17x-faster-vs-python-scipy.html 
 - https://julialang.org/learning/tutorials/ 
+- [JuliaHub-Parallel Computing Guide (pdf)](https://info.juliacomputing.com/hubfs/JuliaHub-Parallel%20Computing%20Guide.pdf)
+- https://github.com/Arpeggeo/julia-distributed-computing
