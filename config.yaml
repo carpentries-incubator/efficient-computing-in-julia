@@ -67,6 +67,7 @@ learners:
 
 # Information for Instructors
 instructors: 
+- overview.md
 
 # Learner Profiles
 profiles: 
