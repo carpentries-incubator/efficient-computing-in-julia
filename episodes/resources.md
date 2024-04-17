@@ -3,6 +3,7 @@ title: Resources
 ---
 
 ## Existing material
+- https://carpentries-incubator.github.io/julia-novice
 - https://github.com/carstenbauer/JuliaHLRS22 
 - https://juliafolds.github.io/data-parallelism/tutorials/quick-introduction/ 
 - https://juliateachingctu.github.io/Julia-for-Optimization-and-Learning/dev/ 
