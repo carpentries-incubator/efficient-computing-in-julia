@@ -1,19 +1,16 @@
 ---
-title: Types
+title: (extra) GPU
 ---
 
 ::: questions
 :::
 
 ::: objectives
-- dispatch
-- structs
-- abstract types
-- parametric types
 :::
 
 ---
 
 ::: keypoints
 :::
+
 

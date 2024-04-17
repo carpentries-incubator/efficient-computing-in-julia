@@ -1,19 +1,16 @@
 ---
-title: Types
+title: Getting Started
 ---
 
 ::: questions
 :::
 
 ::: objectives
-- dispatch
-- structs
-- abstract types
-- parametric types
 :::
 
 ---
 
 ::: keypoints
 :::
+
 

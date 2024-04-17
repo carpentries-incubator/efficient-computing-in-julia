@@ -1,19 +1,18 @@
 ---
-title: Types
+title: Recommended libraries
 ---
 
 ::: questions
 :::
 
 ::: objectives
-- dispatch
-- structs
-- abstract types
-- parametric types
 :::
+
+This is a nice closing episode.
 
 ---
 
 ::: keypoints
 :::
+
 
