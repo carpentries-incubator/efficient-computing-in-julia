@@ -12,7 +12,7 @@ title: Getting Started
 - Understand Pluto's behaviour (w.r.t. Jupyter)
 :::
 
----
+## Running Julia
 
 ::: keypoints
 - In Julia, the REPL is much more important than in some other languages.

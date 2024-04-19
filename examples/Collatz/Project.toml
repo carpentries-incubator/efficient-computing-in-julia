@@ -1,0 +1,4 @@
+name = "Collatz"
+uuid = "7f1893b8-0685-48be-97e1-7ab8cdba95c7"
+authors = ["Johan Hidding <j.hidding@esciencecenter.nl>"]
+version = "0.1.0"
