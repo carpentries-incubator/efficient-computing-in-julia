@@ -58,6 +58,7 @@ function count_until(pred, iterator)
       return i
     end
   end
+  return -1
 end
 ```
 
@@ -75,7 +76,7 @@ the second handles all consecutive calls
 
 	iterate(i::Iterator, state_n) -> (item_n+1, state_n+1)
 
-Then, many functions also need to know the size of the iterator, through `Base.IteratorSize(::Iterator)`. In our case this is `SizeUnknown()`. If you know the length in advance, also implement `Base.length`.
+Then, many functions also need to know the size of the iterator, through `Base.IteratorSize(::Iterator)`. In our case this is `IsInfinite()`. If you know the length in advance, also implement `Base.length`.
 
 You may also want to implement `Base.IteratorEltype()` and `Base.eltype`.
 
@@ -86,26 +87,26 @@ Later on, we will see how we can achieve similar results using channels.
 
 Our new iterator can compute the next state from the previous value, so state and emitted value will be the same in this example.
 
-``` {.julia #recursion-untyped}
-struct Recursion
+``` {.julia #iterated-untyped}
+struct Iterated
   fn
   init
 end
 
-recurse(fn) = init -> Recursion(fn, init)
-recurse(fn, init) = Recursion(fn, init)
+iterated(fn) = init -> Iterated(fn, init)
+iterated(fn, init) = Iterated(fn, init)
 
-function Base.iterate(i::Recursion)
+function Base.iterate(i::Iterated)
   i.init, i.init
 end
 
-function Base.iterate(i::Recursion, state)
+function Base.iterate(i::Iterated, state)
   x = i.fn(state)
   x, x
 end
 
-Base.IteratorSize(::Recursion) = Base.SizeUnknown()
-Base.IteratorEltype(::Recursion) = Base.EltypeUnknown()
+Base.IteratorSize(::Iterated) = Base.IsInfinite()
+Base.IteratorEltype(::Iterated) = Base.EltypeUnknown()
 ```
 
 There is a big problem with this implementation: it is slow as molasses. We don't know the types of the members of `Recursion` before hand, and neither does the compiler. The compiler will see a `iterate(::Recursion)` implementation that can contain members of any type. This means that the return value tuple needs to be dynamically allocated, and the call `i.fn(state)` is indeterminate.
@@ -117,27 +118,27 @@ We can make this code a lot faster by writing a generic function implementation,
 In Julia, every function has its own unique type. There is an overarching abstract `Function` type, but not all function objects (that implement `(::T)(args...)` semantics) derive from that class. The only way to capture function types statically is by making them generic, as in the following example.
 :::
 
-``` {.julia #recursion-typed}
-struct Recursion{Fn,T}
+``` {.julia #iterated}
+struct Iterated{Fn,T}
   fn::Fn
   init::T
 end
 
-recurse(fn) = init -> Recursion(fn, init)
-recurse(fn, init) = Recursion(fn, init)
+iterated(fn) = init -> Iterated(fn, init)
+iterated(fn, init) = Iterated(fn, init)
 
-function Base.iterate(i::Recursion{Fn,T}) where {Fn,T}
+function Base.iterate(i::Iterated{Fn,T}) where {Fn,T}
   i.init, i.init
 end
 
-function Base.iterate(i::Recursion{Fn,T}, state::T) where {Fn,T}
+function Base.iterate(i::Iterated{Fn,T}, state::T) where {Fn,T}
   x = i.fn(state)
   x, x
 end
 
-Base.IteratorSize(::Recursion) = Base.SizeUnknown()
-Base.IteratorEltype(::Recursion) = Base.HasEltype()
-Base.eltype(::Recursion{Fn,T}) where {Fn,T} = T
+Base.IteratorSize(::Iterated) = Base.IsInfinite()
+Base.IteratorEltype(::Iterated) = Base.HasEltype()
+Base.eltype(::Iterated{Fn,T}) where {Fn,T} = T
 ```
 
 With this definition for `Recursion`, we can write our new function for the Collatz stopping time:
@@ -156,7 +157,7 @@ Retrieving the same run times as we had with our first implementation.
 module Collatz
 
 <<count-until>>
-<<recursion-typed>>
+<<iterated>>
 <<a-collatz>>
 
 end # module Collatz

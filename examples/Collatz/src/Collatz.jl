@@ -21,29 +21,30 @@ function count_until(pred, iterator)
       return i
     end
   end
+  return -1
 end
 # ~/~ end
-# ~/~ begin <<episodes/a01-collatz.md#recursion-typed>>[init]
-struct Recursion{Fn,T}
+# ~/~ begin <<episodes/a01-collatz.md#iterated>>[init]
+struct Iterated{Fn,T}
   fn::Fn
   init::T
 end
 
-recurse(fn) = init -> Recursion(fn, init)
-recurse(fn, init) = Recursion(fn, init)
+iterated(fn) = init -> Iterated(fn, init)
+iterated(fn, init) = Iterated(fn, init)
 
-function Base.iterate(i::Recursion{Fn,T}) where {Fn,T}
+function Base.iterate(i::Iterated{Fn,T}) where {Fn,T}
   i.init, i.init
 end
 
-function Base.iterate(i::Recursion{Fn,T}, state::T) where {Fn,T}
+function Base.iterate(i::Iterated{Fn,T}, state::T) where {Fn,T}
   x = i.fn(state)
   x, x
 end
 
-Base.IteratorSize(::Recursion) = Base.SizeUnknown()
-Base.IteratorEltype(::Recursion) = Base.HasEltype()
-Base.eltype(::Recursion{Fn,T}) where {Fn,T} = T
+Base.IteratorSize(::Iterated) = Base.IsInfinite()
+Base.IteratorEltype(::Iterated) = Base.HasEltype()
+Base.eltype(::Iterated{Fn,T}) where {Fn,T} = T
 # ~/~ end
 # ~/~ begin <<episodes/a01-collatz.md#a-collatz>>[init]
 collatz(x) = iseven(x) ? x ÷ 2 : 3x + 1

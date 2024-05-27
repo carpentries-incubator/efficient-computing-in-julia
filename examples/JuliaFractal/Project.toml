@@ -1,0 +1,10 @@
+name = "JuliaFractal"
+uuid = "326d93a7-e397-4fd2-a539-a941ebed2d3e"
+authors = ["Johan Hidding <j.hidding@esciencecenter.nl>"]
+version = "0.1.0"
+
+[deps]
+GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
+IterTools = "c8e1da08-722c-5040-9ed9-7db0dc04731e"
+Observables = "510215fc-4207-5dde-b226-833fc4488ee2"
+Transducers = "28d57a85-8fef-5791-bfe6-a80928e7c999"

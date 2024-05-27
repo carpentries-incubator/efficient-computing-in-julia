@@ -6,9 +6,9 @@
       "deps": [
         "episodes/a01-collatz.md"
       ],
-      "modified": "2024-04-18T14:29:53.156549",
-      "hexdigest": "11b27998149a517802f1c585e0c094d6745a978a0370680bccfda3e4ab0f1603",
-      "size": 1428
+      "modified": "2024-04-19T19:20:53.846529",
+      "hexdigest": "70bda431a5b73aafdb96fd8219742f66ff482e15b91aca5594266b7ebc5a54e9",
+      "size": 1425
     },
     {
       "path": ".entangled/tasks.json",
@@ -23,13 +23,6 @@
       "modified": "2024-04-17T09:47:13.584840",
       "hexdigest": "6ad4f2d7c89592ce4b5163a47e2b42ec61e11631a597d0e798f209d9e60ff3d4",
       "size": 3524
-    },
-    {
-      "path": "episodes/resources.md",
-      "deps": null,
-      "modified": "2024-04-17T13:06:43.889845",
-      "hexdigest": "d9908636c24b7d535e712955500c634d0d1d4f2bf8d0064112c85994f4335d70",
-      "size": 783
     },
     {
       "path": "episodes/020-getting-started.md",
@@ -83,79 +76,79 @@
     {
       "path": "episodes/100-introduction-performance.md",
       "deps": null,
-      "modified": "2024-04-17T15:14:08.860575",
-      "hexdigest": "f0cf21c188f702d613c0537fe606dab43adebdb0ea0ee24daa903fbed67c8e46",
-      "size": 96
+      "modified": "2024-04-18T14:41:03.591292",
+      "hexdigest": "99189c1f019a139c45330e5d76c6ff773c3c053a803c72934f4c575b88d8d673",
+      "size": 378
     },
     {
       "path": "episodes/110-performance-analysis.md",
       "deps": null,
-      "modified": "2024-04-17T15:14:13.532607",
-      "hexdigest": "f0cf21c188f702d613c0537fe606dab43adebdb0ea0ee24daa903fbed67c8e46",
-      "size": 96
+      "modified": "2024-04-18T14:43:41.904393",
+      "hexdigest": "338be68b9fad1c14bf10f5ad648b297856aeced9ec558fdb0868608927108956",
+      "size": 459
     },
     {
       "path": "episodes/120-dos-and-donts.md",
       "deps": null,
-      "modified": "2024-04-17T15:14:19.001644",
-      "hexdigest": "f0cf21c188f702d613c0537fe606dab43adebdb0ea0ee24daa903fbed67c8e46",
-      "size": 96
+      "modified": "2024-04-18T14:51:09.651508",
+      "hexdigest": "fac01c40a8ee7cf45382dd8adf5e6c5213fdeff2dbb8eb5013a5ec8457ae900a",
+      "size": 528
     },
     {
       "path": "episodes/130-channels-and-do.md",
       "deps": null,
-      "modified": "2024-04-17T15:14:22.987672",
-      "hexdigest": "f0cf21c188f702d613c0537fe606dab43adebdb0ea0ee24daa903fbed67c8e46",
-      "size": 96
+      "modified": "2024-04-19T16:26:48.045787",
+      "hexdigest": "2a1253fadb066fa94d0d22baa032a883932119400e6b4b113e787ff49b04c0c9",
+      "size": 382
     },
     {
       "path": "episodes/140-threads-async-and-tasks.md",
       "deps": null,
-      "modified": "2024-04-17T15:14:26.733697",
-      "hexdigest": "f0cf21c188f702d613c0537fe606dab43adebdb0ea0ee24daa903fbed67c8e46",
-      "size": 96
+      "modified": "2024-04-19T16:32:53.273306",
+      "hexdigest": "336cfe6c9e67da60a1ffeb39e89c26863f5af02b57c22a07c4bf83cc77804d8e",
+      "size": 393
     },
     {
       "path": "episodes/150-transducers.md",
       "deps": null,
-      "modified": "2024-04-17T15:14:34.738752",
-      "hexdigest": "f0cf21c188f702d613c0537fe606dab43adebdb0ea0ee24daa903fbed67c8e46",
-      "size": 96
+      "modified": "2024-04-19T22:05:55.539834",
+      "hexdigest": "0709131adc52a02bcf3908ecba89ae3bbf636045f419d3b061e53cccab6f185e",
+      "size": 834
     },
     {
       "path": "episodes/160-cool-libraries.md",
       "deps": null,
-      "modified": "2024-04-17T15:15:59.353328",
-      "hexdigest": "dfdb34f098d23e811ad82e09d7de807de6c0c8c517da61c3f04fc2e70007eae5",
-      "size": 135
+      "modified": "2024-04-19T17:06:39.137368",
+      "hexdigest": "7c0212c53c13be0fd0030980d7421ac8cd8f8273b65957bb37a7b796988af45f",
+      "size": 358
     },
     {
       "path": "episodes/170-gpu-programming.md",
       "deps": null,
-      "modified": "2024-04-17T15:15:15.932032",
-      "hexdigest": "2b0955ab2d61e3ccba1fb021be19bea627eb4262e81e2d82097d583b4e0c13f2",
-      "size": 92
+      "modified": "2024-04-19T17:10:47.201157",
+      "hexdigest": "02c49f5f95b1982d3ef6d1fe5c815e2d459bfb2a00983c1eb8bcb2b8a0bd5afb",
+      "size": 246
     },
     {
       "path": "episodes/145-distributed.md",
       "deps": null,
-      "modified": "2024-04-17T15:14:30.988726",
-      "hexdigest": "f0cf21c188f702d613c0537fe606dab43adebdb0ea0ee24daa903fbed67c8e46",
-      "size": 96
+      "modified": "2024-04-19T16:36:16.714709",
+      "hexdigest": "c9bbc3a94a86ecafd523b6edf0e1113d15fc233e3af7fcefc8a7f121a02f43be",
+      "size": 261
     },
     {
       "path": "episodes/a01-collatz.md",
       "deps": null,
-      "modified": "2024-04-18T14:30:11.368679",
-      "hexdigest": "621459a3a5bc9850b40aee0dbe48f0f61099372a974dc4d1ce6e093bc1b9b21a",
-      "size": 5093
+      "modified": "2024-04-19T19:20:53.820529",
+      "hexdigest": "9708e4453acb8424e8e3d9a268abec26273ad1597772c9ec5d0f71d88af560db",
+      "size": 5047
     },
     {
       "path": "episodes/090-best-practices.md",
       "deps": null,
-      "modified": "2024-04-18T14:18:01.021476",
-      "hexdigest": "e7ebec908fa678223125f514c3682a532ad6f77d0569cafd05423500bbc05d2c",
-      "size": 616
+      "modified": "2024-04-19T17:17:08.378903",
+      "hexdigest": "ea408883b5b046b18ec87b4a20ea97656378022e5965166789cf0a82d09ebe4c",
+      "size": 593
     },
     {
       "path": "episodes/050-arrays-and-broadcasting.md",
@@ -163,10 +156,28 @@
       "modified": "2024-04-18T14:04:22.735907",
       "hexdigest": "2d7e19f0b8920d943006f4b36114c46cd16e1c775cb3ccba70601ff25ffcbbab",
       "size": 813
+    },
+    {
+      "path": "examples/JuliaFractal/src/JuliaFractal.jl",
+      "deps": [
+        "episodes/a02-julia-fractals.md",
+        "episodes/a01-collatz.md"
+      ],
+      "modified": "2024-04-19T22:03:46.973383",
+      "hexdigest": "acfdcefae9bfb56147cc9504279f342c9cbc39f4fcc6713b652fc9096cd00732",
+      "size": 2147
+    },
+    {
+      "path": "episodes/a02-julia-fractals.md",
+      "deps": null,
+      "modified": "2024-04-19T22:03:47.057383",
+      "hexdigest": "60c2764d7699ee17a52f220f4f6a8cec515630726aba8e720cbdd3e5ba40c533",
+      "size": 1284
     }
   ],
   "source": [],
   "target": [
-    "examples/Collatz/src/Collatz.jl"
+    "examples/Collatz/src/Collatz.jl",
+    "examples/JuliaFractal/src/JuliaFractal.jl"
   ]
 }
