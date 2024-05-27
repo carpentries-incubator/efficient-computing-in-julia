@@ -13,6 +13,13 @@ title: Transducers
 - Write performant code that scales.
 :::
 
+List of libraries:
+
+- `Transducers.jl`
+- `Folds.jl`
+- `FLoops.jl`
+
+
 ---
 
 ::: keypoints
