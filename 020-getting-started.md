@@ -119,14 +119,14 @@ Try to play around in Pluto to use Julia as a calculator.
 
 a. What do you find is the operator for exponentiation?
 b. How do you assign a variable?
-c. What happens when you divide any two integers? Can you figure out how to integer division (search the documentation!)?
+c. What happens when you divide any two integers? Use the `typeof` function to inspect the type of the result. Can you figure out how to integer division (search the documentation!)?
 d. What happens in Pluto when you change a variable that is depended upon?
 
 ::::solution
-a. In Julia this is `^`.
+a. In Julia exponentiation is `^`.
 b. Just like you're used to `x = 3`.
 c. The `/` operator always returns a floating point value. To get to integer division, we want the `÷` operator, which can be typed using `\div` and then press TAB. Or you can use the equivalent `div` function.
-c . Pluto updates all dependent computations automatically.
+d. Pluto updates all dependent computations automatically. This is known as a **reactive notebook**.
 ::::
 :::
 
