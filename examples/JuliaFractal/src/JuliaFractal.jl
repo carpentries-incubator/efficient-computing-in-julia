@@ -4,52 +4,52 @@ module JuliaFractal
 using Transducers: Iterated, Enumerate, Map, Take, DropWhile
 
 module MyIterators
-# ~/~ begin <<episodes/a01-collatz.md#count-until>>[init]
-function count_until_fn(pred, fn, init)
-  n = 1
-  x = init
-  while true
-    if pred(x)
-      return n
-    end
-    x = fn(x)
-    n += 1
-  end
-end
-# ~/~ end
-# ~/~ begin <<episodes/a01-collatz.md#count-until>>[1]
-function count_until(pred, iterator)
-  for (i, e) in enumerate(iterator)
-    if pred(e)
-      return i
+  # ~/~ begin <<episodes/a01-collatz.md#count-until>>[init]
+  function count_until_fn(pred, fn, init)
+    n = 1
+    x = init
+    while true
+      if pred(x)
+        return n
+      end
+      x = fn(x)
+      n += 1
     end
   end
-  return -1
-end
-# ~/~ end
+  # ~/~ end
+  # ~/~ begin <<episodes/a01-collatz.md#count-until>>[1]
+  function count_until(pred, iterator)
+    for (i, e) in enumerate(iterator)
+      if pred(e)
+        return i
+      end
+    end
+    return -1
+  end
+  # ~/~ end
 
-# ~/~ begin <<episodes/a01-collatz.md#iterated>>[init]
-struct Iterated{Fn,T}
-  fn::Fn
-  init::T
-end
+  # ~/~ begin <<episodes/a01-collatz.md#iterated>>[init]
+  struct Iterated{Fn,T}
+    fn::Fn
+    init::T
+  end
 
-iterated(fn) = init -> Iterated(fn, init)
-iterated(fn, init) = Iterated(fn, init)
+  iterated(fn) = init -> Iterated(fn, init)
+  iterated(fn, init) = Iterated(fn, init)
 
-function Base.iterate(i::Iterated{Fn,T}) where {Fn,T}
-  i.init, i.init
-end
+  function Base.iterate(i::Iterated{Fn,T}) where {Fn,T}
+    i.init, i.init
+  end
 
-function Base.iterate(i::Iterated{Fn,T}, state::T) where {Fn,T}
-  x = i.fn(state)
-  x, x
-end
+  function Base.iterate(i::Iterated{Fn,T}, state::T) where {Fn,T}
+    x = i.fn(state)
+    x, x
+  end
 
-Base.IteratorSize(::Iterated) = Base.IsInfinite()
-Base.IteratorEltype(::Iterated) = Base.HasEltype()
-Base.eltype(::Iterated{Fn,T}) where {Fn,T} = T
-# ~/~ end
+  Base.IteratorSize(::Iterated) = Base.IsInfinite()
+  Base.IteratorEltype(::Iterated) = Base.HasEltype()
+  Base.eltype(::Iterated{Fn,T}) where {Fn,T} = T
+  # ~/~ end
 end
 
 julia(c) = z -> z^2 + c
@@ -70,6 +70,10 @@ grid(box::BoundingBox) =
   ((idx[1] * box.resolution) + (idx[2] * box.resolution)im + box.origin
    for idx in CartesianIndices(box.shape))
 
+axes(box::BoundingBox) =
+  ((1:box.shape[1]) .* box.resolution .+ box.origin.real,
+   (1:box.shape[2]) .* box.resolution .+ box.origin.imag)
+
 escape_time(fn, maxit) = function (z)
   MyIterators.count_until(
     z -> real(z * conj(z)) > 4.0,
@@ -87,6 +91,17 @@ escape_time_2(fn, maxit) = function (z)
   MyIterators.iterated(fn, z) |> Enumerate() |> Take(maxit) |>
   DropWhile(((i, z),) -> real(z * conj(z)) < 4.0) |>
   first |> first
+end
+
+function plot_julia(z)
+  let width = 1920
+      height = 1080
+      bbox = bounding_box(width, height, 0.0+0.0im, 0.004)
+
+  image = grid(bbox) .|> escape_time(julia, 512)
+  fig = Figure()
+  ax = Axis(fig[1,1])
+  heatmap!(ax, image)
 end
 
 end  # module

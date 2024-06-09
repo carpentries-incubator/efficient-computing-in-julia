@@ -1,5 +1,5 @@
 {
-  "version": "2.0.2",
+  "version": "2.0.3",
   "files": [
     {
       "path": "examples/Collatz/src/Collatz.jl",
@@ -27,9 +27,9 @@
     {
       "path": "episodes/020-getting-started.md",
       "deps": null,
-      "modified": "2024-04-18T13:42:12.135266",
-      "hexdigest": "6ec33a64e99ea044491ba2127665472dbf85fd2fedfb9104d97bf33dd42e87aa",
-      "size": 328
+      "modified": "2024-06-09T11:26:07.793898",
+      "hexdigest": "a5121049d811c63c32cd05049e20e80667bd6b2a331f8c1da62f22508d213806",
+      "size": 6274
     },
     {
       "path": "episodes/000-template.md",
@@ -41,16 +41,16 @@
     {
       "path": "episodes/040-dispatch-and-types.md",
       "deps": null,
-      "modified": "2024-04-18T13:57:24.526159",
-      "hexdigest": "8214f0f5c62a67ed520a3d554a55dfd1e74e5705cc5edf1758e8fd85bf5b9063",
-      "size": 520
+      "modified": "2024-06-09T12:29:41.244202",
+      "hexdigest": "c0a8eb8556043865f4eff8b20c400a5e3bb59f96259fd5ff08f69ad9bb9f2aa7",
+      "size": 1405
     },
     {
       "path": "episodes/030-julia-basics.md",
       "deps": null,
-      "modified": "2024-04-18T13:52:19.091187",
-      "hexdigest": "9c7eae325d676c2baf20b781299d4670ba42571e11d678799d074322199e74d3",
-      "size": 582
+      "modified": "2024-06-09T09:33:10.991184",
+      "hexdigest": "ad288bde12525f85604078074a15772059a3dd79de004180a3bc5c85c0a54e95",
+      "size": 4194
     },
     {
       "path": "episodes/060-plotting.md",
@@ -163,21 +163,21 @@
         "episodes/a02-julia-fractals.md",
         "episodes/a01-collatz.md"
       ],
-      "modified": "2024-04-19T22:03:46.973383",
-      "hexdigest": "acfdcefae9bfb56147cc9504279f342c9cbc39f4fcc6713b652fc9096cd00732",
-      "size": 2147
+      "modified": "2024-06-09T23:37:06.218906",
+      "hexdigest": "6f68e86fc4bc8e31d3d701ae21a896f34d361753cebb4001db2f57327d1a02f2",
+      "size": 2608
     },
     {
       "path": "episodes/a02-julia-fractals.md",
       "deps": null,
-      "modified": "2024-04-19T22:03:47.057383",
-      "hexdigest": "60c2764d7699ee17a52f220f4f6a8cec515630726aba8e720cbdd3e5ba40c533",
-      "size": 1284
+      "modified": "2024-06-09T23:37:06.481907",
+      "hexdigest": "b1f63d6162a33128e4cc09a2c969b13fc4bcf8eadaba5b7ed5d8e4bbb41dbac1",
+      "size": 1667
     }
   ],
   "source": [],
   "target": [
-    "examples/Collatz/src/Collatz.jl",
-    "examples/JuliaFractal/src/JuliaFractal.jl"
+    "examples/JuliaFractal/src/JuliaFractal.jl",
+    "examples/Collatz/src/Collatz.jl"
   ]
 }
