@@ -158,26 +158,15 @@
       "size": 813
     },
     {
-      "path": "examples/JuliaFractal/src/JuliaFractal.jl",
-      "deps": [
-        "episodes/a02-julia-fractals.md",
-        "episodes/a01-collatz.md"
-      ],
-      "modified": "2024-06-09T23:37:06.218906",
-      "hexdigest": "6f68e86fc4bc8e31d3d701ae21a896f34d361753cebb4001db2f57327d1a02f2",
-      "size": 2608
-    },
-    {
       "path": "episodes/a02-julia-fractals.md",
       "deps": null,
-      "modified": "2024-06-09T23:37:06.481907",
-      "hexdigest": "b1f63d6162a33128e4cc09a2c969b13fc4bcf8eadaba5b7ed5d8e4bbb41dbac1",
-      "size": 1667
+      "modified": "2024-06-10T01:11:28.758854",
+      "hexdigest": "d0635a35a1e84ed86d84e082e9ccb09083995809f4606a35a6bb7ec4b46306bb",
+      "size": 1861
     }
   ],
   "source": [],
   "target": [
-    "examples/JuliaFractal/src/JuliaFractal.jl",
     "examples/Collatz/src/Collatz.jl"
   ]
 }

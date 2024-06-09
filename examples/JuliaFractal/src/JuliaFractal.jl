@@ -2,6 +2,7 @@
 module JuliaFractal
 
 using Transducers: Iterated, Enumerate, Map, Take, DropWhile
+using GLMakie
 
 module MyIterators
   # ~/~ begin <<episodes/a01-collatz.md#count-until>>[init]
@@ -71,12 +72,13 @@ grid(box::BoundingBox) =
    for idx in CartesianIndices(box.shape))
 
 axes(box::BoundingBox) =
-  ((1:box.shape[1]) .* box.resolution .+ box.origin.real,
-   (1:box.shape[2]) .* box.resolution .+ box.origin.imag)
+  ((1:box.shape[1]) .* box.resolution .+ real(box.origin),
+   (1:box.shape[2]) .* box.resolution .+ imag(box.origin))
 
-escape_time(fn, maxit) = function (z)
+escape_time(fn::Fn, maxit::Int64) where {Fn} = 
+function (z::Complex{T}) where {T <: Real}
   MyIterators.count_until(
-    z -> real(z * conj(z)) > 4.0,
+    (z::Complex{T}) -> real(z * conj(z)) > 4.0,
     Iterators.take(MyIterators.iterated(fn, z), maxit))
 end
 
@@ -93,15 +95,19 @@ escape_time_2(fn, maxit) = function (z)
   first |> first
 end
 
-function plot_julia(z)
+function plot_julia(z::Complex{T}) where {T <: Real}
   let width = 1920
       height = 1080
-      bbox = bounding_box(width, height, 0.0+0.0im, 0.004)
+      bbox = bounding_box(width=width, height=height, center=0.0+0.0im, resolution=0.002)
 
-  image = grid(bbox) .|> escape_time(julia, 512)
-  fig = Figure()
-  ax = Axis(fig[1,1])
-  heatmap!(ax, image)
+    image = grid(bbox) .|> escape_time(julia(z), 2048)
+    image[image .== -1] .= 2048
+    fig = Figure()
+    ax = Axis(fig[1,1])
+    x, y = axes(bbox)
+    heatmap!(ax, x, y, sqrt.(image))
+    (fig, ax)
+  end
 end
 
 end  # module
