@@ -1,7 +1,6 @@
 ---
 title: Types and Dispatch
 ---
-
 ::: questions
 
 - How does Julia deal with types?
@@ -70,6 +69,86 @@ e. `Float64`
 
 ## Structures
 
+```julia
+struct Point2
+  x::Float64
+  y::Float64
+end
+```
+
+```julia
+let p = Point2(1, 3)
+  println("Point at ${p.x}, ${p.y}")
+end
+```
+
+### Methods
+
+```julia
+dot(a::Point2, b::Point2) = a.x*b.x + a.y*b.y
+```
+
+:::challenge
+
+### 3d Point
+
+::::solution
+
+```julia
+struct Point3
+  x::Float64
+  y::Float64
+  z::Float64
+end
+
+dot(a::Point3, b::Point3) = a.x*b.x + a.y*b.y + a.z*b.z
+```
+
+::::
+:::
+
+## Multiple dispatch (function overloading)
+
+```julia
+Base.:+(a::Point2, b::Point2) = Point2(a.x+b.x, a.y+b.y)
+```
+
+```julia
+Point2(1, 2) + Point2(-1, -1)
+```
+
+```output
+Point2(0, 1)
+```
+
+:::callout
+
+## OOP (Sort of)
+
+Julia is not an Object Oriented language. If you feel the unstoppable urge to implement a class-like abstraction, this can be done through abstract types.
+
+```julia
+abstract type Vehicle end
+
+struct Car <: Vehicle
+end
+
+struct Bike <: Vehicle
+end
+
+function travel_time(v::Vehicle, distance::Float64)
+end
+
+function fuel_cost(v::Vehicle, ::Float64)
+  return 0.0
+end
+
+function fuel_cost(v::Car, distance::Float64)
+end
+```
+
+:::
+
 ::: keypoints
 
 - Julia is fundamentally a dynamically typed language.
@@ -77,3 +156,4 @@ e. `Float64`
 - Multiple dispatch is the most important means of abstraction in Julia.
 - Parametric types are important to achieve type stability.
 :::
+

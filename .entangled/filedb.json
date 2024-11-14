@@ -41,9 +41,9 @@
     {
       "path": "episodes/040-dispatch-and-types.md",
       "deps": null,
-      "modified": "2024-06-09T12:29:41.244202",
-      "hexdigest": "c0a8eb8556043865f4eff8b20c400a5e3bb59f96259fd5ff08f69ad9bb9f2aa7",
-      "size": 1405
+      "modified": "2024-06-11T14:18:44.383570",
+      "hexdigest": "2d303f4669ca13a7b7203ec81730d78c60b4a75260ea5153c182c06b8668ebc0",
+      "size": 2434
     },
     {
       "path": "episodes/030-julia-basics.md",
@@ -160,13 +160,24 @@
     {
       "path": "episodes/a02-julia-fractals.md",
       "deps": null,
-      "modified": "2024-06-10T01:11:28.758854",
-      "hexdigest": "d0635a35a1e84ed86d84e082e9ccb09083995809f4606a35a6bb7ec4b46306bb",
-      "size": 1861
+      "modified": "2024-06-26T12:59:00.995222",
+      "hexdigest": "5a549aaa21ade2fff454f4c2b4589e343429fbf31fc6c876b3488ce2311be826",
+      "size": 2669
+    },
+    {
+      "path": "examples/JuliaFractal/src/JuliaFractal.jl",
+      "deps": [
+        "episodes/a02-julia-fractals.md",
+        "episodes/a01-collatz.md"
+      ],
+      "modified": "2024-06-26T12:59:01.053223",
+      "hexdigest": "76e788cc55deb4f3355962505adffebaa543a26bf17eeb7c7dba469886b3c7a4",
+      "size": 2871
     }
   ],
   "source": [],
   "target": [
+    "examples/JuliaFractal/src/JuliaFractal.jl",
     "examples/Collatz/src/Collatz.jl"
   ]
 }
