@@ -1,3 +1,3 @@
 version = "2.0"
-watch_list = ["episodes/*.md"]
+watch_list = ["episodes/**/*.md"]
 hooks = ["quarto_attributes", "brei"]

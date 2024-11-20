@@ -8,7 +8,7 @@
 # lc: Library Carpentry
 # cp: Carpentries (to use for instructor training for instance)
 # incubator: The Carpentries Incubator
-carpentry: 'swc'
+carpentry: 'incubator'
 
 # Overall title for pages.
 title: 'Efficient Computing in Julia'
@@ -58,8 +58,7 @@ contact: 'j.hidding@esciencecenter.nl'
 # - another-learner.md
 
 # Order of episodes in your lesson
-episodes: 
-- 'introduction.md'
+episodes:
 - '020-getting-started.md'
 - '030-julia-basics.md'
 - '040-dispatch-and-types.md'
@@ -81,20 +80,19 @@ episodes:
 - 'a02-julia-fractals.md'
 
 # Information for Learners
-learners: 
+learners:
 - setup.md
 - reference.md
 
 # Information for Instructors
-instructors: 
-- overview.md
+instructors:
+- 'overview.md'
 
 # Learner Profiles
-profiles: 
+profiles:
+- 'learner-profiles.md'
 
 # Customisation ---------------------------------------------
 #
 # This space below is where custom yaml items (e.g. pinning
 # sandpaper and varnish versions) should live
-
-

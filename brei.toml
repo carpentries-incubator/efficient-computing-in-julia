@@ -1,0 +1,17 @@
+include = ["docs/weave.toml", "docs/weave_html.json"]
+
+[[task]]
+description = "Scan for input Markdown files and generate contents"
+force = true
+creates = ["docs/weave_html.json", "docs/contents.md"]
+runner = "python"
+path = "docs/gencontents.py"
+
+[environment]
+title = "Efficient Computing in Julia"
+subtitle = "lesson material"
+
+[[task]]
+name = "weave"
+description = "Deploy site"
+requires = ["#html", "#static"]

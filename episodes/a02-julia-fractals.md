@@ -24,7 +24,7 @@ take(iterated(julia(c), 0.0), 20) |> collect
 
 We may plot the behaviour depending on the value of $c$.
 
-![Orbits of $z=z^2+c$ for real values](fig/a02-real-orbits.svg)
+![Orbits of $z=z^2+c$ for real values](fig/a02-real-orbits.svg){alt='julia orbits'}
 
 For any starting position $z_0$, we can see if the series produced by iterating over $J_c$. The question is whether this series then diverges or not.
 

@@ -1,5 +1,5 @@
 ---
-title: Lesson Overview
+title: 'Lesson Overview'
 ---
 
 ## Audience

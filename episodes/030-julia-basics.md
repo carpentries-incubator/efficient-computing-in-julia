@@ -139,17 +139,17 @@ Loop iterations can be skipped using `continue`, or broken with `break`, identic
 Julia is **lexically scoped**. This means that variables do not outlive the block that they're defined in. In a nutshell, this means the following:
 
   ```julia
-  let s = 42 
+  let s = 42
     println(s)
 
     for s = 1:5
       println(s)
     end
-    
+
     println(s)
   end
   ```
-  
+
   ```output
   42
   1
