@@ -48,6 +48,7 @@ The following sillabus assumes 6 hours of effective teaching per day.
 
 - Measuring speed with `BenchmarkTools`: 1h
   - closures to reduce allocations
+  - static types to reduce dynamic look-up
 - Types: 1h
   - parametric types
   - generic types
