@@ -1,0 +1,55 @@
+[environment]
+pandoc_args = """
+${pandoc_format} ${pandoc_style} ${pandoc_template} ${pandoc_filters} \
+--syntax-definition docs/template/gnuplot.xml \
+-M title='${title}' -M subtitle='${subtitle}' \
+-M contents_file='docs/contents.md'"""
+
+pandoc_format = "-s -t html5 --section-divs --toc --toc-depth 2 --mathjax"
+pandoc_template = "--template docs/template/template.html"
+pandoc_style = "--css dark.css --highlight-style zenburn"
+pandoc_filters = """
+--lua-filter ${filter_dir}/include-contents.lua \
+--lua-filter ${filter_dir}/include.lua \
+--lua-filter ${filter_dir}/annotate.lua \
+--lua-filter ${filter_dir}/details.lua \
+--lua-filter ${filter_dir}/eqnos.lua \
+--lua-filter ${filter_dir}/eval.lua \
+--lua-filter ${filter_dir}/links.lua \
+--lua-filter ${filter_dir}/special-blocks.lua \
+-M link-citations=true \
+--citeproc --bibliography docs/ref.bib"""
+
+filter_dir = "docs/filters"
+
+[[call]]
+template = "copy"
+collect = "static"
+[call.args]
+srcdir = "docs/template"
+tgtdir = "docs/site"
+basename = ["dark.css"]
+
+[template.pandoc]
+requires = [
+  "episodes/${basename}.md",
+  "docs/template/template.html",
+  "docs/contents.md",
+]
+description = "pandoc `${basename}`"
+creates = ["docs/site/${basename}.html"]
+script = """
+mkdir -p docs/site
+pandoc ${pandoc_args} -o 'docs/site/${basename}.html' 'episodes/${basename}.md'
+"""
+
+[template.copy]
+description = "copy `${basename}`"
+requires = ["${srcdir}/${basename}"]
+creates = ["${tgtdir}/${basename}"]
+script = """
+mkdir -p '${tgtdir}'
+cp '${srcdir}/${basename}' '${tgtdir}'
+"""
+
+# vim:ft=toml
