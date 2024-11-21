@@ -53,3 +53,5 @@ docs/site
 # translation temp files
 po/*~
 
+.entangled/filedb.json
+
