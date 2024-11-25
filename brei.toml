@@ -15,3 +15,11 @@ subtitle = "lesson material"
 name = "weave"
 description = "Deploy site"
 requires = ["#html", "#static"]
+
+[[call]]
+template = "copy"
+collect = "static"
+[call.args]
+srcdir = "episodes/fig"
+tgtdir = "docs/site/fig"
+basename = ["a02-real-orbits.svg"]

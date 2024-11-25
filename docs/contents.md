@@ -5,7 +5,7 @@
 1. [Getting Started](020-getting-started.md)
 2. [Julia Syntax](030-julia-basics.md)
 3. [Types and Dispatch](040-dispatch-and-types.md)
-4. [Arrays, broadcasting and (some) Linear Algebra](050-arrays-and-broadcasting.md)
+4. [Arrays and broadcasting](050-arrays-and-broadcasting.md)
 5. [Plotting](060-plotting.md)
 6. [Packages and environments](070-pkg.md)
 7. [Package development](080-package-development.md)
@@ -21,3 +21,4 @@
 17. [(extra) GPU](170-gpu-programming.md)
 18. [Appendix: Iterators and type stability](a01-collatz.md)
 19. [Appendix: Generating Julia Fractals](a02-julia-fractals.md)
+20. [Appendix: Lorenz attractor](a03-lorenz-attractor.md)

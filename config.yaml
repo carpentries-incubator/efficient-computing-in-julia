@@ -78,6 +78,7 @@ episodes:
 - '170-gpu-programming.md'
 - 'a01-collatz.md'
 - 'a02-julia-fractals.md'
+- 'a03-lorenz-attractor.md'
 
 # Information for Learners
 learners:

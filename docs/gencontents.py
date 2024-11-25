@@ -41,6 +41,6 @@ def write_contents(files):
 
 
 if __name__ == "__main__":
-    files = list(Path("episodes").glob("*.md"))
+    files = sorted(Path("episodes").glob("*.md"))
     write_weave_html(files)
     write_contents(files)

@@ -5,7 +5,7 @@ local function Set (list)
 end
 
 function Div(elem)
-    local s = Set{"keypoints", "questions", "objectives", "challenge"}
+    local s = Set{"keypoints", "questions", "objectives", "challenge", "instructor"}
     if s[elem.classes[1]] then
         table.insert(elem.classes, "special")
         return elem

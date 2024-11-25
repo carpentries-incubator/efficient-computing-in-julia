@@ -4,6 +4,7 @@
 :root {
   --primary-hue: 230deg;
   --secondary-hue: 200deg;
+  --tertiary-hue: 100deg;
   --background: white;
   --text-color: black;
   --code-block-bg: hsl(var(--secondary-hue) 20% 20%);
@@ -417,6 +418,16 @@ div.sourceCode {
 .keypoints::before {
     content: "Key points";
     background: hsl(var(--primary-hue) 50% 50%);
+}
+
+.instructor::before {
+    content: "Instructor note";
+    background: hsl(var(--tertiary-hue) 50% 50%);
+}
+
+.challenge::before {
+    content: "Challenge";
+    background: hsl(20deg 50% 50%);
 }
 
 /* === Equations =================================== */
