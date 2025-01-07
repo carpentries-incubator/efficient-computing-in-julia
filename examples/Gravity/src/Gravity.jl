@@ -1,20 +1,4 @@
----
-title: Plotting
----
-
-::: questions
-- How do I quickly visualize some data?
-- What is the best plotting package?
-- Why is this taking so long, I thought Julia was fast?
-:::
-
-::: objectives
-- Plots.jl
-- Makie.jl
-:::
-
-
-``` {.julia file=examples/Gravity/src/Gravity.jl}
+# ~/~ begin <<episodes/060-plotting.md#examples/Gravity/src/Gravity.jl>>[init]
 module Gravity
 
 using Unitful
@@ -100,7 +84,7 @@ end
 
 function plot_orbits()
 	out = solve(leap_frog!(5.0e4u"s"), set_still!(deepcopy([SUN, EARTH, MOON])), 2000)
-
+	
 	fig = Figure()
 	ax = Axis(fig[1,1])
 
@@ -126,7 +110,7 @@ function plot_random_orbits(n, mass)
     random_particle() = Particle(mass, randn(Vec3d)u"m", randn(Vec3d)u"mm/s")
 
 	out = solve(leap_frog!(1.0u"s"), set_still!(generate(random_particle, n)), 5000)
-
+	
 	fig = Figure()
 	ax = Axis3(fig[1,1]) #, limits=((-5, 5), (-5, 5), (-5, 5)))
 
@@ -139,10 +123,4 @@ function plot_random_orbits(n, mass)
 end
 
 end
-```
-
-::: keypoints
-- `Plots.jl` is in some ways the 'standard' plotting package, but it is in fact quite horrible.
-- `Makie.jl` offers a nice interface, pretty plots, is generally stable and very efficient once things have been compiled.
-:::
-
+# ~/~ end

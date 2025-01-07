@@ -10,6 +10,13 @@ title: "Performance: do's and don'ts"
 - Identify potential problems with given code.
 :::
 
+## Type Stability
+
+::: info
+A good summary on type stability can be found in the following blog post:
+- [Writing type-stable Julia code](https://www.juliabloggers.com/writing-type-stable-julia-code/)
+:::
+
 ---
 
 ::: keypoints
@@ -20,5 +27,3 @@ title: "Performance: do's and don'ts"
 - Write functions that always return the same type (type stability).
 - Don't change the type of variables.
 :::
-
-
