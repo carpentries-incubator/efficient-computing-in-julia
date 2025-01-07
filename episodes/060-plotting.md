@@ -69,7 +69,7 @@ function drift!(p::Particle, dt)
 end
 
 function drift!(particles, dt)
-	for p in particles
+	for p in values(particles)
 		drift!(p, dt)
 	end
 	return particles
@@ -89,10 +89,10 @@ function solve(step!, x, n)
 end
 
 function set_still!(particles)
-	total_momentum = sum(p.mass * p.velocity for p in particles)
-	total_mass = sum(p.mass for p in particles)
+	total_momentum = sum(p.mass * p.velocity for p in values(particles))
+	total_mass = sum(p.mass for p in values(particles))
 	correction = total_momentum / total_mass
-	for p in particles
+	for p in values(particles)
 		p.velocity -= correction
 	end
 	return particles
@@ -134,7 +134,7 @@ function plot_random_orbits(n, mass)
 	out = solve(leap_frog!(1.0u"s"), set_still!(generate(random_particle, n)), 5000)
 
 	fig = Figure()
-	ax = Axis3(fig[1,1]) #, limits=((-5, 5), (-5, 5), (-5, 5)))
+	ax = Axis3(fig[1,1], limits=((-5, 5), (-5, 5), (-5, 5)))
 
     for i in 1:n
         scatter!(ax, [out[1][i].position / u"m"])
