@@ -95,6 +95,12 @@ function plot_orbits()
 	fig
 end
 
+"""
+## Challenge
+
+Plot the orbit of the moon around the earth. Make a `Dataframe` that contains all model data, and work from there.
+"""
+
 function generate(f, n)
     Ts = Base.return_types(f, ())
     @assert length(Ts) == 1
