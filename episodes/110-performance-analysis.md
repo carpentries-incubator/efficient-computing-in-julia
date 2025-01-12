@@ -1,82 +1,156 @@
 ---
-title: Performance Analysis
+title: Reducing allocations on the Logistic Map
 ---
 
 ::: questions
-- How can I measure the efficiency of my code?
-- How can I identify bottle necks?
+- How can I reduce the number of allocations?
 :::
 
 ::: objectives
-- Learn how to use `BenchmarkTools`
-- Learn how to use `Profiler` and `PProf`
+- Apply a code transformation to write to pre-allocated memory.
 :::
 
-```julia
-using IterTools
-using GLMakie
+Logistic growth (in economy or biology) is sometimes modelled using the recurrence formula:
 
+$$N_{i+1} = r N_{i} (1 - N_{i}),$$
+
+also known as the **logistic map**, where $r$ is the **reproduction factor**. For low values of $N$ this behaves as exponential growth. However, most growth processes will hit a ceiling at some point. Let's try:
+
+```julia
 logistic_map(r) = n -> r * n * (1 - n)
 ```
 
 ```julia
-let
-	fig = Figure(size=(800, 200))
-	for (i, r) in enumerate([2.8, 3.3, 3.56, 3.671])
-		ax = Axis(fig[1, i], aspect=1, title="r=$r")  # , limits=(nothing, nothing))
-		orbit = Iterators.take(iterated(logistic_map(r), 0.5), 40) |> collect
-		lines!(ax, orbit)
-		scatter!(ax, orbit)
-	end
-	fig
-end
+using IterTools
+using GLMakie
 ```
 
 ```julia
-using .Iterators: take, drop, flatten
-using BenchmarkTools
+take(iterated(logistic_map(1.05), 0.001), 200) |> collect |> lines
 ```
 
-```julia
-lm_points(n_skip, n_take) = r -> imap(x->Point2(r, x), take(drop(iterated(logistic_map(r), 0.5), n_skip), n_take))
-lm_points(r, n_skip, n_take) = map(lm_points(n_skip, n_take), r) |> flatten |> collect
-```
+::: challenge
+### Vary `r`
+Try different values of $r$, what do you see?
 
-```julia
-function bifurcation_diagram_data(r::Float64, skip, data)
-	x = 0.5
-	f = logistic_map(r)
-	for _ in 1:skip
-		x = f(x)
-	end
-	for j in eachindex(view(data, 2, :))
-		x = f(x)
-		data[2,j] = x
-	end
-	data[1,:] .= r
-	data
-end
-```
+Extra (advanced!): see the [Makie documention on `Slider`](https://docs.makie.org/stable/reference/blocks/slider). Can you make an interactive plot?
 
-```julia
-function bifurcation_diagram_data(rs::AbstractArray, skip, nitr)
-	data = Array{Float32}(undef, 2, nitr, length(rs))
-	for (i, r) in enumerate(rs)
-		bifurcation_diagram_data(r, skip, view(data, :, :, i))
-	end
-	pts = reshape(view(data, :, :, :), 2, :)
-end
-```
-
-```julia
-pts = bifurcation_diagram_data(LinRange(2.6, 4.0, 80000), 1000, 1000)
-```
-
+:::: solution
 ```julia
 let
+    fig = Figure()
+    sl_r = Slider(fig[2, 2], range=1.0:0.001:4.0, startvalue=2.0)
+    Label(fig[2,1], lift(r->"r = $r", sl_r.value))
+    points = lift(sl_r.value) do r
+        take(iterated(logistic_map(r), 0.001), 50) |> collect
+    end
+    ax = Axis(fig[1, 1:2], limits=(nothing, (0.0, 1.0)))
+    plot!(ax, points)
+    lines!(ax, points)
+    fig
+end
+```
+::::
+:::
+
+There seem to be key values of $r$ where the iteration of the logistic map splits into periodic orbits, and even get into chaotic behaviour.
+
+We can plot all points for an arbitrary sized orbit for all values of $r$ between 2.6 and 4.0. First of all, let's see how the `iterated |> take |> collect` function chain performs.
+
+```julia
+@btime takestrict(iterated(logistic_map(3.5), 0.5), 10000) |> collect
+```
+
+```julia
+function iterated_fn(f, x, n)
+    result = Float64[]
+    for i in 1:n
+        x = f(x)
+        push!(result, x)
+    end
+    return result
+end
+
+@btime iterated_fn(logistic_map(3.5), 0.5, 10000)
+```
+
+That seems to be slower than the original! Let's try to improve:
+
+```julia
+function iterated_fn(f, x, n)
+    result = Vector{Float64}(undef, n)
+    for i in 1:n
+        x = f(x)
+        result[i] = x
+    end
+    return result
+end
+
+@btime iterated_fn(logistic_map(3.5), 0.5, 10000)
+```
+
+We can do better if we don't need to allocate:
+
+```julia
+function iterated_fn!(f, x, out)
+    for i in eachindex(out)
+        x = f(x)
+        out[i] = x
+    end
+end
+
+out = Vector{Float64}(undef, 1000)
+@btime iterated_fn!(logistic_map(3.5), 0.5, out)
+```
+
+```julia
+function logistic_map_points(r::Real, n_skip)
+    make_point(x) = Point2f(r, x)
+    x0 = nth(iterated(logistic_map(r), 0.5), n_skip)
+    Iterators.map(make_point, iterated(logistic_map(r), x0))
+end
+
+@btime takestrict(logistic_map_points(3.5, 1000), 1000) |> collect
+```
+
+```julia
+function logistic_map_points(rs::AbstractVector{R}, n_skip, n_take) where {R <: Real}
+    flatten(logistic_map_points(r, n_skip, n_take) for r in rs) 
+end
+
+@btime logistic_map_points(LinRange(2.6, 4.0, 1000), 1000, 1000)
+```
+
+```julia
+@profview logistic_map_points(LinRange(2.6, 4.0, 1000), 1000, 1000)
+```
+
+```julia
+function collect!(it, tgt)
+    for (i, v) in zip(eachindex(tgt), it)
+        tgt[i] = v
+    end
+end
+
+function logistic_map_points_td(rs::AbstractVector{R}, n_skip, n_take) where {R <: Real}
+    result = Matrix{Point2f}(undef, n_take, length(rs))
+    Threads.@threads for i in eachindex(rs)
+        collect!(logistic_map_points(rs[i], n_skip), view(result, :, i))
+    end
+    return reshape(result, :)
+end
+
+@btime logistic_map_points_td(LinRange(2.6, 4.0, 1000), 1000, 1000)
+@profview logistic_map_points_td(LinRange(2.6, 4.0, 1000), 1000, 1000)
+```
+
+
+```julia
+let
+    pts = logistic_map_points_td(LinRange(2.6, 4.0, 10000), 1000, 10000)
 	fig = Figure(size=(800, 700))
 	ax = Makie.Axis(fig[1,1], limits=((2.6, 4.0), nothing))
-	datashader!(ax, reinterpret(Point2f, pts)[1,:], async=false, colormap=:deep)
+	datashader!(ax, pts, async=false, colormap=:deep)
 	fig
 end
 ```
@@ -84,9 +158,8 @@ end
 ---
 
 ::: keypoints
-- When you want to compare performance of different implementations, use `BenchmarkTools`.
-- When you want to identify bottle necks, use `Profiler`.
-- Pay close attention to the memory allocations.
+- Allocations are slow.
+- Growing arrays dynamically induces allocations.
 :::
 
 

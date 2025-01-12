@@ -63,7 +63,7 @@ episodes:
 - '030-julia-basics.md'
 - '040-dispatch-and-types.md'
 - '050-arrays-and-broadcasting.md'
-- '060-plotting.md'
+- '060-simulating-solar-system.md'
 - '070-pkg.md'
 - '080-package-development.md'
 - '090-best-practices.md'
