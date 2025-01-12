@@ -1,73 +1,86 @@
 ---
-title: Lesson Overview
+title: 'Lesson Overview'
 ---
 
 ## Audience
 
-People know how to program in either Python or R (never both!)
+Competent programmer in another language like Python, R, or Matlab.
 
 ## Goal
 
-Create new Julia advocates. Win them over by showing technical superiority. World Domination!
+Julia is designed to solve the two-language problem. Languages like Python and R are easy to get started with, but don't offer the efficiency of compiled languages like C++, Rust or Fortran. Often the easier scripting languages offer a front-end for code implemented in one of the compiled languages. This means that, to implement a solution that is both efficient and user friendly, you need to write your package in two languages. This comes with several problems:
+
+- The front-end talks to the back-end through a native interface (C-ABI) which is often unsafe and can cause bugs.
+- Developers need to be competent in two languages as well as the interface between them.
+- Native libraries can be hard to compile due to a stack of dependencies.
+- Existing packages are hard to extend, i.e. the learning gradient from incidental user to developer is too steep considering the non-professional nature of most scientific applications.
+- Interaction between different packages is often limited to the slower scripting language.
+
+Julia solves these problems by offering a language that is both easy to get started with, and can achieve native performance. Furthermore, Julia has an excellent packaging system that solves many of the reproducibility problems associated with other languages. Although it is possible to write programs in Julia that perform similar (and sometimes even better) as in native languages (C, Fortran), actually getting to these levels of performance is not trivial.
+
+This workshop aims to get research software engineers from their first steps in Julia to become aware of all the major techniques and pitfalls when it comes to writing performant Julia.
 
 ## Setup
 
-- TODO: Create named env that people can precompile
+Participants will have to install Julia by following the instruction on [the Julia webpage, downloads section](https://julialang.org/downloads/). They should be provided an environment with a `Project.toml` so they can precompile any dependencies before the workshop starts. In most cases this should suffice, though we have encountered university-managed Windows laptops in the wild that gave problems.
 
-## Scope
+The workshop uses Pluto notebooks through-out.
 
-- Introduction to Julia: 1st day
-    - using Pluto
-    - basics of Julia: 3h
-        - basic flow control
-        - broadcasting
-        - Multiple dispatch
-        - Parametric types
-        - do syntax (similar to Python `with`)
-        - Plotting with Makie: 1h
-    - mis-en-place: 3h
-        - creating a package
-        - best practices in package development
-        - testing
-        - Revise
-        - VSCode
+## Sillabus
 
-- Efficient computing: 2nd day
-    - Best practices for code efficiency:
-        - use modules
-        - use functions
-        - only globals when const
-        - ...
-    - Performance analysis: 2h
-        - The compiler is slow
-        - BenchmarkTools
-        - Profiling
-        - Type stability:
-            - `@code_warntype`
-            - Cthulu
-    - useful libraries: 30min
-        - (scipy)  there is none:
-            - SciML stack (Abel says: overengineered wrappers)
-            - JuMP
-            - quadrature, root-finding, ode-solving, optimisation
-            - Google
-        - (pandas) Dataframes.jl
-    - Parallel programming: 2h
-        - Channels
-        - Tasks
-        - Threads
-        - Transducer based stuff
-        - mention: GPU
-        - mention: Distributed: https://github.com/JuliaParallel/ClusterManagers.jl
+The following sillabus assumes 6 hours of effective teaching per day.
+
+### Day 1: Introduction to Julia
+
+- Using Pluto
+- Basics of Julia: 3h
+  - basic operations, flow control and functions
+  - `Unitful` quantities
+  - types and multiple dispatch
+  - arrays and broadcasting
+- Plotting using `Makie`: 1h
+  - Lorenz attractor
+- Package development with `Pkg`: 1h
+- Best practices: testing and documentation: 1h
+  - `BestieTemplate`
+
+### Day 2: Efficient with Julia
+
+- Measuring speed with `BenchmarkTools`: 1h
+  - closures to reduce allocations
+  - static types to reduce dynamic look-up
+- Types: 1h
+  - parametric types
+  - generic types
+  - value types
+- Type stability: 1h
+  - `JET` and `Cthulu`
+- Parallel programming: 1h
+  - Channels
+  - Threads and Tasks
+  - Transducers
+  - GPUs
+- Computing Julia fractals: 2h
+
+## 1-day alternative
+
+- Using Pluto
+- Basics of Julia: 3h
+  - basic operations, flow control and functions
+  - `Unitful` quantities
+  - types and multiple dispatch
+  - arrays and broadcasting
+- Measuring speed with `BenchmarkTools`: 2h
+  - closures to reduce allocations
+  - static types to reduce dynamic look-up
+- Best practices with `BestieTemplate`: 1h
 
 ## Guiding examples
 
-Principle: examples that are not *too* technical, but give the participants the feeling that we're solving real-world problems.
+Principle: examples that are not *too* technical, but give the participants the feeling that we're solving real-world problems. Candidates:
 
 - Computing $\pi$ for realz
 - Mandelbrot
 - Lorenz attractor
 - k-means clustering
 - generate data, process, optimise! (analysis pipeline example)
-- 
-

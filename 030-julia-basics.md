@@ -127,23 +127,29 @@ Many people find it more readable however, to always have an explicit `return`.
 
 :::callout
 
-### More on `for`-loops
+### More on for-loops
 
-- Loop iterations can be skipped using `continue`, or broken with `break`.
-- Julia is **lexically scoped**. This means that variables do not outlive the block that they're defined in. In a nutshell, this means the following:
+Loop iterations can be skipped using `continue`, or broken with `break`, identical to C or Python.
+:::
+
+:::callout
+
+### Lexical scoping
+
+Julia is **lexically scoped**. This means that variables do not outlive the block that they're defined in. In a nutshell, this means the following:
 
   ```julia
-  let s = 42 
+  let s = 42
     println(s)
 
     for s = 1:5
       println(s)
     end
-    
+
     println(s)
   end
   ```
-  
+
   ```output
   42
   1

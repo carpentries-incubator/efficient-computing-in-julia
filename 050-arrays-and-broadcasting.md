@@ -1,5 +1,5 @@
 ---
-title: Arrays, broadcasting and (some) Linear Algebra
+title: Arrays and broadcasting
 ---
 
 ::: questions
@@ -22,4 +22,3 @@ title: Arrays, broadcasting and (some) Linear Algebra
 - Use `.` notation to do point-wise computations on arrays.
 - Linear algebra is fully supported in the standard library.
 :::
-

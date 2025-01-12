@@ -8,7 +8,7 @@
 # lc: Library Carpentry
 # cp: Carpentries (to use for instructor training for instance)
 # incubator: The Carpentries Incubator
-carpentry: 'swc'
+carpentry: 'incubator'
 
 # Overall title for pages.
 title: 'Efficient Computing in Julia'
@@ -58,42 +58,42 @@ contact: 'j.hidding@esciencecenter.nl'
 # - another-learner.md
 
 # Order of episodes in your lesson
-episodes: 
-- introduction.md
-- 020-getting-started.md
-- 030-julia-basics.md
-- 040-dispatch-and-types.md
-- 050-arrays-and-broadcasting.md
-- 060-plotting.md
-- 070-pkg.md
-- 080-package-development.md
-- 090-best-practices.md
-- 100-introduction-performance.md
-- 110-performance-analysis.md
-- 120-dos-and-donts.md
-- 130-channels-and-do.md
-- 140-threads-async-and-tasks.md
-- 145-distributed.md
-- 150-transducers.md
-- 160-cool-libraries.md
-- 170-gpu-programming.md
-- a01-collatz.md
+episodes:
+- '020-getting-started.md'
+- '030-julia-basics.md'
+- '040-dispatch-and-types.md'
+- '050-arrays-and-broadcasting.md'
+- '060-simulating-solar-system.md'
+- '070-pkg.md'
+- '080-package-development.md'
+- '090-best-practices.md'
+- '100-introduction-performance.md'
+- '110-performance-analysis.md'
+- '120-dos-and-donts.md'
+- '130-channels-and-do.md'
+- '140-threads-async-and-tasks.md'
+- '145-distributed.md'
+- '150-transducers.md'
+- '160-cool-libraries.md'
+- '170-gpu-programming.md'
+- 'a01-collatz.md'
+- 'a02-julia-fractals.md'
+- 'a03-lorenz-attractor.md'
 
 # Information for Learners
-learners: 
+learners:
 - setup.md
 - reference.md
 
 # Information for Instructors
-instructors: 
-- overview.md
+instructors:
+- 'overview.md'
 
 # Learner Profiles
-profiles: 
+profiles:
+- 'learner-profiles.md'
 
 # Customisation ---------------------------------------------
 #
 # This space below is where custom yaml items (e.g. pinning
 # sandpaper and varnish versions) should live
-
-

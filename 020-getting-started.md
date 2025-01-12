@@ -15,6 +15,21 @@ title: Getting Started
 - Understand Pluto's behaviour (w.r.t. Jupyter)
 :::
 
+:::instructor
+
+### Teaching strategy
+
+Julia is easy to get into because it centers around a few easy to understand core concepts: functions, multiple-dispatch, array polymorphism. It is easy to get needlessly stranded into complications that hinder the pacing of this lesson. For example: when explaining `for` loops you may spend ten minutes explaining all the finesse of `break` and `continue`, but most people will either know or don't care. There are several ways to fill these gaps in the material:
+  
+  1. Explain these concepts when they naturally arise in an example or exercise.
+  2. Point to their existence in a call-out, but refer interested readers to the relevant section in the Julia manual, to study in their own time.
+  3. Give them as part of an exercise: let participants read a section of the manual before solving the exercise. This should empower them to look for the manual when solving their own problems.
+
+  This way, you can move on in a natural pacing, only showing the core concepts relevant to the Julia language, and get to interesting (and motivating) challenges earlier in the lesson.
+
+  You may want to explain this general strategy to participants before starting on the main content. This will build both patience and trust with your audience.
+:::
+
 ## Why Julia
 
 Most of the participants will be coming from Python, Matlab or a lower level language like C/C++ or Fortran. Why should you be interested in learning Julia?
