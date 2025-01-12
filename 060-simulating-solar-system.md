@@ -94,7 +94,7 @@ Two bodies of mass $M$ and $m$ attract each other with the force
 
 $$F = \frac{GMm}{r^2},$$
 
-where $r$ is the distance between those bodies, and $G$ is the universal gravitational constant. 
+where $r$ is the distance between those bodies, and $G$ is the universal gravitational constant.
 
 ``` {.julia #gravity}
 const G = 6.6743e-11u"m^3*kg^-1*s^-2"
@@ -119,12 +119,12 @@ function kick!(particles, dt)
 end
 ```
 
-:::info
+:::callout
 ### Why the `!` exclamation mark?
 In Julia it is custom to have an exclamation mark at the end of names of functions that mutate their arguments.
 :::
 
-:::info
+:::callout
 ### Use `eachindex`
 Note the way we used `eachindex`. This idiom guarantees that we can't make out-of-bounds errors, and also this code is generic over different kinds of collections in Julia. We could have a `Vector{Particle}`, but a `Dict{Symbol, Particle}` would work just as well.
 :::
@@ -275,4 +275,3 @@ end
 - `Plots.jl` is in some ways the 'standard' plotting package, but it is in fact quite horrible.
 - `Makie.jl` offers a nice interface, pretty plots, is generally stable and very efficient once things have been compiled.
 :::
-
