@@ -59,6 +59,7 @@ contact: 'j.hidding@esciencecenter.nl'
 
 # Order of episodes in your lesson
 episodes:
+- 'index.md'
 - '020-getting-started.md'
 - '030-julia-basics.md'
 - '040-dispatch-and-types.md'
