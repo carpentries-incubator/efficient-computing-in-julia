@@ -12,7 +12,7 @@ title: "Performance: do's and don'ts"
 
 ## Type Stability
 
-::: info
+:::callout
 A good summary on type stability can be found in the following blog post:
 - [Writing type-stable Julia code](https://www.juliabloggers.com/writing-type-stable-julia-code/)
 :::
