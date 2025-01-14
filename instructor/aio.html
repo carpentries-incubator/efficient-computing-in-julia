@@ -1680,7 +1680,7 @@ any links that you are not going to use.
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 
 </div>
@@ -1764,7 +1764,7 @@ function</a>. Can you figure out a way to generate a random
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>One way is to generate three random numbers and convert the resulting
 array to a <code>Vec3d</code>:</p>
@@ -2001,7 +2001,7 @@ faster? Why?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2231,7 +2231,7 @@ generally stable and very efficient once things have been compiled.</li>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Testing and Plots </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb30">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2615,7 +2615,8 @@ try:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">logistic_map</span>(r) <span class="op">=</span> n <span class="op">-&gt;</span> r <span class="op">*</span> n <span class="op">*</span> (<span class="fl">1</span> <span class="op">-</span> n)</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co">#| id: logistic-map</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">logistic_map</span>(r) <span class="op">=</span> n <span class="op">-&gt;</span> r <span class="op">*</span> n <span class="op">*</span> (<span class="fl">1</span> <span class="op">-</span> n)</span></code></pre>
 </div>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2650,7 +2651,7 @@ plot?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2672,6 +2673,46 @@ plot?</p>
 </div>
 </div>
 </div>
+<figure><img src="../fig/logistic-map-orbits.png" alt="a grid of 8 different plots with qualitive different behaviour" class="figure mx-auto d-block"><div class="figcaption">Orbits of logistic map for 8 different values of
+<span class="math inline">\(r\)</span>.</div>
+</figure><div id="accordionSpoiler1" class="accordion spoiler-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
+  <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Plotting code </h3>
+</button>
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div class="accordion-body">
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co">#| classes: ["task"]</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#| collect: figures</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#| creates: episodes/fig/logistic-map-orbits.png</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="kw">module</span> Script</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="im">using</span> <span class="bu">IterTools</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="im">using</span> <span class="bu">.Iterators</span>: take</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="im">using</span> <span class="bu">GLMakie</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="kw">function</span> <span class="fu">main</span>()</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>    <span class="fu">logistic_map</span>(r) <span class="op">=</span> n <span class="op">-&gt;</span> r <span class="op">*</span> n <span class="op">*</span> (<span class="fl">1</span> <span class="op">-</span> n)</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>    fig <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">1024</span>, <span class="fl">512</span>))</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>    <span class="cf">for</span> (i, r) <span class="kw">in</span> <span class="fu">enumerate</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">8</span>))</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>        ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fu">div</span>(i<span class="op">-</span><span class="fl">1</span>, <span class="fl">4</span>)<span class="op">+</span><span class="fl">1</span>, <span class="fu">mod1</span>(i, <span class="fl">4</span>)], title<span class="op">=</span><span class="st">"r=</span><span class="sc">$$</span>r<span class="st">"</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>        pts <span class="op">=</span> <span class="fu">take</span>(<span class="fu">iterated</span>(<span class="fu">logistic_map</span>(r), <span class="fl">0.001</span>), <span class="fl">50</span>) <span class="op">|&gt;</span> collect</span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>        <span class="fu">lines!</span>(ax, pts, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>        <span class="fu">plot!</span>(ax, pts, markersize<span class="op">=</span><span class="fl">5.0</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>    <span class="fu">save</span>(<span class="st">"episodes/fig/logistic-map-orbits.png"</span>, fig)</span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a>Script.<span class="fu">main</span>()</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 <p>There seem to be key values of <span class="math inline">\(r\)</span>
 where the iteration of the logistic map splits into periodic orbits, and
 even get into chaotic behaviour.</p>
@@ -2679,112 +2720,154 @@ even get into chaotic behaviour.</p>
 <span class="math inline">\(r\)</span> between 2.6 and 4.0. First of
 all, let’s see how the <code>iterated |&gt; take |&gt; collect</code>
 function chain performs.</p>
-<div class="codewrapper sourceCode" id="cb5">
-<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">BenchmarkTools</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">take</span>(<span class="fu">iterated</span>(<span class="fu">logistic_map</span>(<span class="fl">3.5</span>), <span class="fl">0.5</span>), <span class="fl">10000</span>) <span class="op">|&gt;</span> collect</span></code></pre>
-</div>
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">iterated_fn</span>(f, x, n)</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>    result <span class="op">=</span> <span class="dt">Float64</span>[]</span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n</span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>        x <span class="op">=</span> <span class="fu">f</span>(x)</span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>        <span class="fu">push!</span>(result, x)</span>
-<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>    <span class="cf">return</span> result</span>
-<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">iterated_fn</span>(<span class="fu">logistic_map</span>(<span class="fl">3.5</span>), <span class="fl">0.5</span>, <span class="fl">10000</span>)</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">BenchmarkTools</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">take</span>(<span class="fu">iterated</span>(<span class="fu">logistic_map</span>(<span class="fl">3.5</span>), <span class="fl">0.5</span>), <span class="fl">10000</span>) <span class="op">|&gt;</span> collect</span></code></pre>
 </div>
-<p>That seems to be slower than the original! Let’s try to improve:</p>
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">iterated_fn</span>(f, x, n)</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>    result <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{Float64}</span>(<span class="cn">undef</span>, n)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>    result <span class="op">=</span> <span class="dt">Float64</span>[]</span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n</span>
 <span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>        x <span class="op">=</span> <span class="fu">f</span>(x)</span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>        result[i] <span class="op">=</span> x</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>        <span class="fu">push!</span>(result, x)</span>
 <span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>    <span class="cf">end</span></span>
 <span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>    <span class="cf">return</span> result</span>
 <span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="kw">end</span></span>
 <span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="pp">@benchmark</span> <span class="fu">iterated_fn</span>(<span class="fu">logistic_map</span>(<span class="fl">3.5</span>), <span class="fl">0.5</span>, <span class="fl">10000</span>)</span></code></pre>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">iterated_fn</span>(<span class="fu">logistic_map</span>(<span class="fl">3.5</span>), <span class="fl">0.5</span>, <span class="fl">10000</span>)</span></code></pre>
 </div>
-<p>We can do better if we don’t need to allocate:</p>
+<p>That seems to be slower than the original! Let’s try to improve:</p>
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">iterated_fn!</span>(f, x, out)</span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fu">eachindex</span>(out)</span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>        x <span class="op">=</span> <span class="fu">f</span>(x)</span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>        out[i] <span class="op">=</span> x</span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>out <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{Float64}</span>(<span class="cn">undef</span>, <span class="fl">10000</span>)</span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="pp">@benchmark</span> <span class="fu">iterated_fn!</span>(<span class="fu">logistic_map</span>(<span class="fl">3.5</span>), <span class="fl">0.5</span>, out)</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">iterated_fn</span>(f, x, n)</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>    result <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{Float64}</span>(<span class="cn">undef</span>, n)</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>        x <span class="op">=</span> <span class="fu">f</span>(x)</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>        result[i] <span class="op">=</span> x</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>    <span class="cf">return</span> result</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="pp">@benchmark</span> <span class="fu">iterated_fn</span>(<span class="fu">logistic_map</span>(<span class="fl">3.5</span>), <span class="fl">0.5</span>, <span class="fl">10000</span>)</span></code></pre>
 </div>
+<p>We can do better if we don’t need to allocate:</p>
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">logistic_map_points</span>(r<span class="op">::</span><span class="dt">Real</span>, n_skip)</span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>    <span class="fu">make_point</span>(x) <span class="op">=</span> <span class="fu">Point2f</span>(r, x)</span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>    x0 <span class="op">=</span> <span class="fu">nth</span>(<span class="fu">iterated</span>(<span class="fu">logistic_map</span>(r), <span class="fl">0.5</span>), n_skip)</span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>    <span class="bu">Iterators</span>.<span class="fu">map</span>(make_point, <span class="fu">iterated</span>(<span class="fu">logistic_map</span>(r), x0))</span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">takestrict</span>(<span class="fu">logistic_map_points</span>(<span class="fl">3.5</span>, <span class="fl">1000</span>), <span class="fl">1000</span>) <span class="op">|&gt;</span> collect</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">iterated_fn!</span>(f, x, out)</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fu">eachindex</span>(out)</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>        x <span class="op">=</span> <span class="fu">f</span>(x)</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>        out[i] <span class="op">=</span> x</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>out <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{Float64}</span>(<span class="cn">undef</span>, <span class="fl">10000</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="pp">@benchmark</span> <span class="fu">iterated_fn!</span>(<span class="fu">logistic_map</span>(<span class="fl">3.5</span>), <span class="fl">0.5</span>, out)</span></code></pre>
 </div>
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">logistic_map_points</span>(rs<span class="op">::</span><span class="dt">AbstractVector{R}</span>, n_skip, n_take) <span class="kw">where</span> {R <span class="op">&lt;:</span><span class="dt"> Real</span>}</span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>    <span class="bu">Iterators</span>.<span class="fu">flatten</span>(<span class="bu">Iterators</span>.<span class="fu">take</span>(<span class="fu">logistic_map_points</span>(r, n_skip), n_take) <span class="cf">for</span> r <span class="kw">in</span> rs) </span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="cf">end</span></span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="pp">@benchmark</span> <span class="fu">logistic_map_points</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">1000</span>), <span class="fl">1000</span>, <span class="fl">1000</span>) <span class="op">|&gt;</span> collect</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co">#| id: logistic-map</span></span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="kw">function</span> <span class="fu">logistic_map_points</span>(r<span class="op">::</span><span class="dt">Real</span>, n_skip)</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>    <span class="fu">make_point</span>(x) <span class="op">=</span> <span class="fu">Point2f</span>(r, x)</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>    x0 <span class="op">=</span> <span class="fu">nth</span>(<span class="fu">iterated</span>(<span class="fu">logistic_map</span>(r), <span class="fl">0.5</span>), n_skip)</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>    <span class="bu">Iterators</span>.<span class="fu">map</span>(make_point, <span class="fu">iterated</span>(<span class="fu">logistic_map</span>(r), x0))</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
 </div>
-<p>First of all, let’s visualize the output because its so pretty!</p>
 <div class="codewrapper sourceCode" id="cb11">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="kw">let</span></span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>    pts <span class="op">=</span> <span class="fu">logistic_map_points_td</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">10000</span>), <span class="fl">1000</span>, <span class="fl">10000</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>	fig <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">800</span>, <span class="fl">700</span>))</span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>	ax <span class="op">=</span> Makie.<span class="fu">Axis</span>(fig[<span class="fl">1</span>,<span class="fl">1</span>], limits<span class="op">=</span>((<span class="fl">2.6</span>, <span class="fl">4.0</span>), <span class="cn">nothing</span>))</span>
-<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>	<span class="fu">datashader!</span>(ax, pts, async<span class="op">=</span><span class="cn">false</span>, colormap<span class="op">=:</span>deep)</span>
-<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>	fig</span>
-<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">takestrict</span>(<span class="fu">logistic_map_points</span>(<span class="fl">3.5</span>, <span class="fl">1000</span>), <span class="fl">1000</span>) <span class="op">|&gt;</span> collect</span></code></pre>
 </div>
 <div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="pp">@profview</span> <span class="fu">logistic_map_points</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">1000</span>), <span class="fl">1000</span>, <span class="fl">1000</span>) <span class="op">|&gt;</span> collect</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="co">#| id: logistic-map</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="kw">function</span> <span class="fu">logistic_map_points</span>(rs<span class="op">::</span><span class="dt">AbstractVector{R}</span>, n_skip, n_take) <span class="kw">where</span> {R <span class="op">&lt;:</span><span class="dt"> Real</span>}</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>    <span class="bu">Iterators</span>.<span class="fu">flatten</span>(<span class="bu">Iterators</span>.<span class="fu">take</span>(<span class="fu">logistic_map_points</span>(r, n_skip), n_take) <span class="cf">for</span> r <span class="kw">in</span> rs) </span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="cf">end</span></span></code></pre>
 </div>
 <div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">collect!</span>(it, tgt)</span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>    <span class="cf">for</span> (i, v) <span class="kw">in</span> <span class="fu">zip</span>(<span class="fu">eachindex</span>(tgt), it)</span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>        tgt[i] <span class="op">=</span> <span class="fu">v_map</span>(r) <span class="op">=</span> n <span class="op">-&gt;</span> r </span>
-<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a></span>
-<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a><span class="kw">function</span> <span class="fu">logistic_map_points_td</span>(rs<span class="op">::</span><span class="dt">AbstractVector{R}</span>, n_skip, n_take) <span class="kw">where</span> {R <span class="op">&lt;:</span><span class="dt"> Real</span>}</span>
-<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>    result <span class="op">=</span> <span class="fu">Matrix</span><span class="dt">{Point2}</span>(<span class="cn">undef</span>, n_take, <span class="fu">length</span>(rs))</span>
-<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a>    <span class="co"># Threads.@threads for i in eachindex(rs)</span></span>
-<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fu">eachindex</span>(rs)</span>
-<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>        <span class="fu">collect!</span>(<span class="fu">logistic_map_points</span>(rs[i], n_skip), <span class="fu">view</span>(result, <span class="op">:</span>, i))</span>
-<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a>    <span class="cf">return</span> <span class="fu">reshape</span>(result, <span class="op">:</span>)</span>
-<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a></span>
-<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a><span class="pp">@benchmark</span> <span class="fu">logistic_map_points_td</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">1000</span>), <span class="fl">1000</span>, <span class="fl">1000</span>)</span>
-<span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a><span class="pp">@profview</span> <span class="fu">logistic_map_points_td</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">10000</span>), <span class="fl">1000</span>, <span class="fl">1000</span>)</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="pp">@benchmark</span> <span class="fu">logistic_map_points</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">1000</span>), <span class="fl">1000</span>, <span class="fl">1000</span>) <span class="op">|&gt;</span> collect</span></code></pre>
+</div>
+<p>First of all, let’s visualize the output because its so pretty!</p>
+<div class="codewrapper sourceCode" id="cb14">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co">#| id: logistic-map</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="kw">function</span> <span class="fu">plot_bifurcation_diagram</span>()</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  pts <span class="op">=</span> <span class="fu">logistic_map_points</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">10000</span>), <span class="fl">1000</span>, <span class="fl">10000</span>) <span class="op">|&gt;</span> collect</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>	fig <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">1024</span>, <span class="fl">768</span>))</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>	ax <span class="op">=</span> Makie.<span class="fu">Axis</span>(fig[<span class="fl">1</span>,<span class="fl">1</span>], limits<span class="op">=</span>((<span class="fl">2.6</span>, <span class="fl">4.0</span>), <span class="cn">nothing</span>), xlabel<span class="op">=</span><span class="st">"r"</span>, ylabel<span class="op">=</span><span class="st">"N"</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>	<span class="fu">datashader!</span>(ax, pts, async<span class="op">=</span><span class="cn">false</span>, colormap<span class="op">=:</span>deep)</span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>	fig</span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+</div>
+<figure><img src="../fig/bifurcation-diagram.png" alt="undescribable beauty" class="figure mx-auto d-block"><div class="figcaption">The bifurcation diagram</div>
+</figure><div id="accordionSpoiler2" class="accordion spoiler-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
+  <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Plotting code </h3>
+</button>
+<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
+<div class="accordion-body">
+<div class="codewrapper sourceCode" id="cb15">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co">#| classes: ["task"]</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="co">#| collect: figures</span></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a><span class="co">#| creates: episodes/fig/bifurcation-diagram.png</span></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="kw">module</span> Script</span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="im">using</span> <span class="bu">GLMakie</span></span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="im">using</span> <span class="bu">IterTools</span></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="im">using</span> <span class="bu">.Iterators</span>: take</span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a><span class="op">&lt;&lt;</span>logistic<span class="op">-</span>map<span class="op">&gt;&gt;</span></span>
+<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a><span class="kw">function</span> <span class="fu">main</span>()</span>
+<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a>    fig <span class="op">=</span> <span class="fu">plot_bifurcation_diagram</span>()</span>
+<span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a>    <span class="fu">save</span>(<span class="st">"episodes/fig/bifurcation-diagram.png"</span>, fig)</span>
+<span id="cb15-14"><a href="#cb15-14" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb15-15"><a href="#cb15-15" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb15-16"><a href="#cb15-16" tabindex="-1"></a></span>
+<span id="cb15-17"><a href="#cb15-17" tabindex="-1"></a>Script.<span class="fu">main</span>()</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="codewrapper sourceCode" id="cb16">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="pp">@profview</span> <span class="fu">logistic_map_points</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">1000</span>), <span class="fl">1000</span>, <span class="fl">1000</span>) <span class="op">|&gt;</span> collect</span></code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb17">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">collect!</span>(it, tgt)</span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>    <span class="cf">for</span> (i, v) <span class="kw">in</span> <span class="fu">zip</span>(<span class="fu">eachindex</span>(tgt), it)</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>        tgt[i] <span class="op">=</span> <span class="fu">v_map</span>(r) <span class="op">=</span> n <span class="op">-&gt;</span> r </span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a><span class="kw">function</span> <span class="fu">logistic_map_points_td</span>(rs<span class="op">::</span><span class="dt">AbstractVector{R}</span>, n_skip, n_take) <span class="kw">where</span> {R <span class="op">&lt;:</span><span class="dt"> Real</span>}</span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a>    result <span class="op">=</span> <span class="fu">Matrix</span><span class="dt">{Point2}</span>(<span class="cn">undef</span>, n_take, <span class="fu">length</span>(rs))</span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a>    <span class="co"># Threads.@threads for i in eachindex(rs)</span></span>
+<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fu">eachindex</span>(rs)</span>
+<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a>        <span class="fu">collect!</span>(<span class="fu">logistic_map_points</span>(rs[i], n_skip), <span class="fu">view</span>(result, <span class="op">:</span>, i))</span>
+<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb17-13"><a href="#cb17-13" tabindex="-1"></a>    <span class="cf">return</span> <span class="fu">reshape</span>(result, <span class="op">:</span>)</span>
+<span id="cb17-14"><a href="#cb17-14" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb17-15"><a href="#cb17-15" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" tabindex="-1"></a><span class="pp">@benchmark</span> <span class="fu">logistic_map_points_td</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">1000</span>), <span class="fl">1000</span>, <span class="fl">1000</span>)</span>
+<span id="cb17-17"><a href="#cb17-17" tabindex="-1"></a><span class="pp">@profview</span> <span class="fu">logistic_map_points_td</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">10000</span>), <span class="fl">1000</span>, <span class="fl">1000</span>)</span></code></pre>
 </div>
 <div id="rewrite-the-logistic_map_points-function" class="callout challenge">
 <div class="callout-square">
@@ -2804,39 +2887,39 @@ style!). Is this faster than using iterators?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb14">
+<div class="codewrapper sourceCode" id="cb18">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">logistic_map_points_raw</span>(rs<span class="op">::</span><span class="dt">AbstractVector{R}</span>, n_skip, n_take, out<span class="op">::</span><span class="dt">AbstractVector{P}</span>) <span class="kw">where</span> {R <span class="op">&lt;:</span><span class="dt"> Real</span>, P}</span>
-<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>    <span class="co"># result = Array{Float32}(undef, 2, n_take, length(rs))</span></span>
-<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>    <span class="co"># result = Array{Point2f}(undef, n_take, length(rs))</span></span>
-<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>    <span class="pp">@assert</span> <span class="fu">length</span>(out) <span class="op">==</span> <span class="fu">length</span>(rs) <span class="op">*</span> n_take</span>
-<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>    <span class="co"># result = reshape(reinterpret(Float32, out), 2, n_take, length(rs))</span></span>
-<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>    result <span class="op">=</span> <span class="fu">reshape</span>(out, n_take, <span class="fu">length</span>(rs))</span>
-<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fu">eachindex</span>(rs)</span>
-<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>        x <span class="op">=</span> <span class="fl">0.5</span></span>
-<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a>        r <span class="op">=</span> rs[i]</span>
-<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a>        <span class="cf">for</span> _ <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n_skip</span>
-<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a>            x <span class="op">=</span> r <span class="op">*</span> x <span class="op">*</span> (<span class="fl">1</span> <span class="op">-</span> x)</span>
-<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a>        <span class="cf">end</span></span>
-<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n_take</span>
-<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a>            x <span class="op">=</span> r <span class="op">*</span> x <span class="op">*</span> (<span class="fl">1</span> <span class="op">-</span> x)</span>
-<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a>            result[j, i] <span class="op">=</span> <span class="fu">P</span>(r, x)</span>
-<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a>            <span class="co">#result[1, j, i] = r</span></span>
-<span id="cb14-17"><a href="#cb14-17" tabindex="-1"></a>            <span class="co">#result[2, j, i] = x</span></span>
-<span id="cb14-18"><a href="#cb14-18" tabindex="-1"></a>        <span class="cf">end</span></span>
-<span id="cb14-19"><a href="#cb14-19" tabindex="-1"></a>        <span class="co"># result[1, :, i] .= r</span></span>
-<span id="cb14-20"><a href="#cb14-20" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb14-21"><a href="#cb14-21" tabindex="-1"></a>    <span class="co"># return reshape(reinterpret(Point2f, result), :)</span></span>
-<span id="cb14-22"><a href="#cb14-22" tabindex="-1"></a>    <span class="co"># return reshape(result, :)</span></span>
-<span id="cb14-23"><a href="#cb14-23" tabindex="-1"></a>    out</span>
-<span id="cb14-24"><a href="#cb14-24" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb14-25"><a href="#cb14-25" tabindex="-1"></a></span>
-<span id="cb14-26"><a href="#cb14-26" tabindex="-1"></a>out <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{Point2d}</span>(<span class="cn">undef</span>, <span class="fl">1000000</span>)</span>
-<span id="cb14-27"><a href="#cb14-27" tabindex="-1"></a><span class="fu">logistic_map_points_raw</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">1000</span>), <span class="fl">1000</span>, <span class="fl">1000</span>, out)</span>
-<span id="cb14-28"><a href="#cb14-28" tabindex="-1"></a><span class="pp">@benchmark</span> <span class="fu">logistic_map_points_raw</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">1000</span>), <span class="fl">1000</span>, <span class="fl">1000</span>, out)</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">logistic_map_points_raw</span>(rs<span class="op">::</span><span class="dt">AbstractVector{R}</span>, n_skip, n_take, out<span class="op">::</span><span class="dt">AbstractVector{P}</span>) <span class="kw">where</span> {R <span class="op">&lt;:</span><span class="dt"> Real</span>, P}</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>    <span class="co"># result = Array{Float32}(undef, 2, n_take, length(rs))</span></span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>    <span class="co"># result = Array{Point2f}(undef, n_take, length(rs))</span></span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>    <span class="pp">@assert</span> <span class="fu">length</span>(out) <span class="op">==</span> <span class="fu">length</span>(rs) <span class="op">*</span> n_take</span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>    <span class="co"># result = reshape(reinterpret(Float32, out), 2, n_take, length(rs))</span></span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>    result <span class="op">=</span> <span class="fu">reshape</span>(out, n_take, <span class="fu">length</span>(rs))</span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fu">eachindex</span>(rs)</span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a>        x <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>        r <span class="op">=</span> rs[i]</span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a>        <span class="cf">for</span> _ <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n_skip</span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a>            x <span class="op">=</span> r <span class="op">*</span> x <span class="op">*</span> (<span class="fl">1</span> <span class="op">-</span> x)</span>
+<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n_take</span>
+<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a>            x <span class="op">=</span> r <span class="op">*</span> x <span class="op">*</span> (<span class="fl">1</span> <span class="op">-</span> x)</span>
+<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a>            result[j, i] <span class="op">=</span> <span class="fu">P</span>(r, x)</span>
+<span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a>            <span class="co">#result[1, j, i] = r</span></span>
+<span id="cb18-17"><a href="#cb18-17" tabindex="-1"></a>            <span class="co">#result[2, j, i] = x</span></span>
+<span id="cb18-18"><a href="#cb18-18" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb18-19"><a href="#cb18-19" tabindex="-1"></a>        <span class="co"># result[1, :, i] .= r</span></span>
+<span id="cb18-20"><a href="#cb18-20" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb18-21"><a href="#cb18-21" tabindex="-1"></a>    <span class="co"># return reshape(reinterpret(Point2f, result), :)</span></span>
+<span id="cb18-22"><a href="#cb18-22" tabindex="-1"></a>    <span class="co"># return reshape(result, :)</span></span>
+<span id="cb18-23"><a href="#cb18-23" tabindex="-1"></a>    out</span>
+<span id="cb18-24"><a href="#cb18-24" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb18-25"><a href="#cb18-25" tabindex="-1"></a></span>
+<span id="cb18-26"><a href="#cb18-26" tabindex="-1"></a>out <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{Point2d}</span>(<span class="cn">undef</span>, <span class="fl">1000000</span>)</span>
+<span id="cb18-27"><a href="#cb18-27" tabindex="-1"></a><span class="fu">logistic_map_points_raw</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">1000</span>), <span class="fl">1000</span>, <span class="fl">1000</span>, out)</span>
+<span id="cb18-28"><a href="#cb18-28" tabindex="-1"></a><span class="pp">@benchmark</span> <span class="fu">logistic_map_points_raw</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">1000</span>), <span class="fl">1000</span>, <span class="fl">1000</span>, out)</span></code></pre>
 </div>
 </div>
 </div>
@@ -3284,7 +3367,7 @@ using the above packages in conjunction with
 </button>
 </div>
 </nav><div id="nav-tabContent-1" class="tab-content">
-<div id="nav-tabpanel-1-Intel" class="tab-pane show active" aria-labelledby="nav-tab-1-Intel" role="tabpanel">
+<div id="nav-tabpanel-1-Intel" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-1-Intel">
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -3293,7 +3376,7 @@ using the above packages in conjunction with
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="im">using</span> <span class="bu">KernelAbstractions</span></span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-1-Metal" class="tab-pane" aria-labelledby="nav-tab-1-Metal" role="tabpanel">
+<div id="nav-tabpanel-1-Metal" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-Metal">
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -3301,7 +3384,7 @@ using the above packages in conjunction with
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="im">using</span> <span class="bu">KernelAbstractions</span></span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-1-NVidia" class="tab-pane" aria-labelledby="nav-tab-1-NVidia" role="tabpanel">
+<div id="nav-tabpanel-1-NVidia" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-NVidia">
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -3309,7 +3392,7 @@ using the above packages in conjunction with
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="im">using</span> <span class="bu">KernelAbstractions</span></span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-1-AMD" class="tab-pane" aria-labelledby="nav-tab-1-AMD" role="tabpanel">
+<div id="nav-tabpanel-1-AMD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-AMD">
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -3365,7 +3448,7 @@ arrays.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-2" class="tab-content">
-<div id="nav-tabpanel-2-Intel" class="tab-pane show active" aria-labelledby="nav-tab-2-Intel" role="tabpanel">
+<div id="nav-tabpanel-2-Intel" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-2-Intel">
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -3374,7 +3457,7 @@ arrays.</p>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>a_dev <span class="op">.+</span> b_dev</span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-2-Metal" class="tab-pane" aria-labelledby="nav-tab-2-Metal" role="tabpanel">
+<div id="nav-tabpanel-2-Metal" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-Metal">
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -3383,7 +3466,7 @@ arrays.</p>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>a_dev <span class="op">.+</span> b_dev</span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-2-NVidia" class="tab-pane" aria-labelledby="nav-tab-2-NVidia" role="tabpanel">
+<div id="nav-tabpanel-2-NVidia" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-NVidia">
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -3392,7 +3475,7 @@ arrays.</p>
 <span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>a_dev <span class="op">.+</span> b_dev</span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-2-AMD" class="tab-pane" aria-labelledby="nav-tab-2-AMD" role="tabpanel">
+<div id="nav-tabpanel-2-AMD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-AMD">
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -3437,7 +3520,7 @@ results.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3524,7 +3607,7 @@ image, in this case <code>480</code> seemed to work.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3805,7 +3888,7 @@ implementation.</p>
   Collatz module
   </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb3" file="examples/Collatz/src/Collatz.jl">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3879,7 +3962,7 @@ then diverges or not.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb2" file="examples/JuliaFractal/src/JuliaFractal.jl">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
