@@ -1,6 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/020-getting-started.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/030-julia-basics.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/040-dispatch-and-types.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/060-simulating-solar-system.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/070-pkg.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/080-package-development.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/090-best-practices.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/100-introduction-performance.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/110-performance-analysis.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/120-dos-and-donts.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/130-channels-and-do.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/140-threads-async-and-tasks.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/145-distributed.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/150-transducers.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/160-cool-libraries.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/170-gpu-programming.html</loc>
+  </url>
+  <url>
     <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/404.html</loc>
   </url>
   <url>
@@ -8,6 +56,15 @@
   </url>
   <url>
     <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/a01-collatz.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/a02-julia-fractals.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/a03-lorenz-attractor.html</loc>
   </url>
   <url>
     <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/aio.html</loc>
@@ -19,6 +76,54 @@
     <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/index.html</loc>
   </url>
   <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/020-getting-started.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/030-julia-basics.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/040-dispatch-and-types.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/060-simulating-solar-system.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/070-pkg.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/080-package-development.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/090-best-practices.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/100-introduction-performance.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/110-performance-analysis.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/120-dos-and-donts.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/130-channels-and-do.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/140-threads-async-and-tasks.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/145-distributed.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/150-transducers.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/160-cool-libraries.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/170-gpu-programming.html</loc>
+  </url>
+  <url>
     <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/404.html</loc>
   </url>
   <url>
@@ -26,6 +131,15 @@
   </url>
   <url>
     <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/a01-collatz.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/a02-julia-fractals.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/a03-lorenz-attractor.html</loc>
   </url>
   <url>
     <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/aio.html</loc>
@@ -55,6 +169,9 @@
     <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/resources.html</loc>
   </url>
   <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/workshops.html</loc>
+  </url>
+  <url>
     <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor-notes.html</loc>
   </url>
   <url>
@@ -71,5 +188,8 @@
   </url>
   <url>
     <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/resources.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/workshops.html</loc>
   </url>
 </urlset>
