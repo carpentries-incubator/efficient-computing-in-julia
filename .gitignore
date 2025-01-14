@@ -1,7 +1,3 @@
-notebooks
-_libs
-.direnv
-
 # sandpaper files
 episodes/*html
 site/*
@@ -48,10 +44,10 @@ vignettes/*.pdf
 .Renviron
 
 # pkgdown site
-docs/site
+docs/
 
 # translation temp files
 po/*~
 
-.entangled/filedb.json
-
+# renv sandbox needed for renv version 0.16.0
+renv/sandbox # OPTIONAL

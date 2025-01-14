@@ -1,3 +1,35 @@
 {
-  "task": []
+  "task": [
+    {
+      "description": null,
+      "creates": [
+        "episodes/fig/getting-started-makie.png"
+      ],
+      "requires": [],
+      "runner": "julia",
+      "stdout": null,
+      "stdin": null,
+      "script": "#| classes: [\"task\"]\n#| creates: episodes/fig/getting-started-makie.png\n#| collect: figures\n\nmodule Script\nusing GLMakie\n\nfunction main()\n    x = -3.0:0.1:3.0\n    z = sinc.(sqrt.(x.^2 .+ x'.^2))\n\n    fig = Figure(size=(1024, 768))\n    ax = Axis3(fig[1,1])\n    surface!(ax, x, x, z, alpha=0.5)\n    wireframe!(ax, x, x, z, color=:black, linewidth=0.5)\n    save(\"episodes/fig/getting-started-makie.png\", fig)\nend\nend\n\nScript.main()",
+      "path": null
+    },
+    {
+      "description": null,
+      "creates": [
+        "episodes/fig/random-orbits.png"
+      ],
+      "requires": [],
+      "runner": "julia",
+      "stdout": null,
+      "stdin": null,
+      "script": "#| classes: [\"task\"]\n#| creates: episodes/fig/random-orbits.png\n#| collect: figures\n\nmodule Script\n\nusing Unitful\nusing GLMakie\nusing DataFrames\nusing Random\nusing EfficientJulia.Gravity: random_orbits\n\nfunction plot_orbits!(ax, orbits::DataFrame)\n    for colname in names(orbits)[2:end]\n        scatter!(ax, [orbits[1,colname] / u\"m\"])\n        lines!(ax, orbits[!,colname] / u\"m\")\n    end\nend\n\nfunction main()\n    Random.seed!(0)\n    orbs1 = random_orbits(2, 1e6u\"kg\")\n    Random.seed!(15)\n    orbs2 = random_orbits(3, 1e6u\"kg\")\n\n    fig = Figure(size=(1024, 600))\n    ax1 = Axis3(fig[1,1], azimuth=\u03c0/2+0.1, elevation=0.1\u03c0, title=\"two particles\")\n    ax2 = Axis3(fig[1,2], azimuth=\u03c0/3, title=\"three particles\")\n\n    plot_orbits!(ax1, orbs1)\n    plot_orbits!(ax2, orbs2)\n\n    save(\"episodes/fig/random-orbits.png\", fig)\n    fig\nend\n\nend\n\nScript.main()",
+      "path": null
+    },
+    {
+      "name": "figures",
+      "requires": [
+        "episodes/fig/getting-started-makie.png",
+        "episodes/fig/random-orbits.png"
+      ]
+    }
+  ]
 }

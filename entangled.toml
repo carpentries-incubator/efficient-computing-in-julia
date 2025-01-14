@@ -1,3 +1,21 @@
 version = "2.0"
 watch_list = ["episodes/**/*.md"]
 hooks = ["quarto_attributes", "brei"]
+
+[markers]
+open="^(?P<indent>\\s*)```(?P<properties>.*)$"
+close="^(?P<indent>\\s*)```\\s*$"
+
+# We're not really using these "Languages", but these definitions are here
+# to prevent warnings.
+
+[[languages]]
+name = "JSON"
+identifiers = ["json"]
+comment = { open = "//" }   # not really, but hey...
+
+[[languages]]
+name = "Output"
+identifiers = ["output"]
+comment = { open = "#" }
+

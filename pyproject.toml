@@ -1,15 +1,17 @@
-[tool.poetry]
-name = "efficient-computing-in-julia"
+[project]
+name = "efficient-computing-in-julia-2"
 version = "0.1.0"
-description = "Python Venv for running Entangled"
-authors = ["Johan Hidding <j.hidding@esciencecenter.nl>"]
+description = ""
+authors = [
+    {name = "Johan Hidding",email = "j.hidding@esciencecenter.nl"}
+]
 readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.11"
-entangled-cli = "^2.0.3"
+requires-python = ">=3.13"
+dependencies = [
+    "jupyterlab (>=4.3.4,<5.0.0)"
+]
 
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"

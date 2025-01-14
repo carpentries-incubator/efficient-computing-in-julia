@@ -1,25 +1,6 @@
-include = ["docs/weave.toml", "docs/weave_html.json"]
+include=[".entangled/tasks.json"]
 
-[[task]]
-description = "Scan for input Markdown files and generate contents"
-force = true
-creates = ["docs/weave_html.json", "docs/contents.md"]
-runner = "python"
-path = "docs/gencontents.py"
+[runner.julia]
+command = "julia"
+args = ["--project=.", "-O0", "${script}"]
 
-[environment]
-title = "Efficient Computing in Julia"
-subtitle = "lesson material"
-
-[[task]]
-name = "weave"
-description = "Deploy site"
-requires = ["#html", "#static"]
-
-[[call]]
-template = "copy"
-collect = "static"
-[call.args]
-srcdir = "episodes/fig"
-tgtdir = "docs/site/fig"
-basename = ["a02-real-orbits.svg"]

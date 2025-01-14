@@ -15,7 +15,7 @@ title: Best practices
 - documentation
 - GitHub workflows
 - JuliaFormatter.jl
-- COPIERTemplate.jl
+- BestieTemplate.jl
 :::
 
 The following is a function for computing the roots of a cubic polynomial

@@ -23,10 +23,11 @@ logistic_map(r) = n -> r * n * (1 - n)
 ```julia
 using IterTools
 using GLMakie
+using .Iterators: take, flatten
 ```
 
 ```julia
-take(iterated(logistic_map(1.05), 0.001), 200) |> collect |> lines
+take(iterated(logistic_map(3.0), 0.001), 200) |> collect |> lines
 ```
 
 ::: challenge
@@ -58,7 +59,8 @@ There seem to be key values of $r$ where the iteration of the logistic map split
 We can plot all points for an arbitrary sized orbit for all values of $r$ between 2.6 and 4.0. First of all, let's see how the `iterated |> take |> collect` function chain performs.
 
 ```julia
-@btime takestrict(iterated(logistic_map(3.5), 0.5), 10000) |> collect
+using BenchmarkTools
+@btime take(iterated(logistic_map(3.5), 0.5), 10000) |> collect
 ```
 
 ```julia
@@ -86,7 +88,7 @@ function iterated_fn(f, x, n)
     return result
 end
 
-@btime iterated_fn(logistic_map(3.5), 0.5, 10000)
+@benchmark iterated_fn(logistic_map(3.5), 0.5, 10000)
 ```
 
 We can do better if we don't need to allocate:
@@ -99,8 +101,8 @@ function iterated_fn!(f, x, out)
     end
 end
 
-out = Vector{Float64}(undef, 1000)
-@btime iterated_fn!(logistic_map(3.5), 0.5, out)
+out = Vector{Float64}(undef, 10000)
+@benchmark iterated_fn!(logistic_map(3.5), 0.5, out)
 ```
 
 ```julia
@@ -115,35 +117,13 @@ end
 
 ```julia
 function logistic_map_points(rs::AbstractVector{R}, n_skip, n_take) where {R <: Real}
-    flatten(logistic_map_points(r, n_skip, n_take) for r in rs) 
+    Iterators.flatten(Iterators.take(logistic_map_points(r, n_skip), n_take) for r in rs) 
 end
 
-@btime logistic_map_points(LinRange(2.6, 4.0, 1000), 1000, 1000)
+@benchmark logistic_map_points(LinRange(2.6, 4.0, 1000), 1000, 1000) |> collect
 ```
 
-```julia
-@profview logistic_map_points(LinRange(2.6, 4.0, 1000), 1000, 1000)
-```
-
-```julia
-function collect!(it, tgt)
-    for (i, v) in zip(eachindex(tgt), it)
-        tgt[i] = v
-    end
-end
-
-function logistic_map_points_td(rs::AbstractVector{R}, n_skip, n_take) where {R <: Real}
-    result = Matrix{Point2f}(undef, n_take, length(rs))
-    Threads.@threads for i in eachindex(rs)
-        collect!(logistic_map_points(rs[i], n_skip), view(result, :, i))
-    end
-    return reshape(result, :)
-end
-
-@btime logistic_map_points_td(LinRange(2.6, 4.0, 1000), 1000, 1000)
-@profview logistic_map_points_td(LinRange(2.6, 4.0, 1000), 1000, 1000)
-```
-
+First of all, let's visualize the output because its so pretty!
 
 ```julia
 let
@@ -154,6 +134,68 @@ let
 	fig
 end
 ```
+
+```julia
+@profview logistic_map_points(LinRange(2.6, 4.0, 1000), 1000, 1000) |> collect
+```
+
+```julia
+function collect!(it, tgt)
+    for (i, v) in zip(eachindex(tgt), it)
+        tgt[i] = v_map(r) = n -> r 
+    end
+end
+
+function logistic_map_points_td(rs::AbstractVector{R}, n_skip, n_take) where {R <: Real}
+    result = Matrix{Point2}(undef, n_take, length(rs))
+    # Threads.@threads for i in eachindex(rs)
+    for i in eachindex(rs)
+        collect!(logistic_map_points(rs[i], n_skip), view(result, :, i))
+    end
+    return reshape(result, :)
+end
+
+@benchmark logistic_map_points_td(LinRange(2.6, 4.0, 1000), 1000, 1000)
+@profview logistic_map_points_td(LinRange(2.6, 4.0, 10000), 1000, 1000)
+```
+
+:::challenge
+### Rewrite the `logistic_map_points` function
+Rewrite the last function, so that everything is in one body (Fortran style!). Is this faster than using iterators?
+
+::::solution
+```julia
+function logistic_map_points_raw(rs::AbstractVector{R}, n_skip, n_take, out::AbstractVector{P}) where {R <: Real, P}
+    # result = Array{Float32}(undef, 2, n_take, length(rs))
+    # result = Array{Point2f}(undef, n_take, length(rs))
+    @assert length(out) == length(rs) * n_take
+    # result = reshape(reinterpret(Float32, out), 2, n_take, length(rs))
+    result = reshape(out, n_take, length(rs))
+    for i in eachindex(rs)
+        x = 0.5
+        r = rs[i]
+        for _ in 1:n_skip
+            x = r * x * (1 - x)
+        end
+        for j in 1:n_take
+            x = r * x * (1 - x)
+            result[j, i] = P(r, x)
+            #result[1, j, i] = r
+            #result[2, j, i] = x
+        end
+        # result[1, :, i] .= r
+    end
+    # return reshape(reinterpret(Point2f, result), :)
+    # return reshape(result, :)
+    out
+end
+
+out = Vector{Point2d}(undef, 1000000)
+logistic_map_points_raw(LinRange(2.6, 4.0, 1000), 1000, 1000, out)
+@benchmark logistic_map_points_raw(LinRange(2.6, 4.0, 1000), 1000, 1000, out)
+```
+::::
+:::
 
 ---
 

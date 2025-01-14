@@ -1,5 +1,5 @@
 ---
-title: 'Lesson Overview'
+title: Instructor Notes
 ---
 
 ## Audience
@@ -24,7 +24,9 @@ This workshop aims to get research software engineers from their first steps in 
 
 Participants will have to install Julia by following the instruction on [the Julia webpage, downloads section](https://julialang.org/downloads/). They should be provided an environment with a `Project.toml` so they can precompile any dependencies before the workshop starts. In most cases this should suffice, though we have encountered university-managed Windows laptops in the wild that gave problems.
 
-The workshop uses Pluto notebooks through-out.
+## Workflow
+
+We're teaching using VS Code as the main environment. If you prefer, you might also use Pluto, but interactive `Makie` plots don't work so well in Pluto (you'd use `PlutoUI` instead), and the `@profview` macro needs an extra dependency to work from Pluto.
 
 ## Sillabus
 
@@ -75,12 +77,13 @@ The following sillabus assumes 6 hours of effective teaching per day.
   - static types to reduce dynamic look-up
 - Best practices with `BestieTemplate`: 1h
 
-## Guiding examples
+## Oddities
 
-Principle: examples that are not *too* technical, but give the participants the feeling that we're solving real-world problems. Candidates:
+Many of the code blocks have a comment stating some sort of id.
 
-- Computing $\pi$ for realz
-- Mandelbrot
-- Lorenz attractor
-- k-means clustering
-- generate data, process, optimise! (analysis pipeline example)
+```julia
+#| id: code-block-id
+...
+```
+
+These are used to collect code blocks into executable units for automated testing and rendering of output figures, using [Entangled](https://entangled.github.io). You can certainly ignore them while teaching.
