@@ -25,10 +25,36 @@
       "path": null
     },
     {
+      "description": null,
+      "creates": [
+        "episodes/fig/logistic-map-orbits.png"
+      ],
+      "requires": [],
+      "runner": "julia",
+      "stdout": null,
+      "stdin": null,
+      "script": "#| classes: [\"task\"]\n#| collect: figures\n#| creates: episodes/fig/logistic-map-orbits.png\n\nmodule Script\nusing IterTools\nusing .Iterators: take\nusing GLMakie\n\nfunction main()\n    logistic_map(r) = n -> r * n * (1 - n)\n    fig = Figure(size=(1024, 512))\n    for (i, r) in enumerate(LinRange(2.6, 4.0, 8))\n        ax = Axis(fig[div(i-1, 4)+1, mod1(i, 4)], title=\"r=$$r\")\n        pts = take(iterated(logistic_map(r), 0.001), 50) |> collect\n        lines!(ax, pts, alpha=0.5)\n        plot!(ax, pts, markersize=5.0)\n    end\n    save(\"episodes/fig/logistic-map-orbits.png\", fig)\nend\nend\n\nScript.main()",
+      "path": null
+    },
+    {
+      "description": null,
+      "creates": [
+        "episodes/fig/bifurcation-diagram.png"
+      ],
+      "requires": [],
+      "runner": "julia",
+      "stdout": null,
+      "stdin": null,
+      "script": "#| classes: [\"task\"]\n#| collect: figures\n#| creates: episodes/fig/bifurcation-diagram.png\nmodule Script\nusing GLMakie\nusing IterTools\nusing .Iterators: take\n\n#| id: logistic-map\nlogistic_map(r) = n -> r * n * (1 - n)\n#| id: logistic-map\nfunction logistic_map_points(r::Real, n_skip)\n    make_point(x) = Point2f(r, x)\n    x0 = nth(iterated(logistic_map(r), 0.5), n_skip)\n    Iterators.map(make_point, iterated(logistic_map(r), x0))\nend\n#| id: logistic-map\nfunction logistic_map_points(rs::AbstractVector{R}, n_skip, n_take) where {R <: Real}\n    Iterators.flatten(Iterators.take(logistic_map_points(r, n_skip), n_take) for r in rs) \nend\n#| id: logistic-map\nfunction plot_bifurcation_diagram()\n  pts = logistic_map_points(LinRange(2.6, 4.0, 10000), 1000, 10000) |> collect\n\tfig = Figure(size=(1024, 768))\n\tax = Makie.Axis(fig[1,1], limits=((2.6, 4.0), nothing), xlabel=\"r\", ylabel=\"N\")\n\tdatashader!(ax, pts, async=false, colormap=:deep)\n\tfig\nend\n\nfunction main()\n    fig = plot_bifurcation_diagram()\n    save(\"episodes/fig/bifurcation-diagram.png\", fig)\nend\nend\n\nScript.main()",
+      "path": null
+    },
+    {
       "name": "figures",
       "requires": [
         "episodes/fig/getting-started-makie.png",
-        "episodes/fig/random-orbits.png"
+        "episodes/fig/random-orbits.png",
+        "episodes/fig/logistic-map-orbits.png",
+        "episodes/fig/bifurcation-diagram.png"
       ]
     }
   ]

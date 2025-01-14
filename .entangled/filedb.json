@@ -3,150 +3,145 @@
     {
       "deps": [
         "episodes/020-getting-started.md",
-        "episodes/060-simulating-solar-system.md"
+        "episodes/060-simulating-solar-system.md",
+        "episodes/110-performance-analysis.md",
+        "episodes/110-performance-analysis.md"
       ],
-      "hexdigest": "58617f1d7a456054d71b1e15b6b033fe4cf72a76ada4d4513bd7d682e6384f3c",
-      "modified": "2025-01-14T14:49:43.850369",
+      "hexdigest": "95d0d6b1f1bf121732641be47a3bccf06ff76c799d9f774461b2163604ec1df6",
+      "modified": "2025-01-14T22:24:03.667077",
       "path": ".entangled/tasks.json",
-      "size": 2031
+      "size": 4359
     },
     {
       "deps": null,
       "hexdigest": "a1f9d20deab0d89ec37bfbc2091551303989befaf23d421abeef10fb8da2c626",
-      "modified": "2025-01-14T13:53:47.807363",
+      "modified": "2025-01-14T16:06:22.171072",
       "path": "episodes/020-getting-started.md",
       "size": 8032
     },
     {
       "deps": null,
-      "hexdigest": "a25f78485734f3f50b96c94b57dc42737ee79954fb0281a0ef96bb78f3cedba1",
-      "modified": "2025-01-13T23:00:44.261199",
+      "hexdigest": "6aa0d6a9e126d8fe59caf7e8c822896db84d78019a957335f5a82885d53e6147",
+      "modified": "2025-01-14T16:06:22.171072",
       "path": "episodes/030-julia-basics.md",
-      "size": 5108
+      "size": 7218
     },
     {
       "deps": null,
       "hexdigest": "2d303f4669ca13a7b7203ec81730d78c60b4a75260ea5153c182c06b8668ebc0",
-      "modified": "2025-01-12T23:26:03.871989",
+      "modified": "2025-01-14T16:06:22.170072",
       "path": "episodes/040-dispatch-and-types.md",
       "size": 2434
     },
     {
       "deps": null,
-      "hexdigest": "c4a89245c9a27ee9b15be3b552cf367d0dc24446249604db748ab4c88388d46b",
-      "modified": "2025-01-12T23:26:03.871989",
-      "path": "episodes/050-arrays-and-broadcasting.md",
-      "size": 789
-    },
-    {
-      "deps": null,
       "hexdigest": "d4ec4268874428a0bcba8d8ce52f96bc6c4ca8d1330c1f0d0188b507feba31eb",
-      "modified": "2025-01-14T14:49:41.771351",
+      "modified": "2025-01-14T16:06:22.171072",
       "path": "episodes/060-simulating-solar-system.md",
       "size": 12300
     },
     {
       "deps": null,
       "hexdigest": "b4d91f71a85ac7a0fff5833a732068b77ea0f8594dec65366a587e04420937c1",
-      "modified": "2025-01-12T23:26:03.871989",
+      "modified": "2025-01-14T16:06:22.170072",
       "path": "episodes/070-pkg.md",
       "size": 670
     },
     {
       "deps": null,
       "hexdigest": "348ca5f3d5ee49608b44afb4d33d62f31339bf3d708b5b7c9ba586dc74a05ef4",
-      "modified": "2025-01-12T23:26:03.871989",
+      "modified": "2025-01-14T16:06:22.170072",
       "path": "episodes/080-package-development.md",
       "size": 518
     },
     {
       "deps": null,
       "hexdigest": "b9641a2821999091e65ae8a7541a468b16a51de7e8458602cf3692e7b7296300",
-      "modified": "2025-01-13T10:39:40.349715",
+      "modified": "2025-01-14T16:06:22.170072",
       "path": "episodes/090-best-practices.md",
       "size": 1960
     },
     {
       "deps": null,
       "hexdigest": "99189c1f019a139c45330e5d76c6ff773c3c053a803c72934f4c575b88d8d673",
-      "modified": "2025-01-12T23:26:03.871989",
+      "modified": "2025-01-14T16:06:22.170072",
       "path": "episodes/100-introduction-performance.md",
       "size": 378
     },
     {
       "deps": null,
-      "hexdigest": "37a7f7f8cba24b2ad46589e6e24ff1f492fe121dceccbd72fe24805e9c5f38a4",
-      "modified": "2025-01-13T10:34:00.806774",
+      "hexdigest": "802475b99212f8ad4fe487e8ed15bf6650abb2df6a60d1e774f5a305862317e6",
+      "modified": "2025-01-14T22:23:59.409082",
       "path": "episodes/110-performance-analysis.md",
-      "size": 5456
+      "size": 6870
     },
     {
       "deps": null,
       "hexdigest": "5ada621addbce38382b6860d031b90b851be204ad2c80aeaf91463d385866d51",
-      "modified": "2025-01-12T23:26:03.871989",
+      "modified": "2025-01-14T16:06:22.170072",
       "path": "episodes/120-dos-and-donts.md",
       "size": 733
     },
     {
       "deps": null,
       "hexdigest": "2a1253fadb066fa94d0d22baa032a883932119400e6b4b113e787ff49b04c0c9",
-      "modified": "2025-01-12T23:26:03.871989",
+      "modified": "2025-01-14T16:06:22.170072",
       "path": "episodes/130-channels-and-do.md",
       "size": 382
     },
     {
       "deps": null,
       "hexdigest": "336cfe6c9e67da60a1ffeb39e89c26863f5af02b57c22a07c4bf83cc77804d8e",
-      "modified": "2025-01-12T23:26:03.871989",
+      "modified": "2025-01-14T16:06:22.170072",
       "path": "episodes/140-threads-async-and-tasks.md",
       "size": 393
     },
     {
       "deps": null,
       "hexdigest": "c9bbc3a94a86ecafd523b6edf0e1113d15fc233e3af7fcefc8a7f121a02f43be",
-      "modified": "2025-01-12T23:26:03.871989",
+      "modified": "2025-01-14T16:06:22.170072",
       "path": "episodes/145-distributed.md",
       "size": 261
     },
     {
       "deps": null,
       "hexdigest": "0709131adc52a02bcf3908ecba89ae3bbf636045f419d3b061e53cccab6f185e",
-      "modified": "2025-01-12T23:26:03.871989",
+      "modified": "2025-01-14T16:06:22.170072",
       "path": "episodes/150-transducers.md",
       "size": 834
     },
     {
       "deps": null,
       "hexdigest": "7c0212c53c13be0fd0030980d7421ac8cd8f8273b65957bb37a7b796988af45f",
-      "modified": "2025-01-12T23:26:03.871989",
+      "modified": "2025-01-14T16:06:22.170072",
       "path": "episodes/160-cool-libraries.md",
       "size": 358
     },
     {
       "deps": null,
-      "hexdigest": "ef3514f1447575db6e1c9d850db7311b19ae1a4c54b1ed8818c8def498ec34e1",
-      "modified": "2025-01-13T14:34:25.678372",
+      "hexdigest": "e826536d7fd16d5e5f0de15f5e597d94e9e4559a1e834a8e4d735e492469ce04",
+      "modified": "2025-01-14T16:06:22.171072",
       "path": "episodes/170-gpu-programming.md",
-      "size": 4804
+      "size": 4808
     },
     {
       "deps": null,
       "hexdigest": "9708e4453acb8424e8e3d9a268abec26273ad1597772c9ec5d0f71d88af560db",
-      "modified": "2025-01-12T23:26:03.871989",
+      "modified": "2025-01-14T16:06:22.170072",
       "path": "episodes/a01-collatz.md",
       "size": 5047
     },
     {
       "deps": null,
       "hexdigest": "8c62affdec490ea3e63911020734067a4af72fc5a09c3bba7608fbfac99d0459",
-      "modified": "2025-01-12T23:26:03.871989",
+      "modified": "2025-01-14T16:06:22.171072",
       "path": "episodes/a02-julia-fractals.md",
       "size": 2689
     },
     {
       "deps": null,
       "hexdigest": "e4c7daeedd55f7efd52dfdf9dc0862baed8e7ca8620f38d056e14c5f3d5cb469",
-      "modified": "2025-01-12T23:26:03.871989",
+      "modified": "2025-01-14T16:06:22.171072",
       "path": "episodes/a03-lorenz-attractor.md",
       "size": 740
     },
@@ -155,13 +150,14 @@
         "episodes/060-simulating-solar-system.md"
       ],
       "hexdigest": "59116ce49979a1680ff91272d68d5511ff1d67eb09c32b79eb9ce162f7f0ac99",
-      "modified": "2025-01-14T14:25:17.650334",
+      "modified": "2025-01-14T16:06:22.178072",
       "path": "src/Gravity.jl",
       "size": 4015
     }
   ],
   "source": [],
   "target": [
+    ".entangled/tasks.json",
     "src/Gravity.jl"
   ],
   "version": "2.1.10"

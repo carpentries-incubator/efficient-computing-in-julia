@@ -17,6 +17,7 @@ $$N_{i+1} = r N_{i} (1 - N_{i}),$$
 also known as the **logistic map**, where $r$ is the **reproduction factor**. For low values of $N$ this behaves as exponential growth. However, most growth processes will hit a ceiling at some point. Let's try:
 
 ```julia
+#| id: logistic-map
 logistic_map(r) = n -> r * n * (1 - n)
 ```
 
@@ -52,6 +53,37 @@ let
 end
 ```
 ::::
+:::
+
+![Orbits of logistic map for 8 different values of $r$.](fig/logistic-map-orbits.png){alt="a grid of 8 different plots with qualitive different behaviour"}
+
+::: spoiler
+### Plotting code
+```julia
+#| classes: ["task"]
+#| collect: figures
+#| creates: episodes/fig/logistic-map-orbits.png
+
+module Script
+using IterTools
+using .Iterators: take
+using GLMakie
+
+function main()
+    logistic_map(r) = n -> r * n * (1 - n)
+    fig = Figure(size=(1024, 512))
+    for (i, r) in enumerate(LinRange(2.6, 4.0, 8))
+        ax = Axis(fig[div(i-1, 4)+1, mod1(i, 4)], title="r=$$r")
+        pts = take(iterated(logistic_map(r), 0.001), 50) |> collect
+        lines!(ax, pts, alpha=0.5)
+        plot!(ax, pts, markersize=5.0)
+    end
+    save("episodes/fig/logistic-map-orbits.png", fig)
+end
+end
+
+Script.main()
+```
 :::
 
 There seem to be key values of $r$ where the iteration of the logistic map splits into periodic orbits, and even get into chaotic behaviour.
@@ -106,34 +138,67 @@ out = Vector{Float64}(undef, 10000)
 ```
 
 ```julia
+#| id: logistic-map
 function logistic_map_points(r::Real, n_skip)
     make_point(x) = Point2f(r, x)
     x0 = nth(iterated(logistic_map(r), 0.5), n_skip)
     Iterators.map(make_point, iterated(logistic_map(r), x0))
 end
-
+```
+    
+```julia
 @btime takestrict(logistic_map_points(3.5, 1000), 1000) |> collect
 ```
 
 ```julia
+#| id: logistic-map
 function logistic_map_points(rs::AbstractVector{R}, n_skip, n_take) where {R <: Real}
     Iterators.flatten(Iterators.take(logistic_map_points(r, n_skip), n_take) for r in rs) 
 end
+```
 
+```julia
 @benchmark logistic_map_points(LinRange(2.6, 4.0, 1000), 1000, 1000) |> collect
 ```
 
 First of all, let's visualize the output because its so pretty!
 
 ```julia
-let
-    pts = logistic_map_points_td(LinRange(2.6, 4.0, 10000), 1000, 10000)
-	fig = Figure(size=(800, 700))
-	ax = Makie.Axis(fig[1,1], limits=((2.6, 4.0), nothing))
+#| id: logistic-map
+function plot_bifurcation_diagram()
+  pts = logistic_map_points(LinRange(2.6, 4.0, 10000), 1000, 10000) |> collect
+	fig = Figure(size=(1024, 768))
+	ax = Makie.Axis(fig[1,1], limits=((2.6, 4.0), nothing), xlabel="r", ylabel="N")
 	datashader!(ax, pts, async=false, colormap=:deep)
 	fig
 end
 ```
+
+![The bifurcation diagram](fig/bifurcation-diagram.png){alt="undescribable beauty"}
+
+::: spoiler
+### Plotting code
+
+```julia
+#| classes: ["task"]
+#| collect: figures
+#| creates: episodes/fig/bifurcation-diagram.png
+module Script
+using GLMakie
+using IterTools
+using .Iterators: take
+
+<<logistic-map>>
+
+function main()
+    fig = plot_bifurcation_diagram()
+    save("episodes/fig/bifurcation-diagram.png", fig)
+end
+end
+
+Script.main()
+```
+:::
 
 ```julia
 @profview logistic_map_points(LinRange(2.6, 4.0, 1000), 1000, 1000) |> collect
