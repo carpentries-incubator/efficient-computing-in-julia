@@ -1,5 +1,5 @@
 ---
-title: (extra) GPU
+title: GPU Programming
 ---
 
 ::: questions
@@ -26,11 +26,37 @@ CUDA by far has the best and most mature support. We can get reasonably portable
 
 ## `KernelAbstractions`
 
+::: group-tab
+### Intel
+
 ```julia
 using BenchmarkTools
-using oneAPI  # or CUDA or Metal etc.
+using oneAPI
 using KernelAbstractions
 ```
+
+### Metal
+
+```julia
+using Metal
+using KernelAbstractions
+```
+
+### NVidia
+
+```julia
+using CUDA
+using KernelAbstractions
+```
+
+### AMD
+
+```julia
+using AMDGPU
+using KernelAbstractions
+```
+:::
+
 
 ```julia
 @kernel function vector_add(a, b, c)
@@ -49,23 +75,75 @@ c = Vector{Float32}(undef, 1024)
 vector_add(dev, 512)(a, b, c, ndrange=size(a))
 ```
 
+We can perform operations on the GPU simply by operating on device arrays.
+
+::: group-tab
+### Intel
+
+```julia
+a_dev = oneArray(a)
+b_dev = oneArray(b)
+a_dev .+ b_dev
+```
+
+### Metal
+
+```julia
+a_dev = MtlArray(a)
+b_dev = MtlArray(b)
+a_dev .+ b_dev
+```
+
+### NVidia
+
+```julia
+a_dev = CuArray(a)
+b_dev = CuArray(b)
+a_dev .+ b_dev
+```
+
+### AMD
+
+```julia
+a_dev = ROCArray(a)
+b_dev = ROCArray(b)
+a_dev .+ b_dev
+```
+:::
+
+## Computations on the device
+
+```julia
+dev = get_backend(a_dev)
+```
+
 ::: challenge
 ### Run the vector-add on the device
 Depending on your machine, try and run the above vector addition on your GPU. Most PC (Windows or Linux) laptops have an on-board Intel GPU that can be exploited using `oneAPI`. If you have a Mac, give it a shot with `Metal`. Some of you may have brought a gaming laptop with a real GPU, then `CUDA` or `AMDGPU` is your choice.
 
+Compare the run time of `vector_add` to the threaded CPU version and the array implementation. Make sure to run `KernelAbstractions.synchronize(backend)` when you time results.
+
+::::solution
 ```julia
-using oneAPI
-a_dev = oneArray(a)
-b_dev = oneArray(b)
 c_dev = oneArray(zeros(Float32, 1024))
-dev = get_backend(a_dev)
 vector_add(dev, 512)(a_dev, b_dev, c_dev, ndrange=1024)
 all(Array(c_dev) .== a .+ b)
+
+function test_vector_add()
+	vector_add(dev, 512)(a_dev, b_dev, c_dev, ndrange=1024)
+	KernelAbstractions.synchronize(dev) 
+end
+
+@benchmark test_vector_add()
+@benchmark begin c_dev .= a_dev .+ b_dev; KernelAbstractions.synchronize(dev) end
+@benchmark c .= a .+ b
 ```
+::::
 :::
 
 ::: challenge
 ### Implement the Julia fractal
+
 Use the GPU library that is appropriate for your laptop. Do you manage to get any speedup? 
 
 ```julia
@@ -93,7 +171,12 @@ julia_host(c, 1f0/600, 1024, out_host)
 ```
 
 ```julia
-@btime julia_host(c, 1f0/600, 1024, out_host)
+using GLMakie
+heatmap(out_host)
+```
+
+```julia
+@benchmark julia_host(c, 1f0/600, 1024, out_host)
 ```
 
 Hint 1: you need to convert the `@index(Global)` index into a `(i, j)` pair. You can do this by computing the quotient and remainder to the image width.
@@ -137,7 +220,7 @@ all(Array(out) .== out_host)
 ```
 
 ```julia
-@btime begin julia_dev(backend, 480)(c, 1f0/600, 1024, out, ndrange=size(out)); Array(out) end
+@benchmark begin julia_dev(backend, 480)(c, 1f0/600, 1024, out, ndrange=size(out)); KernelAbstractions.synchronize(backend) end
 ```
 ::::
 :::
@@ -145,6 +228,6 @@ all(Array(out) .== out_host)
 ---
 
 ::: keypoints
-- GPU support is in immature stages.
 - We can compile Julia code to GPU backends using `KernelAbstractions`.
+- Even on smaller laptops, significant speedups can be achieved, given the right problem.
 :::

@@ -1,18 +1,17 @@
 ---
 title: Getting Started
+teaching: 40
+exercises: 10
 ---
 
 ::: questions
-
 - Why should I use Julia?
 - How do I get started with Julia?
 :::
 
 ::: objectives
-
 - Start a REPL
-- Start Pluto
-- Understand Pluto's behaviour (w.r.t. Jupyter)
+- Run lines from VS Code
 :::
 
 :::instructor
@@ -20,7 +19,7 @@ title: Getting Started
 ### Teaching strategy
 
 Julia is easy to get into because it centers around a few easy to understand core concepts: functions, multiple-dispatch, array polymorphism. It is easy to get needlessly stranded into complications that hinder the pacing of this lesson. For example: when explaining `for` loops you may spend ten minutes explaining all the finesse of `break` and `continue`, but most people will either know or don't care. There are several ways to fill these gaps in the material:
-  
+
   1. Explain these concepts when they naturally arise in an example or exercise.
   2. Point to their existence in a call-out, but refer interested readers to the relevant section in the Julia manual, to study in their own time.
   3. Give them as part of an exercise: let participants read a section of the manual before solving the exercise. This should empower them to look for the manual when solving their own problems.
@@ -65,7 +64,7 @@ Why are you interested in Julia? What is your current go-to for efficient comput
 
 When working in Julia it is very common to do so from the REPL (Read-Eval-Print Loop). Please open the Julia REPL on your system
 
-```shell
+```output
 $ julia
                _
    _       _ _(_)_     |  Documentation: https://docs.julialang.org
@@ -76,7 +75,7 @@ $ julia
  _/ |\__'_|_|_|\__'_|  |  Official https://julialang.org/ release
 |__/                   |
 
-julia> 
+julia>
 ```
 
 The REPL needs a small introduction since it has several **modes**.
@@ -90,7 +89,7 @@ The REPL needs a small introduction since it has several **modes**.
 
 :::challenge
 
-### Play with the REPL
+### Play with the REPL (5min)
 
 a. `Pkg` mode has a `help` command to help you along. Find out what the `add` command does.
 b. Check the contents of the folder in which your are running your REPL (`ls` on Unix, `dir` on Windows).
@@ -111,7 +110,7 @@ Please take a look at the Julia documentation now at [https://docs.julialang.org
 
 Pluto is the notebook environment from which we will teach much of this workshop. We can run it from the Julia REPL.
 
-```shell
+```output
 pkg> add Pluto
 ... quite a bit of output ...
 
@@ -119,16 +118,33 @@ julia> using Pluto
 
 julia> Pluto.run()
 [ Info: Loading...
-┌ Info: 
+┌ Info:
 └ Opening http://localhost:1235/?secret=xyzxyzxyz in your default browser... ~ have fun!
-┌ Info: 
+┌ Info:
 │ Press Ctrl+C in this terminal to stop Pluto
-└ 
+└
+```
+
+## VS Code
+VS Code is the editor for which Julia has the best support. We'll be needing to run Julia in multiple threads later on, so we'll set some arguments for the REPL in `settings.json` (press `Ctrl-,`).
+
+```json
+{
+    ...
+    "julia.additionalArgs": [ 
+        "-t", "4"
+    ]
+}
+```
+
+Now when you start a new REPL, (`Ctrl-Shift-P`, search "Julia REPL") you can query the number of threads available:
+
+```julia
+Threads.nthreads()
 ```
 
 :::challenge
-
-### Julia as a calculator
+### Julia as a calculator (5min)
 
 Try to play around in Pluto to use Julia as a calculator.
 
@@ -146,7 +162,60 @@ d. Pluto updates all dependent computations automatically. This is known as a **
 :::
 
 ::: keypoints
-
 - In Julia, the REPL is much more important than in some other languages.
 - Pluto is a reactive environment
+- VS Code has the best editor integration for Julia
+:::
+
+## Activate the Workshop Environment
+
+For this workshop, we prepared an environment. Press `]` in the REPL to activate `Pkg` mode.
+Make sure that you are in the path where you prepared your environment (see Setup Instructions).
+
+```
+(v1.11) pkg> activate .
+(EfficientJulia) pkg>
+```
+
+Alternatively, check the little "Julia env" message at the bottom of VS Code, and make sure that the correct environment is there.
+
+You should now be able to generate a plot using `GLMakie` (that one dependency that made you wait)
+
+```julia
+using GLMakie
+x = -3.0:0.1:3.0
+z = sinc.(sqrt.(x.^2 .+ x'.^2))
+surface(x, x, z, alpha=0.5)
+wireframe!(x, x, z, color=:black, linewidth=0.5)
+```
+
+![A 3D surface plot](fig/getting-started-makie.png){alt="A 3d rendering of a sinc function."}
+
+::: spoiler
+### Figure code
+
+To create the above figure:
+
+```julia
+#| classes: ["task"]
+#| creates: episodes/fig/getting-started-makie.png
+#| collect: figures
+
+module Script
+using GLMakie
+
+function main()
+    x = -3.0:0.1:3.0
+    z = sinc.(sqrt.(x.^2 .+ x'.^2))
+
+    fig = Figure(size=(1024, 768))
+    ax = Axis3(fig[1,1])
+    surface!(ax, x, x, z, alpha=0.5)
+    wireframe!(ax, x, x, z, color=:black, linewidth=0.5)
+    save("episodes/fig/getting-started-makie.png", fig)
+end
+end
+
+Script.main()
+```
 :::
