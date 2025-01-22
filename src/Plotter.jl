@@ -1,5 +1,6 @@
 module Plotter
 
+using ColorTypes
 using ColorSchemes
 using Images
 using ImageIO
@@ -12,7 +13,7 @@ end
 xaxis(bb::BoundingBox) = LinRange(bb.limits[1]..., bb.size[1]+1)
 yaxis(bb::BoundingBox) = LinRange(bb.limits[2]..., bb.size[2]+1)
 
-function scalar_image(raw::AbstractMatrix{F}, scale, clip, cmap, reversed=false) where {F <: Real}
+function scalar_image!(out, raw::AbstractMatrix{F}, scale, clip, cmap, reversed=false) where {F <: Real}
     rescale(a, b) = v -> (v - a) / (b - a)
     clip_unit(v) = v < 0.0 ? 0.0 : (v > 1.0 ? 1.0 : v)
     to_range(l) = v -> let n = Int(floor(v * l)) + 1
@@ -20,13 +21,20 @@ function scalar_image(raw::AbstractMatrix{F}, scale, clip, cmap, reversed=false)
     end
     cs = reversed ? reverse(colorschemes[cmap]) : colorschemes[cmap]
     csi = get(cs, range(0.0, 1.0, 256))
-    v = scale.(raw)
-    n = v .|> rescale(extrema(v)...) .|> rescale(clip...) .|> clip_unit
-    csi[n .|> to_range(256)]
+    a, b = extrema(raw)
+    out .= raw .|> scale .|> rescale(scale(a), scale(b)) .|>
+        rescale(clip...) .|> clip_unit .|> to_range(256) .|> (v -> csi[v])
+    # csi[n .|> to_range(256)]
+end
+
+function scalar_image(raw::AbstractMatrix{F}, scale, clip, cmap, reversed=false) where {F <: Real}
+    out = Matrix{RGB{Float64}}(undef, size(raw)...)
+    scalar_image!(out, raw, scale, clip, cmap, reversed)
+    return out
 end
 
 module Bifurcation
-using ..Plotter: BoundingBox, xaxis, yaxis, scalar_image
+using ..Plotter: BoundingBox, xaxis, yaxis, scalar_image, scalar_image!
 using ColorSchemes
 using GLMakie
 
@@ -89,12 +97,13 @@ function explorer()
     limits = Observable(((2.6, 4.0), (0.0, 1.0)))
     bb = lift(l->BoundingBox(l, (3840, 2160)), limits)
     img = Observable(plot_image(bb[], 5*10^4, 1000, 10^4))
-    xax = lift(xaxis, bb)
-    yax = lift(yaxis, bb)
+    rgb = scalar_image(img[], log1p, (0.0, 1.0), :viridis)
+    xax = lift(first, limits)
+    yax = lift(last, limits)
 
     fig = Figure()
-    slx = IntervalSlider(fig[2, 1], range=xax)
-    sly = IntervalSlider(fig[1, 2], range=yax, horizontal=false)
+    slx = IntervalSlider(fig[2, 1], range=lift(r->range(r..., 1000), xax))
+    sly = IntervalSlider(fig[1, 2], range=lift(r->range(r..., 1000), yax), horizontal=false)
 
     sg = SliderGrid(fig[3,1],
         (label = "log10(#skip)", range = 0.0:0.1:5,  format = "{:.1f}", startvalue = 3.0),
@@ -132,8 +141,10 @@ function explorer()
 
     ax = Makie.Axis(fig[1, 1], limits=limits)
     logimg = lift(img, contrast_obs, clip_slider.interval, palette_tb.stored_string, rev_pallete_cb.checked) do img, c, clip, pal, rev
-        scalar_image(img, x->log10(x+c), clip, Symbol(pal), rev)
+        scalar_image!(rgb, img, x->log10(x+c), clip, Symbol(pal), rev)
+        rgb
     end
+
     image!(ax, xax, yax, logimg)
     pts = lift(slx.interval, sly.interval) do (x1, x2), (y1, y2)
         Point2f[(x1, y1), (x2, y1), (x2, y2), (x1, y2)]
