@@ -172,6 +172,8 @@ function plot_bifurcation_diagram()
 	datashader!(ax, pts, async=false, colormap=:deep)
 	fig
 end
+
+plot_bifurcation_diagram()
 ```
 
 ![The bifurcation diagram](fig/bifurcation-diagram.png){alt="undescribable beauty"}
