@@ -7,10 +7,10 @@
         "episodes/110-performance-analysis.md",
         "episodes/110-performance-analysis.md"
       ],
-      "hexdigest": "95d0d6b1f1bf121732641be47a3bccf06ff76c799d9f774461b2163604ec1df6",
-      "modified": "2025-01-14T22:24:03.667077",
+      "hexdigest": "bb8f669d3f724241b2d6caae9503cec675a9c9a460ab6a335d8aa09d4292da0f",
+      "modified": "2025-01-23T16:40:10.701899",
       "path": ".entangled/tasks.json",
-      "size": 4359
+      "size": 4389
     },
     {
       "deps": null,
@@ -70,24 +70,24 @@
     },
     {
       "deps": null,
-      "hexdigest": "802475b99212f8ad4fe487e8ed15bf6650abb2df6a60d1e774f5a305862317e6",
-      "modified": "2025-01-14T22:23:59.409082",
+      "hexdigest": "e2b7e0791198d7d02601ac9316a6d0485fbb180935b684f2d0209e6a619e210a",
+      "modified": "2025-01-20T10:16:59.258857",
       "path": "episodes/110-performance-analysis.md",
-      "size": 6870
+      "size": 6898
     },
     {
       "deps": null,
-      "hexdigest": "5ada621addbce38382b6860d031b90b851be204ad2c80aeaf91463d385866d51",
-      "modified": "2025-01-14T16:06:22.170072",
+      "hexdigest": "0a1aa918d92dd4715bf38776d74089e02fb69731e33d25a762b10c33a0295ba2",
+      "modified": "2025-01-20T10:17:07.971918",
       "path": "episodes/120-dos-and-donts.md",
-      "size": 733
+      "size": 3625
     },
     {
-      "deps": null,
-      "hexdigest": "2a1253fadb066fa94d0d22baa032a883932119400e6b4b113e787ff49b04c0c9",
-      "modified": "2025-01-14T16:06:22.170072",
-      "path": "episodes/130-channels-and-do.md",
-      "size": 382
+      "deps": [],
+      "hexdigest": "ffcdfaba16736b2405e871954624dcc61fc7ea0989f5cfd5d80c94f8cb8fe376",
+      "modified": "2025-01-23T19:09:51.060995",
+      "path": "episodes/130-functional-techniques.md",
+      "size": 3721
     },
     {
       "deps": null,
@@ -147,6 +147,15 @@
     },
     {
       "deps": [
+        "episodes/130-functional-techniques.md"
+      ],
+      "hexdigest": "261c89d9f7fee7ba03e08f2373b3095123c80c46715f0d1babd35ee23e304cc3",
+      "modified": "2025-01-23T19:06:16.854510",
+      "path": "src/CA.jl",
+      "size": 3045
+    },
+    {
+      "deps": [
         "episodes/060-simulating-solar-system.md"
       ],
       "hexdigest": "59116ce49979a1680ff91272d68d5511ff1d67eb09c32b79eb9ce162f7f0ac99",
@@ -158,6 +167,7 @@
   "source": [],
   "target": [
     ".entangled/tasks.json",
+    "src/CA.jl",
     "src/Gravity.jl"
   ],
   "version": "2.1.10"
