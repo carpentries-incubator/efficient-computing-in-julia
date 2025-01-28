@@ -2,7 +2,7 @@
 
 julia_version = "1.11.2"
 manifest_format = "2.0"
-project_hash = "6c8d0cfcbeac431d448e850a3623ecbced6693a1"
+project_hash = "d12db2370425d612a9387a3a19226ebeb555d49d"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -681,6 +681,18 @@ deps = ["ArnoldiMethod", "Compat", "DataStructures", "Distributed", "Inflate", "
 git-tree-sha1 = "1dc470db8b1131cfc7fb4c115de89fe391b9e780"
 uuid = "86223c79-3864-5bf0-83f7-82e725a168b6"
 version = "1.12.0"
+
+[[deps.GraphvizDotLang]]
+deps = ["Graphviz_jll"]
+git-tree-sha1 = "c12291701b81a89068722f1bd35e04f78b366e95"
+uuid = "6039e64d-d8b8-4c93-8e43-7efd2f757352"
+version = "0.2.1"
+
+[[deps.Graphviz_jll]]
+deps = ["Artifacts", "Cairo_jll", "Expat_jll", "JLLWrappers", "Libdl", "Pango_jll", "Pkg"]
+git-tree-sha1 = "a5d45833dda71048117e8a9828bef75c03b18b1c"
+uuid = "3c863552-8265-54e4-a6dc-903eb78fde85"
+version = "2.50.0+1"
 
 [[deps.GridLayoutBase]]
 deps = ["GeometryBasics", "InteractiveUtils", "Observables"]
