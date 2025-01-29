@@ -375,7 +375,7 @@
 <div class="accordion accordion-flush" id="accordionFlush13">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading13">
-        <a href="140-threads-async-and-tasks.html">12. Getting Started</a>
+        <a href="140-threads-async-and-tasks.html">12. Threads, ASync and Tasks</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -387,7 +387,7 @@
 <div class="accordion accordion-flush" id="accordionFlush14">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading14">
-        <a href="145-distributed.html">13. Getting Started</a>
+        <a href="170-gpu-programming.html">13. GPU Programming</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -399,7 +399,7 @@
 <div class="accordion accordion-flush" id="accordionFlush15">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading15">
-        <a href="150-transducers.html">14. Transducers</a>
+        <a href="180-cool-libraries.html">14. Recap and Recommended libraries</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -411,7 +411,7 @@
 <div class="accordion accordion-flush" id="accordionFlush16">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading16">
-        <a href="160-cool-libraries.html">15. Recommended libraries</a>
+        <a href="a01-collatz.html">15. Appendix: Iterators and type stability</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -423,7 +423,7 @@
 <div class="accordion accordion-flush" id="accordionFlush17">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading17">
-        <a href="170-gpu-programming.html">16. GPU Programming</a>
+        <a href="a02-julia-fractals.html">16. Appendix: Generating Julia Fractals</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -435,31 +435,7 @@
 <div class="accordion accordion-flush" id="accordionFlush18">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading18">
-        <a href="a01-collatz.html">17. Appendix: Iterators and type stability</a>
-    </div>
-<!--/div.accordion-header-->
-
-  </div>
-<!--/div.accordion-item-->
-</div>
-<!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush19">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading19">
-        <a href="a02-julia-fractals.html">18. Appendix: Generating Julia Fractals</a>
-    </div>
-<!--/div.accordion-header-->
-
-  </div>
-<!--/div.accordion-item-->
-</div>
-<!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush20">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading20">
-        <a href="a03-lorenz-attractor.html">19. Appendix: Lorenz attractor</a>
+        <a href="a03-lorenz-attractor.html">17. Appendix: Lorenz attractor</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -1422,7 +1398,7 @@ the <code>typeof</code> function. For instance:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <ol style="list-style-type: lower-alpha">
 <li><code>Int64</code></li>
@@ -1477,7 +1453,7 @@ the <code>typeof</code> function. For instance:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3580,9 +3556,9 @@ for agent based modelling.</li>
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
-</section></section><section id="aio-140-threads-async-and-tasks"><p>Content from <a href="140-threads-async-and-tasks.html">Getting Started</a></p>
+</section></section><section id="aio-140-threads-async-and-tasks"><p>Content from <a href="140-threads-async-and-tasks.html">Threads, ASync and Tasks</a></p>
 <hr>
-<p>Last updated on 2024-04-19 |
+<p>Last updated on 2025-01-29 |
 
         <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/140-threads-async-and-tasks.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -3627,165 +3603,6 @@ any links that you are not going to use.
 macro.</li>
 <li>Julia has built-in support for atomics.</li>
 <li>Channels are primary means of asynchronous communication.</li>
-</ul>
-</div>
-</div>
-</div></section><section id="aio-145-distributed"><p>Content from <a href="145-distributed.html">Getting Started</a></p>
-<hr>
-<p>Last updated on 2024-04-19 |
-
-        <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/145-distributed.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-<div class="text-end">
-          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
-        </div>
-<div class="overview card">
-<h2 class="card-header">Overview</h2>
-<div class="row g-0">
-<div class="col-md-4">
-<div class="card-body">
-<div class="inner">
-<h3 class="card-title">Questions</h3>
-<ul>
-<li>Does Julia have support for MPI?</li>
-<li>Can I scale my tasks to multiple machines?</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="col-md-8">
-<div class="card-body">
-<div class="inner bordered">
-<h3 class="card-title">Objectives</h3>
-<ul>
-<li>Learn how to run Julia on HPC.</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div id="keypoints1" class="callout keypoints">
-<div class="callout-square">
-<i class="callout-icon" data-feather="key"></i>
-</div>
-<div class="callout-inner">
-<h3 class="callout-title">Key Points</h3>
-<div class="callout-content">
-<ul>
-<li>Julia has built-in support for distributed computing.</li>
-</ul>
-</div>
-</div>
-</div></section><section id="aio-150-transducers"><p>Content from <a href="150-transducers.html">Transducers</a></p>
-<hr>
-<p>Last updated on 2024-05-27 |
-
-        <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/150-transducers.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-<div class="text-end">
-          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
-        </div>
-<div class="overview card">
-<h2 class="card-header">Overview</h2>
-<div class="row g-0">
-<div class="col-md-4">
-<div class="card-body">
-<div class="inner">
-<h3 class="card-title">Questions</h3>
-<ul>
-<li>Aren’t there better abstractions to deal with parallelism, like
-<code>map</code> and <code>reduce</code>?</li>
-<li>What other libraries exist to aid in parallel computing, and what
-makes them special?</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="col-md-8">
-<div class="card-body">
-<div class="inner bordered">
-<h3 class="card-title">Objectives</h3>
-<ul>
-<li>Exposure to some higher level programming concepts.</li>
-<li>Learn how to work with the pipe <code>|&gt;</code> operator.</li>
-<li>Write performant code that scales.</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</div>
-<p>List of libraries:</p>
-<ul>
-<li><code>Transducers.jl</code></li>
-<li><code>Folds.jl</code></li>
-<li><code>FLoops.jl</code></li>
-</ul>
-<hr>
-<div id="keypoints1" class="callout keypoints">
-<div class="callout-square">
-<i class="callout-icon" data-feather="key"></i>
-</div>
-<div class="callout-inner">
-<h3 class="callout-title">Key Points</h3>
-<div class="callout-content">
-<ul>
-<li>Transducers are composable functions.</li>
-<li>Using the <code>|&gt;</code> operator can make your code consise,
-with fewer parenthesis, and more readable.</li>
-<li>Overusing the <code>|&gt;</code> operator can make your code an
-absolute mess.</li>
-<li>Using Tranducers you can build scalable data pipe lines.</li>
-<li>Many Julia libraries for parallel computing and data processing are
-built on top of Tranducers.</li>
-</ul>
-</div>
-</div>
-</div></section><section id="aio-160-cool-libraries"><p>Content from <a href="160-cool-libraries.html">Recommended libraries</a></p>
-<hr>
-<p>Last updated on 2024-04-19 |
-
-        <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/160-cool-libraries.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-<div class="text-end">
-          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
-        </div>
-<div class="overview card">
-<h2 class="card-header">Overview</h2>
-<div class="row g-0">
-<div class="col-md-4">
-<div class="card-body">
-<div class="inner">
-<h3 class="card-title">Questions</h3>
-<ul>
-<li>Is there a recommended set of standard libraries?</li>
-<li>What is the equivalent of SciPy in Julia.</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="col-md-8">
-<div class="card-body">
-<div class="inner bordered">
-<h3 class="card-title">Objectives</h3>
-<ul>
-<li>Get street-wise.</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</div>
-<p>This is a nice closing episode.</p>
-<hr>
-<div id="keypoints1" class="callout keypoints">
-<div class="callout-square">
-<i class="callout-icon" data-feather="key"></i>
-</div>
-<div class="callout-inner">
-<h3 class="callout-title">Key Points</h3>
-<div class="callout-content">
-<ul>
-<li>SciML toolkit is dominant but not always the best choice.</li>
-<li>Search for libraries that specify your needs.</li>
 </ul>
 </div>
 </div>
@@ -3884,7 +3701,7 @@ using the above packages in conjunction with
 </button>
 </div>
 </nav><div id="nav-tabContent-1" class="tab-content">
-<div id="nav-tabpanel-1-Intel" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-1-Intel">
+<div id="nav-tabpanel-1-Intel" class="tab-pane show active" aria-labelledby="nav-tab-1-Intel" role="tabpanel">
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -3893,7 +3710,7 @@ using the above packages in conjunction with
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="im">using</span> <span class="bu">KernelAbstractions</span></span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-1-Metal" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-Metal">
+<div id="nav-tabpanel-1-Metal" class="tab-pane" aria-labelledby="nav-tab-1-Metal" role="tabpanel">
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -3901,7 +3718,7 @@ using the above packages in conjunction with
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="im">using</span> <span class="bu">KernelAbstractions</span></span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-1-NVidia" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-NVidia">
+<div id="nav-tabpanel-1-NVidia" class="tab-pane" aria-labelledby="nav-tab-1-NVidia" role="tabpanel">
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -3909,7 +3726,7 @@ using the above packages in conjunction with
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="im">using</span> <span class="bu">KernelAbstractions</span></span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-1-AMD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-AMD">
+<div id="nav-tabpanel-1-AMD" class="tab-pane" aria-labelledby="nav-tab-1-AMD" role="tabpanel">
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -3965,7 +3782,7 @@ arrays.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-2" class="tab-content">
-<div id="nav-tabpanel-2-Intel" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-2-Intel">
+<div id="nav-tabpanel-2-Intel" class="tab-pane show active" aria-labelledby="nav-tab-2-Intel" role="tabpanel">
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -3974,7 +3791,7 @@ arrays.</p>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>a_dev <span class="op">.+</span> b_dev</span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-2-Metal" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-Metal">
+<div id="nav-tabpanel-2-Metal" class="tab-pane" aria-labelledby="nav-tab-2-Metal" role="tabpanel">
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -3983,7 +3800,7 @@ arrays.</p>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>a_dev <span class="op">.+</span> b_dev</span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-2-NVidia" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-NVidia">
+<div id="nav-tabpanel-2-NVidia" class="tab-pane" aria-labelledby="nav-tab-2-NVidia" role="tabpanel">
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -3992,7 +3809,7 @@ arrays.</p>
 <span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>a_dev <span class="op">.+</span> b_dev</span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-2-AMD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-AMD">
+<div id="nav-tabpanel-2-AMD" class="tab-pane" aria-labelledby="nav-tab-2-AMD" role="tabpanel">
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -4037,7 +3854,7 @@ results.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -4124,7 +3941,7 @@ image, in this case <code>480</code> seemed to work.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -4186,7 +4003,56 @@ the right problem.</li>
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
-</section></section><section id="aio-a01-collatz"><p>Content from <a href="a01-collatz.html">Appendix: Iterators and type stability</a></p>
+</section></section><section id="aio-180-cool-libraries"><p>Content from <a href="180-cool-libraries.html">Recap and Recommended libraries</a></p>
+<hr>
+<p>Last updated on 2025-01-29 |
+
+        <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/180-cool-libraries.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+<div class="text-end">
+          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
+        </div>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>Is there a recommended set of standard libraries?</li>
+<li>What is the equivalent of SciPy in Julia.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
+<li>Get street-wise.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>This is a nice closing episode.</p>
+<hr>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Key Points</h3>
+<div class="callout-content">
+<ul>
+<li>SciML toolkit is dominant but not always the best choice.</li>
+<li>Search for libraries that specify your needs.</li>
+</ul>
+</div>
+</div>
+</div></section><section id="aio-a01-collatz"><p>Content from <a href="a01-collatz.html">Appendix: Iterators and type stability</a></p>
 <hr>
 <p>Last updated on 2024-05-27 |
 
@@ -4405,7 +4271,7 @@ implementation.</p>
   Collatz module
   </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb3" file="examples/Collatz/src/Collatz.jl">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -4642,8 +4508,8 @@ parameters.</p>
   "url": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/aio.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/aio.html",
   "dateCreated": "2024-01-01",
-  "dateModified": "2025-01-28",
-  "datePublished": "2025-01-28"
+  "dateModified": "2025-01-29",
+  "datePublished": "2025-01-29"
 }
 
   </script><script>
