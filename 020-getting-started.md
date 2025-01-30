@@ -31,7 +31,7 @@ Julia is easy to get into because it centers around a few easy to understand cor
 
 ## Why Julia
 
-Most of the participants will be coming from Python, Matlab or a lower level language like C/C++ or Fortran. Why should you be interested in learning Julia?
+Most of the participants will be coming from Python, MATLAB or a lower level language like C/C++ or Fortran. Why should you be interested in learning Julia?
 
 ### Performance and usability
 
@@ -44,15 +44,15 @@ Julia promises:
 
 These promises seem tantalizing and are in part what draws people to Julia, but in practice getting into Julia and writing performant code are two different things. Julia has its own idiosyncrasies that need to be understood to really squeeze every erg of performance out of your system.
 
-Julia obtains its performance from being a Just-In-Time (JIT) compiler, on top of the lLVM compiler stack (similar to how Python's Numba operates).
+Julia obtains its performance from being a just-in-time (JIT) compiler, on top of the LLVM compiler stack (similar to how Python's Numba operates).
 
 ### Language intrinsics
 
 Next to being performant, it turns out that Julia is a very nice language that does some things a bit different from what you may be used to:
 
-- **First-class arrays** and **Broadcasting**: arrays, slicing and operating on arrays have dedicated syntax, similar to Matlab.
+- **First-class arrays** and **Broadcasting**: arrays, slicing and operating on arrays have dedicated syntax, similar to MATLAB.
 - **Multiple dispatch**: Julia functions can be specialized on the entire call signature (not just its first argument like in Object Oriented Programming).
-- **Macros and Meta-programming**: The Just-in-time nature of the Julia compiler exposes a wide range of meta-programming capabilities, ranging from small macros to enhance the expressibility of the language to full-on code generation.
+- **Macros and Meta-programming**: The just-in-time nature of the Julia compiler exposes a wide range of meta-programming capabilities, ranging from small macros to enhance the expressibility of the language to full-on code generation.
 
 Meta-programming, while very powerful, is also very easy to abuse, often leading to unreadable non-idiomatic code. So tread with care! We'll see some examples where macros are indispensable though, and the SciML stack relies deeply on on-the-fly code-generation.
 
@@ -64,8 +64,11 @@ Why are you interested in Julia? What is your current go-to for efficient comput
 
 When working in Julia it is very common to do so from the REPL (Read-Eval-Print Loop). Please open the Julia REPL on your system
 
-```output
+```shell
 $ julia
+```
+
+```output
                _
    _       _ _(_)_     |  Documentation: https://docs.julialang.org
   (_)     | (_) (_)    |
@@ -87,12 +90,14 @@ The REPL needs a small introduction since it has several **modes**.
 | `;` | `shell>` | **Shell** mode. |
 | `?` | `help?>` | **Help** mode. Type the name of any entity to look up its documentation. |
 
+To switch back to the standard Julia input from another mode, press `Ctrl+C`
+
 :::challenge
 
 ### Play with the REPL (5min)
 
 a. `Pkg` mode has a `help` command to help you along. Find out what the `add` command does.
-b. Check the contents of the folder in which your are running your REPL (`ls` on Unix, `dir` on Windows).
+b. Check the contents of the folder in which you are running your REPL (`ls` on Unix, `dir` on Windows).
 c. Find out what the `print` method does in Julia.
 
 ::::solution
@@ -125,8 +130,9 @@ julia> Pluto.run()
 └
 ```
 
+
 ## VS Code
-VS Code is the editor for which Julia has the best support. We'll be needing to run Julia in multiple threads later on, so we'll set some arguments for the REPL in `settings.json` (press `Ctrl-,`).
+VS Code is the editor for which Julia has the best support. We'll be needing to run Julia in multiple threads later on, so we'll set some arguments for the REPL in `settings.json` (press `Ctrl+Shift+P` and search for `Open User Settings (JSON)`).
 
 ```json
 {
@@ -137,16 +143,17 @@ VS Code is the editor for which Julia has the best support. We'll be needing to 
 }
 ```
 
-Now when you start a new REPL, (`Ctrl-Shift-P`, search "Julia REPL") you can query the number of threads available:
+Now when you start a new REPL (`Ctrl+Shift+P`, search "Julia REPL"), you can query the number of threads available:
 
 ```julia
 Threads.nthreads()
 ```
 
+
 :::challenge
 ### Julia as a calculator (5min)
 
-Try to play around in Pluto to use Julia as a calculator.
+Try to play around in the VS Code REPL to use Julia as a calculator.
 
 a. What do you find is the operator for exponentiation?
 b. How do you assign a variable?
