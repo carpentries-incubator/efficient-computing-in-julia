@@ -53,3 +53,7 @@ po/*~
 renv/sandbox # OPTIONAL
 
 scratch
+
+# IntelliJ IDEA files
+.idea
+**.iml
