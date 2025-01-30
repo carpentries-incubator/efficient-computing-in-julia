@@ -51,7 +51,7 @@ let
 
     input(c) = Input(1.0, c, 10.0, 1.0)
     dN(c) = growth_rate.(input(c), N)
-    ax = Axis(fig[1, 1:2], ylabel="dN", xlabel="N")
+    ax = Makie.Axis(fig[1, 1:2], ylabel="dN", xlabel="N")
     lines!(ax, N, lift(dN, c_slider.value))
     fig
 end
@@ -86,10 +86,10 @@ let
     Label(fig[3,1], lift(y0->"y_0 = $y0", y0_slider.value))
 
     dN(c) = growth_rate.(input(c), N)
-    ax1 = Axis(fig[1, 1:2], ylabel="dN", xlabel="N")
+    ax1 = Makie.Axis(fig[1, 1:2], ylabel="dN", xlabel="N")
     lines!(ax1, N, lift(dN, c_slider.value))
 
-    ax2 = Axis(fig[1, 3], ylabel="N", xlabel="t", limits=(nothing, (0.0, 8.0)))
+    ax2 = Makie.Axis(fig[1, 3], ylabel="N", xlabel="t", limits=(nothing, (0.0, 8.0)))
     y = lift(c_slider.value, y0_slider.value) do c, y0
         forward_euler((t, y) -> growth_rate(input(c), y), y0, t)
     end
