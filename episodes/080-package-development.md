@@ -1,5 +1,5 @@
 ---
-title: Best Practices in Package development
+title: Package development
 ---
 
 ::: questions
