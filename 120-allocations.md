@@ -224,21 +224,8 @@ Script.main()
 
 ```julia
 function collect!(it, tgt)
-    # x = iterate(it)
-    # if x === nothing
-    #     return
-    # end
-    # (v, s) = x
-    # for i in eachindex(tgt)
-    #     tgt[i] = v
-    #     x = iterate(it, s)
-    #     if x === nothing
-    #         return
-    #     end
-    #     (v, s) = x
-    # end
     for (i, v) in zip(eachindex(tgt), it)
-       tgt[i] = v # _map(r) = n -> r 
+       tgt[i] = v
     end
 end
 

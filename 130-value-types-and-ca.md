@@ -17,8 +17,8 @@ Let's build cellular automata! Cellular automata are discrete systems consisting
 
 To implement these cellular automata we'll implement a generic function for performing **stencil operations**: these are operations that take an array as input, and then compute an output array from preset neighbourhoods of the input array. 
 
-| map                                                | stencil |
-|----------------------------------------------------|---------|
+| map                                                | stencil                                                |
+|----------------------------------------------------|--------------------------------------------------------|
 | ![](fig/map_operation.svg){alt="boxes and arrows"} | ![](fig/stencil_operation.svg){alt="boxes and arrows"} |
 
 ::: spoiler
