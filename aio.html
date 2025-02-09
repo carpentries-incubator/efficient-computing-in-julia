@@ -327,7 +327,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="100-introduction-performance.html">8. Julia and performance</a>
+        <a href="100-introduction-performance.html">8. Type Stability</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -339,7 +339,7 @@
 <div class="accordion accordion-flush" id="accordionFlush10">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading10">
-        <a href="110-dos-and-donts.html">9. Performance: do's and don'ts</a>
+        <a href="120-allocations.html">9. Reducing allocations on the Logistic Map</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -351,7 +351,7 @@
 <div class="accordion accordion-flush" id="accordionFlush11">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading11">
-        <a href="120-allocations.html">10. Reducing allocations on the Logistic Map</a>
+        <a href="130-value-types-and-ca.html">10. Value types: game of life</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -363,7 +363,7 @@
 <div class="accordion accordion-flush" id="accordionFlush12">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading12">
-        <a href="130-value-types-and-ca.html">11. Value types: game of life</a>
+        <a href="140-threads-async-and-tasks.html">11. Threads, ASync and Tasks</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -375,7 +375,7 @@
 <div class="accordion accordion-flush" id="accordionFlush13">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading13">
-        <a href="140-threads-async-and-tasks.html">12. Threads, ASync and Tasks</a>
+        <a href="170-gpu-programming.html">12. GPU Programming</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -387,7 +387,7 @@
 <div class="accordion accordion-flush" id="accordionFlush14">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading14">
-        <a href="170-gpu-programming.html">13. GPU Programming</a>
+        <a href="180-cool-libraries.html">13. Recap and Recommended libraries</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -399,7 +399,7 @@
 <div class="accordion accordion-flush" id="accordionFlush15">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading15">
-        <a href="180-cool-libraries.html">14. Recap and Recommended libraries</a>
+        <a href="a01-collatz.html">14. Appendix: Iterators and type stability</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -411,7 +411,7 @@
 <div class="accordion accordion-flush" id="accordionFlush16">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading16">
-        <a href="a01-collatz.html">15. Appendix: Iterators and type stability</a>
+        <a href="a02-julia-fractals.html">15. Appendix: Generating Julia Fractals</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -423,19 +423,7 @@
 <div class="accordion accordion-flush" id="accordionFlush17">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading17">
-        <a href="a02-julia-fractals.html">16. Appendix: Generating Julia Fractals</a>
-    </div>
-<!--/div.accordion-header-->
-
-  </div>
-<!--/div.accordion-item-->
-</div>
-<!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush18">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading18">
-        <a href="a03-lorenz-attractor.html">17. Appendix: Lorenz attractor</a>
+        <a href="a03-lorenz-attractor.html">16. Appendix: Lorenz attractor</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -1474,7 +1462,7 @@ the <code>typeof</code> function. For instance:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <ol style="list-style-type: lower-alpha">
 <li><code>Int64</code></li>
@@ -1529,7 +1517,7 @@ the <code>typeof</code> function. For instance:</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1775,7 +1763,7 @@ function</a>. Can you figure out a way to generate a random
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>One way is to generate three random numbers and convert the resulting
 array to a <code>Vec3d</code>:</p>
@@ -2012,7 +2000,7 @@ faster? Why?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb20">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2241,7 +2229,7 @@ embrace it</li>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Testing and Plots </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb33">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2522,7 +2510,7 @@ as a dependency, then check <code>Project.toml</code> and
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <pre class="shell"><code>pkg&gt; add Dates
 pkg&gt; status
@@ -2915,7 +2903,7 @@ Universe!” then call it in the REPL again.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3228,7 +3216,7 @@ tuple.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>The contents of <code>test-cubic.jl</code> should be e.g.</p>
 <div class="codewrapper sourceCode" id="cb8">
@@ -3360,7 +3348,7 @@ Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
 </div>
-</section></section><section id="aio-100-introduction-performance"><p>Content from <a href="100-introduction-performance.html">Julia and performance</a></p>
+</section></section><section id="aio-100-introduction-performance"><p>Content from <a href="100-introduction-performance.html">Type Stability</a></p>
 <hr>
 <p>Last updated on 2025-02-09 |
 
@@ -3376,9 +3364,9 @@ any links that you are not going to use.
 <div class="inner">
 <h3 class="card-title">Questions</h3>
 <ul>
-<li>How can Julia be so much faster than Python?</li>
-<li>I can’t say Julia is slow, but why is it so sluggish?</li>
-<li>How can I reason about performance?</li>
+<li>What is type stability?</li>
+<li>Why is type stability so important for performance?</li>
+<li>What is the origin of type unstable code? How can I prevent it?</li>
 </ul>
 </div>
 </div>
@@ -3388,13 +3376,24 @@ any links that you are not going to use.
 <div class="inner bordered">
 <h3 class="card-title">Objectives</h3>
 <ul>
-<li>Understand the strategy of JIT compilation.</li>
+<li>Learn to diagnose type stability using <code>@code_warntype</code>
+and <code>@profview</code>
+</li>
+<li>Understand how and why to avoid global mutable variables.</li>
+<li>Analyze the problem when passing functions as members of a
+struct.</li>
 </ul>
 </div>
 </div>
 </div>
 </div>
 </div>
+<p>In this episode we will look into <strong>type stability</strong>, a
+very important topic when it comes to writing efficient Julia. We will
+first show some small examples, trying to explain what type stability
+means and how you can create code that is not type stable. Then we will
+have two examples: one computing the growth of a coral reef under
+varying sea level, the other computing the value of <span class="math inline">\(\pi\)</span> using the Chudnovsky algorithm.</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -3425,8 +3424,12 @@ return type depends on run-time values:</p>
 </div>
 <p>In this case we may observe that the induced type is
 <code>Union{Nothing, T}</code>. If we run <code>@code_warntype</code> we
-can see the yellow highlighting of the union type. The situation is much
-worse when mutable globals are in place.</p>
+can see the yellow highlighting of the union type. Having union-types
+can be hint that the compiler is in uncertain territory. However, union
+types are at the very core of how Julia approaches iteration and
+therefore for-loops, so usually this will not lead to run-time
+dispatches being triggered.</p>
+<p>The situation is much worse when mutable globals are in place.</p>
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -3464,7 +3467,159 @@ unstable version.</p>
 </section><section><h2 class="section-heading" id="functions-in-structs">Functions in structs<a class="anchor" aria-label="anchor" href="#functions-in-structs"></a>
 </h2>
 <hr class="half-width">
-<p>Every function has its own unique type.</p>
+<p>Every function has its own unique type. This can be a problem when we
+want to get some functional user input. The following computes the
+sedimentation history of a coral reef, following a paper by Bosscher
+&amp; Schlager 1992:</p>
+<p><span class="math display">\[\frac{\partial y}{\partial t} = g_m
+\tanh \left(\frac{I_0 \exp(-kw)}{I_k}\right),\]</span></p>
+<p>where <span class="math inline">\(g_m\)</span> is the maximum growth
+rate, <span class="math inline">\(I_0\)</span> is the insolation (light
+intensity at sea-level), <span class="math inline">\(I_k\)</span> the
+saturation intensity, <span class="math inline">\(k\)</span> the
+extinction coefficient and <span class="math inline">\(w\)</span> the
+waterdepth, being <span class="math inline">\(sl(t) - y +
+\sigma*t\)</span>, where <span class="math inline">\(sl(t)\)</span> is
+the sea level and <span class="math inline">\(\sigma\)</span> is the
+subsidence rate. The model uses the <span class="math inline">\(\tanh\)</span> function to interpolate between
+maximum growth and zero growth, modified by the exponential extinction
+of sun light as we go deeper into the water. Details don’t matter much,
+the point being that we’d like to be able to specify the sea level as an
+input parameter in functional form.</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">Unitful</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="im">using</span> <span class="bu">GLMakie</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="pp">@kwdef</span> <span class="kw">struct</span> Input</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>    <span class="st">"The sea level as a function of time"</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>    sea_level <span class="op">=</span> _ <span class="op">-&gt;</span> <span class="fl">0.0</span>u<span class="st">"m"</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>    <span class="st">"Maximum growth rate of the coral, in m/Myr"</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>    maximum_growth_rate<span class="op">::</span><span class="dt">typeof</span>(<span class="fl">1.0</span>u<span class="st">"m/Myr"</span>) <span class="op">=</span> <span class="fl">0.2</span>u<span class="st">"mm/yr"</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>    <span class="st">"The light intensity at which maximum growth is attained, in W/m^2"</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>    saturation_intensity<span class="op">::</span><span class="dt">typeof</span>(<span class="fl">1.0</span>u<span class="st">"W/m^2"</span>) <span class="op">=</span> <span class="fl">50.0</span>u<span class="st">"W/m^2"</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>    <span class="st">"The rate at which growth rate drops every meter of water depth, in 1/m"</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>    extinction_coefficient<span class="op">::</span><span class="dt">typeof</span>(<span class="fl">1.0</span>u<span class="st">"m^-1"</span>) <span class="op">=</span> <span class="fl">0.05</span>u<span class="st">"m^-1"</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a>    <span class="st">"The light intensity of the Sun, in W/m^2"</span></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>    insolation<span class="op">::</span><span class="dt">typeof</span>(<span class="fl">1.0</span>u<span class="st">"W/m^2"</span>) <span class="op">=</span> <span class="fl">400.0</span>u<span class="st">"W/m^2"</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a>    <span class="st">"Subsidence rate is the rate at which the plateau drops, in m/Myr"</span></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a>    subsidence_rate<span class="op">::</span><span class="dt">typeof</span>(<span class="fl">1.0</span>u<span class="st">"m/Myr"</span>) <span class="op">=</span> <span class="fl">50.0</span>u<span class="st">"m/Myr"</span></span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a><span class="kw">function</span> <span class="fu">growth_rate</span>(input)</span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a>    sea_level <span class="op">=</span> input.sea_level</span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a>    <span class="kw">function</span> <span class="fu">df</span>(y, t)</span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a>        <span class="co"># w = input.sea_level(t) - y + input.subsidence_rate * t</span></span>
+<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a>        w <span class="op">=</span> <span class="fu">sea_level</span>(t) <span class="op">-</span> y <span class="op">+</span> input.subsidence_rate <span class="op">*</span> t</span>
+<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a>        g_m <span class="op">=</span> input.maximum_growth_rate</span>
+<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a>        I_0 <span class="op">=</span> input.insolation</span>
+<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a>        I_k <span class="op">=</span> input.saturation_intensity</span>
+<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a>        k <span class="op">=</span> input.extinction_coefficient</span>
+<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a></span>
+<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a>        w <span class="op">&gt;</span> <span class="fl">0</span>u<span class="st">"m"</span> ? g_m <span class="op">*</span> <span class="fu">tanh</span>(I_0 <span class="op">*</span> <span class="fu">exp</span>(<span class="op">-</span>k <span class="op">*</span> w) <span class="op">/</span> I_k) <span class="op">:</span> <span class="fl">0.0</span>u<span class="st">"m/Myr"</span></span>
+<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a>    <span class="kw">end</span></span>
+<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb7">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">forward_euler</span>(df, y0<span class="op">::</span><span class="dt">T</span>, t) <span class="kw">where</span> {T}</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>    result <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{T}</span>(<span class="cn">undef</span>, <span class="fu">length</span>(t) <span class="op">+</span> <span class="fl">1</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>    result[<span class="fl">1</span>] <span class="op">=</span> y <span class="op">=</span> y0</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>    dt <span class="op">=</span> <span class="fu">step</span>(t)</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fu">eachindex</span>(t)</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>        y <span class="op">=</span> y <span class="op">+</span> <span class="fu">df</span>(y, t[i]) <span class="op">*</span> dt</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>        result[i<span class="op">+</span><span class="fl">1</span>] <span class="op">=</span> y</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>    </span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>    <span class="cf">return</span> result</span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="kw">let</span> input <span class="op">=</span> <span class="fu">Input</span>(sea_level<span class="op">=</span>t<span class="op">-&gt;</span><span class="fl">20.0</span>u<span class="st">"m"</span> <span class="op">*</span> <span class="fu">sin</span>(<span class="fl">2</span>π<span class="op">*</span>t<span class="op">/</span><span class="fl">200</span>u<span class="st">"kyr"</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>    initial_topography <span class="op">=</span> (<span class="fl">0.0</span><span class="op">:-</span><span class="fl">1.0</span><span class="op">:-</span><span class="fl">100.0</span>)u<span class="st">"m"</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>    result <span class="op">=</span> <span class="fu">stack</span>(<span class="fu">forward_euler</span>(<span class="fu">growth_rate</span>(input), y0, (<span class="fl">0.0</span><span class="op">:</span><span class="fl">0.001</span><span class="op">:</span><span class="fl">1.0</span>)u<span class="st">"Myr"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>        <span class="cf">for</span> y0 <span class="kw">in</span> initial_topography) <span class="op">.-</span> <span class="fl">1.0</span>u<span class="st">"Myr"</span> <span class="op">*</span> input.subsidence_rate</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>    fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>    ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel<span class="op">=</span><span class="st">"y0"</span>, ylabel<span class="op">=</span><span class="st">"y"</span>, xreversed<span class="op">=</span><span class="cn">true</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>    <span class="cf">for</span> r <span class="kw">in</span> <span class="fu">eachrow</span>(result[<span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">:</span><span class="kw">end</span>,<span class="op">:</span>])</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>        <span class="fu">lines!</span>(ax, initial_topography<span class="op">/</span>u<span class="st">"m"</span>, r<span class="op">/</span>u<span class="st">"m"</span>, color<span class="op">=:</span>black)</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>    fig</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="cf">end</span></span></code></pre>
+</div>
+<p>What is wrong with this code?</p>
+<div class="codewrapper sourceCode" id="cb9">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="kw">let</span> input <span class="op">=</span> <span class="fu">Input</span>(sea_level<span class="op">=</span>t<span class="op">-&gt;</span><span class="fl">20.0</span>u<span class="st">"m"</span> <span class="op">*</span> <span class="fu">sin</span>(<span class="fl">2</span>π<span class="op">*</span>t<span class="op">/</span><span class="fl">200</span>u<span class="st">"kyr"</span>)),</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>    y0 <span class="op">=</span> <span class="op">-</span><span class="fl">50.0</span>u<span class="st">"m"</span></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>    <span class="pp">@code_warntype</span> <span class="fu">forward_euler</span>(<span class="fu">growth_rate</span>(input), y0, (<span class="fl">0.0</span><span class="op">:</span><span class="fl">0.001</span><span class="op">:</span><span class="fl">1.0</span>)u<span class="st">"Myr"</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+</div>
+<p>The function in <code>Input</code> is untyped. We could try to type
+the argument with a type parameter, but that doesn’t work so well with
+<code>@kwdef</code> (we’d have to redefine the constructor). The problem
+is also fixed if we recapture the <code>sea_level</code> parameter in
+the local scope of the <code>growth_rate</code> function, see <a href="https://docs.julialang.org/en/v1/manual/performance-tips/#man-performance-captured" class="external-link">Performance
+Tips</a>.</p>
+<div id="fix-the-code" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="fix-the-code" class="callout-inner">
+<h3 class="callout-title">Fix the code</h3>
+<div class="callout-content">
+<p>Modify the <code>growth_rate</code> function such that the
+<code>sea_level</code> look-up becomes type stable. Assign the parameter
+to a value with local scope.</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div class="accordion-body">
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">growth_rate</span>(input)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>    sea_level <span class="op">=</span> input.sea_level</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>    <span class="kw">function</span> <span class="fu">df</span>(y, t)</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>        w <span class="op">=</span> <span class="fu">sea_level</span>(t) <span class="op">-</span> y <span class="op">+</span> input.subsidence_rate <span class="op">*</span> t</span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>        g_m <span class="op">=</span> input.maximum_growth_rate</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>        I_0 <span class="op">=</span> input.insolation</span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>        I_k <span class="op">=</span> input.saturation_intensity</span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>        k <span class="op">=</span> input.extinction_coefficient</span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>        w <span class="op">&gt;</span> <span class="fl">0</span>u<span class="st">"m"</span> ? g_m <span class="op">*</span> <span class="fu">tanh</span>(I_0 <span class="op">*</span> <span class="fu">exp</span>(<span class="op">-</span>k <span class="op">*</span> w) <span class="op">/</span> I_k) <span class="op">:</span> <span class="fl">0.0</span>u<span class="st">"m/Myr"</span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>    <span class="kw">end</span></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb11">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="kw">let</span> input <span class="op">=</span> <span class="fu">Input</span>(sea_level<span class="op">=</span>t<span class="op">-&gt;</span><span class="fl">20.0</span>u<span class="st">"m"</span> <span class="op">*</span> <span class="fu">sin</span>(<span class="fl">2</span>π<span class="op">*</span>t<span class="op">/</span><span class="fl">200</span>u<span class="st">"kyr"</span>)),</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>    y0 <span class="op">=</span> <span class="op">-</span><span class="fl">50.0</span>u<span class="st">"m"</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>    <span class="pp">@code_warntype</span> <span class="fu">forward_euler</span>(<span class="fu">growth_rate</span>(input), y0, (<span class="fl">0.0</span><span class="op">:</span><span class="fl">0.001</span><span class="op">:</span><span class="fl">1.0</span>)u<span class="st">"Myr"</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </section><section><h2 class="section-heading" id="multi-threading-and-type-stability">Multi-threading and type stability<a class="anchor" aria-label="anchor" href="#multi-threading-and-type-stability"></a>
 </h2>
 <hr class="half-width">
@@ -3476,89 +3631,89 @@ compile time. We can keep the type instability localized by declaring
 the return types.</p>
 <p>The following algorithm is <a href="https://en.wikipedia.org/wiki/Chudnovsky_algorithm" class="external-link">copy-pasted
 from Wikipedia</a>.</p>
-<div class="codewrapper sourceCode" id="cb6">
+<div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">binary_split_1</span>(a, b)</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>    Pab <span class="op">=</span> <span class="fu">-</span>(<span class="fl">6</span><span class="op">*</span>a <span class="op">-</span> <span class="fl">5</span>)<span class="fu">*</span>(<span class="fl">2</span><span class="op">*</span>a <span class="op">-</span> <span class="fl">1</span>)<span class="fu">*</span>(<span class="fl">6</span><span class="op">*</span>a <span class="op">-</span> <span class="fl">1</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>    Qab <span class="op">=</span> <span class="fl">10939058860032000</span> <span class="op">*</span> a<span class="op">^</span><span class="fl">3</span></span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>    Rab <span class="op">=</span> Pab <span class="op">*</span> (<span class="fl">545140134</span><span class="op">*</span>a <span class="op">+</span> <span class="fl">13591409</span>)</span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>    <span class="cf">return</span> Pab, Qab, Rab</span>
-<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="fu">setprecision</span>(<span class="fl">20</span>, base<span class="op">=</span><span class="fl">30</span>) <span class="cf">do</span></span>
-<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>    _, q, r <span class="op">=</span> <span class="fu">binary_split_1</span>(<span class="fu">big</span>(<span class="fl">1</span>), <span class="fu">big</span>(<span class="fl">2</span>))</span>
-<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>    (<span class="fl">426880</span> <span class="op">*</span> <span class="fu">sqrt</span>(<span class="fu">big</span>(<span class="fl">10005.0</span>)) <span class="op">*</span> q) <span class="op">/</span> (<span class="fl">13591409</span><span class="op">*</span>q <span class="op">+</span> r)</span>
-<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="cf">end</span></span>
-<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a></span>
-<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co"># The last few digits are wrong... check</span></span>
-<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="fu">setprecision</span>(<span class="fl">20</span>, base<span class="op">=</span><span class="fl">30</span>) <span class="cf">do</span></span>
-<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>    <span class="cn">π</span> <span class="op">|&gt;</span> <span class="dt">BigFloat</span></span>
-<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="cf">end</span></span>
-<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a></span>
-<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co"># The algorithm refines by recursive binary splitting</span></span>
-<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co"># Recursion is fine here: we go 2logN deep.</span></span>
-<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a></span>
-<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="kw">function</span> <span class="fu">binary_split</span>(a, b)</span>
-<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a>    <span class="cf">if</span> b <span class="op">==</span> a <span class="op">+</span> <span class="fl">1</span></span>
-<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a>        <span class="fu">binary_split_1</span>(a, b)</span>
-<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a>    <span class="cf">else</span></span>
-<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a>        m <span class="op">=</span> <span class="fu">div</span>(a <span class="op">+</span> b, <span class="fl">2</span>)</span>
-<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a>        Pam, Qam, Ram <span class="op">=</span> <span class="fu">binary_split</span>(a, m)</span>
-<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a>        Pmb, Qmb, Rmb <span class="op">=</span> <span class="fu">binary_split</span>(m, b)</span>
-<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a>        </span>
-<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a>        Pab <span class="op">=</span> Pam <span class="op">*</span> Pmb</span>
-<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a>        Qab <span class="op">=</span> Qam <span class="op">*</span> Qmb</span>
-<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a>        Rab <span class="op">=</span> Qmb <span class="op">*</span> Ram <span class="op">+</span> Pam <span class="op">*</span> Rmb</span>
-<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a>        <span class="cf">return</span> Pab, Qab, Rab</span>
-<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a></span>
-<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a><span class="kw">function</span> <span class="fu">chudnovsky</span>(n)</span>
-<span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a>    P1n, Q1n, R1n <span class="op">=</span> <span class="fu">binary_split</span>(<span class="fu">big</span>(<span class="fl">1</span>), n)</span>
-<span id="cb6-38"><a href="#cb6-38" tabindex="-1"></a>    <span class="cf">return</span> (<span class="fl">426880</span> <span class="op">*</span> <span class="fu">sqrt</span>(<span class="fu">big</span>(<span class="fl">10005.0</span>)) <span class="op">*</span> Q1n) <span class="op">/</span> (<span class="fl">13591409</span><span class="op">*</span>Q1n <span class="op">+</span> R1n)</span>
-<span id="cb6-39"><a href="#cb6-39" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb6-40"><a href="#cb6-40" tabindex="-1"></a></span>
-<span id="cb6-41"><a href="#cb6-41" tabindex="-1"></a><span class="fu">setprecision</span>(<span class="fl">10000</span>)</span>
-<span id="cb6-42"><a href="#cb6-42" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">chudnovsky</span>(<span class="fu">big</span>(<span class="fl">20000</span>))</span>
-<span id="cb6-43"><a href="#cb6-43" tabindex="-1"></a></span>
-<span id="cb6-44"><a href="#cb6-44" tabindex="-1"></a><span class="co"># We can create a parallel version by spawning jobs. These are green threads.</span></span>
-<span id="cb6-45"><a href="#cb6-45" tabindex="-1"></a></span>
-<span id="cb6-46"><a href="#cb6-46" tabindex="-1"></a><span class="kw">function</span> <span class="fu">binary_split_td</span>(a<span class="op">::</span><span class="dt">T</span>, b<span class="op">::</span><span class="dt">T</span>) <span class="kw">where</span> {T}</span>
-<span id="cb6-47"><a href="#cb6-47" tabindex="-1"></a>    <span class="cf">if</span> b <span class="op">==</span> a <span class="op">+</span> <span class="fl">1</span></span>
-<span id="cb6-48"><a href="#cb6-48" tabindex="-1"></a>        <span class="fu">binary_split_1</span>(a, b)</span>
-<span id="cb6-49"><a href="#cb6-49" tabindex="-1"></a>    <span class="cf">else</span></span>
-<span id="cb6-50"><a href="#cb6-50" tabindex="-1"></a>        m <span class="op">=</span> <span class="fu">div</span>(a <span class="op">+</span> b, <span class="fl">2</span>)</span>
-<span id="cb6-51"><a href="#cb6-51" tabindex="-1"></a>        t1 <span class="op">=</span> <span class="pp">@Threads</span>.spawn <span class="fu">binary_split_td</span>(a, m)</span>
-<span id="cb6-52"><a href="#cb6-52" tabindex="-1"></a>        t2 <span class="op">=</span> <span class="pp">@Threads</span>.spawn <span class="fu">binary_split_td</span>(m, b)</span>
-<span id="cb6-53"><a href="#cb6-53" tabindex="-1"></a></span>
-<span id="cb6-54"><a href="#cb6-54" tabindex="-1"></a>        Pam, Qam, Ram <span class="op">=</span> <span class="fu">fetch</span>(t1)</span>
-<span id="cb6-55"><a href="#cb6-55" tabindex="-1"></a>        Pmb, Qmb, Rmb <span class="op">=</span> <span class="fu">fetch</span>(t2)</span>
-<span id="cb6-56"><a href="#cb6-56" tabindex="-1"></a>        </span>
-<span id="cb6-57"><a href="#cb6-57" tabindex="-1"></a>        Pab <span class="op">=</span> Pam <span class="op">*</span> Pmb</span>
-<span id="cb6-58"><a href="#cb6-58" tabindex="-1"></a>        Qab <span class="op">=</span> Qam <span class="op">*</span> Qmb</span>
-<span id="cb6-59"><a href="#cb6-59" tabindex="-1"></a>        Rab <span class="op">=</span> Qmb <span class="op">*</span> Ram <span class="op">+</span> Pam <span class="op">*</span> Rmb</span>
-<span id="cb6-60"><a href="#cb6-60" tabindex="-1"></a>        <span class="cf">return</span> Pab, Qab, Rab</span>
-<span id="cb6-61"><a href="#cb6-61" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb6-62"><a href="#cb6-62" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb6-63"><a href="#cb6-63" tabindex="-1"></a></span>
-<span id="cb6-64"><a href="#cb6-64" tabindex="-1"></a><span class="kw">function</span> <span class="fu">chudnovsky_td</span>(n)</span>
-<span id="cb6-65"><a href="#cb6-65" tabindex="-1"></a>    P1n, Q1n, R1n <span class="op">=</span> <span class="fu">binary_split_td</span>(<span class="fu">big</span>(<span class="fl">1</span>), n)</span>
-<span id="cb6-66"><a href="#cb6-66" tabindex="-1"></a>    <span class="cf">return</span> (<span class="fl">426880</span> <span class="op">*</span> <span class="fu">sqrt</span>(<span class="fu">big</span>(<span class="fl">10005.0</span>)) <span class="op">*</span> Q1n) <span class="op">/</span> (<span class="fl">13591409</span><span class="op">*</span>Q1n <span class="op">+</span> R1n)</span>
-<span id="cb6-67"><a href="#cb6-67" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">binary_split_1</span>(a, b)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>    Pab <span class="op">=</span> <span class="fu">-</span>(<span class="fl">6</span><span class="op">*</span>a <span class="op">-</span> <span class="fl">5</span>)<span class="fu">*</span>(<span class="fl">2</span><span class="op">*</span>a <span class="op">-</span> <span class="fl">1</span>)<span class="fu">*</span>(<span class="fl">6</span><span class="op">*</span>a <span class="op">-</span> <span class="fl">1</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>    Qab <span class="op">=</span> <span class="fl">10939058860032000</span> <span class="op">*</span> a<span class="op">^</span><span class="fl">3</span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>    Rab <span class="op">=</span> Pab <span class="op">*</span> (<span class="fl">545140134</span><span class="op">*</span>a <span class="op">+</span> <span class="fl">13591409</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>    <span class="cf">return</span> Pab, Qab, Rab</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="fu">setprecision</span>(<span class="fl">20</span>, base<span class="op">=</span><span class="fl">30</span>) <span class="cf">do</span></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>    _, q, r <span class="op">=</span> <span class="fu">binary_split_1</span>(<span class="fu">big</span>(<span class="fl">1</span>), <span class="fu">big</span>(<span class="fl">2</span>))</span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>    (<span class="fl">426880</span> <span class="op">*</span> <span class="fu">sqrt</span>(<span class="fu">big</span>(<span class="fl">10005.0</span>)) <span class="op">*</span> q) <span class="op">/</span> (<span class="fl">13591409</span><span class="op">*</span>q <span class="op">+</span> r)</span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="co"># The last few digits are wrong... check</span></span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="fu">setprecision</span>(<span class="fl">20</span>, base<span class="op">=</span><span class="fl">30</span>) <span class="cf">do</span></span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a>    <span class="cn">π</span> <span class="op">|&gt;</span> <span class="dt">BigFloat</span></span>
+<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a></span>
+<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a><span class="co"># The algorithm refines by recursive binary splitting</span></span>
+<span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a><span class="co"># Recursion is fine here: we go 2logN deep.</span></span>
+<span id="cb12-20"><a href="#cb12-20" tabindex="-1"></a></span>
+<span id="cb12-21"><a href="#cb12-21" tabindex="-1"></a><span class="kw">function</span> <span class="fu">binary_split</span>(a, b)</span>
+<span id="cb12-22"><a href="#cb12-22" tabindex="-1"></a>    <span class="cf">if</span> b <span class="op">==</span> a <span class="op">+</span> <span class="fl">1</span></span>
+<span id="cb12-23"><a href="#cb12-23" tabindex="-1"></a>        <span class="fu">binary_split_1</span>(a, b)</span>
+<span id="cb12-24"><a href="#cb12-24" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb12-25"><a href="#cb12-25" tabindex="-1"></a>        m <span class="op">=</span> <span class="fu">div</span>(a <span class="op">+</span> b, <span class="fl">2</span>)</span>
+<span id="cb12-26"><a href="#cb12-26" tabindex="-1"></a>        Pam, Qam, Ram <span class="op">=</span> <span class="fu">binary_split</span>(a, m)</span>
+<span id="cb12-27"><a href="#cb12-27" tabindex="-1"></a>        Pmb, Qmb, Rmb <span class="op">=</span> <span class="fu">binary_split</span>(m, b)</span>
+<span id="cb12-28"><a href="#cb12-28" tabindex="-1"></a>        </span>
+<span id="cb12-29"><a href="#cb12-29" tabindex="-1"></a>        Pab <span class="op">=</span> Pam <span class="op">*</span> Pmb</span>
+<span id="cb12-30"><a href="#cb12-30" tabindex="-1"></a>        Qab <span class="op">=</span> Qam <span class="op">*</span> Qmb</span>
+<span id="cb12-31"><a href="#cb12-31" tabindex="-1"></a>        Rab <span class="op">=</span> Qmb <span class="op">*</span> Ram <span class="op">+</span> Pam <span class="op">*</span> Rmb</span>
+<span id="cb12-32"><a href="#cb12-32" tabindex="-1"></a>        <span class="cf">return</span> Pab, Qab, Rab</span>
+<span id="cb12-33"><a href="#cb12-33" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb12-34"><a href="#cb12-34" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb12-35"><a href="#cb12-35" tabindex="-1"></a></span>
+<span id="cb12-36"><a href="#cb12-36" tabindex="-1"></a><span class="kw">function</span> <span class="fu">chudnovsky</span>(n)</span>
+<span id="cb12-37"><a href="#cb12-37" tabindex="-1"></a>    P1n, Q1n, R1n <span class="op">=</span> <span class="fu">binary_split</span>(<span class="fu">big</span>(<span class="fl">1</span>), n)</span>
+<span id="cb12-38"><a href="#cb12-38" tabindex="-1"></a>    <span class="cf">return</span> (<span class="fl">426880</span> <span class="op">*</span> <span class="fu">sqrt</span>(<span class="fu">big</span>(<span class="fl">10005.0</span>)) <span class="op">*</span> Q1n) <span class="op">/</span> (<span class="fl">13591409</span><span class="op">*</span>Q1n <span class="op">+</span> R1n)</span>
+<span id="cb12-39"><a href="#cb12-39" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb12-40"><a href="#cb12-40" tabindex="-1"></a></span>
+<span id="cb12-41"><a href="#cb12-41" tabindex="-1"></a><span class="fu">setprecision</span>(<span class="fl">10000</span>)</span>
+<span id="cb12-42"><a href="#cb12-42" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">chudnovsky</span>(<span class="fu">big</span>(<span class="fl">20000</span>))</span>
+<span id="cb12-43"><a href="#cb12-43" tabindex="-1"></a></span>
+<span id="cb12-44"><a href="#cb12-44" tabindex="-1"></a><span class="co"># We can create a parallel version by spawning jobs. These are green threads.</span></span>
+<span id="cb12-45"><a href="#cb12-45" tabindex="-1"></a></span>
+<span id="cb12-46"><a href="#cb12-46" tabindex="-1"></a><span class="kw">function</span> <span class="fu">binary_split_td</span>(a<span class="op">::</span><span class="dt">T</span>, b<span class="op">::</span><span class="dt">T</span>) <span class="kw">where</span> {T}</span>
+<span id="cb12-47"><a href="#cb12-47" tabindex="-1"></a>    <span class="cf">if</span> b <span class="op">==</span> a <span class="op">+</span> <span class="fl">1</span></span>
+<span id="cb12-48"><a href="#cb12-48" tabindex="-1"></a>        <span class="fu">binary_split_1</span>(a, b)</span>
+<span id="cb12-49"><a href="#cb12-49" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb12-50"><a href="#cb12-50" tabindex="-1"></a>        m <span class="op">=</span> <span class="fu">div</span>(a <span class="op">+</span> b, <span class="fl">2</span>)</span>
+<span id="cb12-51"><a href="#cb12-51" tabindex="-1"></a>        t1 <span class="op">=</span> <span class="pp">@Threads</span>.spawn <span class="fu">binary_split_td</span>(a, m)</span>
+<span id="cb12-52"><a href="#cb12-52" tabindex="-1"></a>        t2 <span class="op">=</span> <span class="pp">@Threads</span>.spawn <span class="fu">binary_split_td</span>(m, b)</span>
+<span id="cb12-53"><a href="#cb12-53" tabindex="-1"></a></span>
+<span id="cb12-54"><a href="#cb12-54" tabindex="-1"></a>        Pam, Qam, Ram <span class="op">=</span> <span class="fu">fetch</span>(t1)</span>
+<span id="cb12-55"><a href="#cb12-55" tabindex="-1"></a>        Pmb, Qmb, Rmb <span class="op">=</span> <span class="fu">fetch</span>(t2)</span>
+<span id="cb12-56"><a href="#cb12-56" tabindex="-1"></a>        </span>
+<span id="cb12-57"><a href="#cb12-57" tabindex="-1"></a>        Pab <span class="op">=</span> Pam <span class="op">*</span> Pmb</span>
+<span id="cb12-58"><a href="#cb12-58" tabindex="-1"></a>        Qab <span class="op">=</span> Qam <span class="op">*</span> Qmb</span>
+<span id="cb12-59"><a href="#cb12-59" tabindex="-1"></a>        Rab <span class="op">=</span> Qmb <span class="op">*</span> Ram <span class="op">+</span> Pam <span class="op">*</span> Rmb</span>
+<span id="cb12-60"><a href="#cb12-60" tabindex="-1"></a>        <span class="cf">return</span> Pab, Qab, Rab</span>
+<span id="cb12-61"><a href="#cb12-61" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb12-62"><a href="#cb12-62" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb12-63"><a href="#cb12-63" tabindex="-1"></a></span>
+<span id="cb12-64"><a href="#cb12-64" tabindex="-1"></a><span class="kw">function</span> <span class="fu">chudnovsky_td</span>(n)</span>
+<span id="cb12-65"><a href="#cb12-65" tabindex="-1"></a>    P1n, Q1n, R1n <span class="op">=</span> <span class="fu">binary_split_td</span>(<span class="fu">big</span>(<span class="fl">1</span>), n)</span>
+<span id="cb12-66"><a href="#cb12-66" tabindex="-1"></a>    <span class="cf">return</span> (<span class="fl">426880</span> <span class="op">*</span> <span class="fu">sqrt</span>(<span class="fu">big</span>(<span class="fl">10005.0</span>)) <span class="op">*</span> Q1n) <span class="op">/</span> (<span class="fl">13591409</span><span class="op">*</span>Q1n <span class="op">+</span> R1n)</span>
+<span id="cb12-67"><a href="#cb12-67" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
 </div>
 <p>The following may show why the parallel code isn’t faster yet.</p>
-<div class="codewrapper sourceCode" id="cb7">
+<div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">setprecision</span>(<span class="fl">10000</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">chudnovsky_td</span>(<span class="fu">big</span>(<span class="fl">20000</span>))</span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="pp">@profview</span> <span class="fu">chudnovsky_td</span>(<span class="fu">big</span>(<span class="fl">200000</span>))</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">setprecision</span>(<span class="fl">10000</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">chudnovsky_td</span>(<span class="fu">big</span>(<span class="fl">20000</span>))</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="pp">@profview</span> <span class="fu">chudnovsky_td</span>(<span class="fu">big</span>(<span class="fl">200000</span>))</span></code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb8">
+<div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="pp">@code_warntype</span> <span class="fu">chudnovsky_td</span>(<span class="fu">big</span>(<span class="fl">6</span>))</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="pp">@code_warntype</span> <span class="fu">chudnovsky_td</span>(<span class="fu">big</span>(<span class="fl">6</span>))</span></code></pre>
 </div>
 <ul>
 <li>The red areas in the flame graph show type unstable code (marked
@@ -3571,19 +3726,19 @@ drop.</li>
 prominent. We can make sure that each task is a bit beefier by reverting
 to the serial code at some point. Insert the following in
 <code>binary_split_td</code>:</p>
-<div class="codewrapper sourceCode" id="cb9">
+<div class="codewrapper sourceCode" id="cb15">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>elseif b <span class="op">-</span> a <span class="op">&lt;=</span> <span class="fl">1024</span></span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>    <span class="fu">binary_split</span>(a, b)</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>elseif b <span class="op">-</span> a <span class="op">&lt;=</span> <span class="fl">1024</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>    <span class="fu">binary_split</span>(a, b)</span></code></pre>
 </div>
 <p>We can limit the type instability by changing the <code>fetch</code>
 lines:</p>
-<div class="codewrapper sourceCode" id="cb10">
+<div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>Pam<span class="op">::</span><span class="dt">T</span>, Qam<span class="op">::</span><span class="dt">T</span>, Ram<span class="op">::</span><span class="dt">T </span><span class="op">=</span> <span class="fu">fetch</span>(t1)</span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>Pmb<span class="op">::</span><span class="dt">T</span>, Qmb<span class="op">::</span><span class="dt">T</span>, Rmb<span class="op">::</span><span class="dt">T </span><span class="op">=</span> <span class="fu">fetch</span>(t2)</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>Pam<span class="op">::</span><span class="dt">T</span>, Qam<span class="op">::</span><span class="dt">T</span>, Ram<span class="op">::</span><span class="dt">T </span><span class="op">=</span> <span class="fu">fetch</span>(t1)</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>Pmb<span class="op">::</span><span class="dt">T</span>, Qmb<span class="op">::</span><span class="dt">T</span>, Rmb<span class="op">::</span><span class="dt">T </span><span class="op">=</span> <span class="fu">fetch</span>(t2)</span></code></pre>
 </div>
 <div id="rerun-the-profiler" class="callout challenge">
 <div class="callout-square">
@@ -3597,193 +3752,41 @@ instability gone?</p>
 </div>
 </div>
 </div>
-<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div id="accordionSolution2" class="accordion challenge-accordion accordion-flush">
 <div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
-  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
+  <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb11">
+<div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">binary_split_td</span>(a<span class="op">::</span><span class="dt">T</span>, b<span class="op">::</span><span class="dt">T</span>) <span class="kw">where</span> {T}</span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>    <span class="cf">if</span> b <span class="op">==</span> a <span class="op">+</span> <span class="fl">1</span></span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>        <span class="fu">binary_split_1</span>(a, b)</span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>    <span class="cf">elseif</span> b <span class="op">-</span> a <span class="op">&lt;=</span> <span class="fl">1024</span></span>
-<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>        <span class="fu">binary_split</span>(a, b)</span>
-<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>    <span class="cf">else</span></span>
-<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>        m <span class="op">=</span> <span class="fu">div</span>(a <span class="op">+</span> b, <span class="fl">2</span>)</span>
-<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a>        t1 <span class="op">=</span> <span class="pp">@Threads</span>.spawn <span class="fu">binary_split_td</span>(a, m)</span>
-<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a>        t2 <span class="op">=</span> <span class="pp">@Threads</span>.spawn <span class="fu">binary_split_td</span>(m, b)</span>
-<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a></span>
-<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a>        Pam<span class="op">::</span><span class="dt">T</span>, Qam<span class="op">::</span><span class="dt">T</span>, Ram<span class="op">::</span><span class="dt">T </span><span class="op">=</span> <span class="fu">fetch</span>(t1)</span>
-<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a>        Pmb<span class="op">::</span><span class="dt">T</span>, Qmb<span class="op">::</span><span class="dt">T</span>, Rmb<span class="op">::</span><span class="dt">T </span><span class="op">=</span> <span class="fu">fetch</span>(t2)</span>
-<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a>        </span>
-<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a>        Pab <span class="op">=</span> Pam <span class="op">*</span> Pmb</span>
-<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a>        Qab <span class="op">=</span> Qam <span class="op">*</span> Qmb</span>
-<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a>        Rab <span class="op">=</span> Qmb <span class="op">*</span> Ram <span class="op">+</span> Pam <span class="op">*</span> Rmb</span>
-<span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a>        <span class="cf">return</span> Pab, Qab, Rab</span>
-<span id="cb11-18"><a href="#cb11-18" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb11-19"><a href="#cb11-19" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">binary_split_td</span>(a<span class="op">::</span><span class="dt">T</span>, b<span class="op">::</span><span class="dt">T</span>) <span class="kw">where</span> {T}</span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>    <span class="cf">if</span> b <span class="op">==</span> a <span class="op">+</span> <span class="fl">1</span></span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>        <span class="fu">binary_split_1</span>(a, b)</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>    <span class="cf">elseif</span> b <span class="op">-</span> a <span class="op">&lt;=</span> <span class="fl">1024</span></span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>        <span class="fu">binary_split</span>(a, b)</span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a>        m <span class="op">=</span> <span class="fu">div</span>(a <span class="op">+</span> b, <span class="fl">2</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a>        t1 <span class="op">=</span> <span class="pp">@Threads</span>.spawn <span class="fu">binary_split_td</span>(a, m)</span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a>        t2 <span class="op">=</span> <span class="pp">@Threads</span>.spawn <span class="fu">binary_split_td</span>(m, b)</span>
+<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a>        Pam<span class="op">::</span><span class="dt">T</span>, Qam<span class="op">::</span><span class="dt">T</span>, Ram<span class="op">::</span><span class="dt">T </span><span class="op">=</span> <span class="fu">fetch</span>(t1)</span>
+<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a>        Pmb<span class="op">::</span><span class="dt">T</span>, Qmb<span class="op">::</span><span class="dt">T</span>, Rmb<span class="op">::</span><span class="dt">T </span><span class="op">=</span> <span class="fu">fetch</span>(t2)</span>
+<span id="cb17-13"><a href="#cb17-13" tabindex="-1"></a>        </span>
+<span id="cb17-14"><a href="#cb17-14" tabindex="-1"></a>        Pab <span class="op">=</span> Pam <span class="op">*</span> Pmb</span>
+<span id="cb17-15"><a href="#cb17-15" tabindex="-1"></a>        Qab <span class="op">=</span> Qam <span class="op">*</span> Qmb</span>
+<span id="cb17-16"><a href="#cb17-16" tabindex="-1"></a>        Rab <span class="op">=</span> Qmb <span class="op">*</span> Ram <span class="op">+</span> Pam <span class="op">*</span> Rmb</span>
+<span id="cb17-17"><a href="#cb17-17" tabindex="-1"></a>        <span class="cf">return</span> Pab, Qab, Rab</span>
+<span id="cb17-18"><a href="#cb17-18" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb17-19"><a href="#cb17-19" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
 </div>
 <p>Yes!</p>
 </div>
 </div>
 </div>
 </div>
-<hr>
-<div id="keypoints1" class="callout keypoints">
-<div class="callout-square">
-<i class="callout-icon" data-feather="key"></i>
-</div>
-<div class="callout-inner">
-<h3 class="callout-title">Key Points</h3>
-<div class="callout-content">
-<ul>
-<li>The Julia compiler compiles a function once its called with a
-specific type signature.</li>
-</ul>
-</div>
-</div>
-</div>
-<!--
-Place links that you need to refer to multiple times across pages here. Delete
-any links that you are not going to use.
- -->
-</section></section><section id="aio-110-dos-and-donts"><p>Content from <a href="110-dos-and-donts.html">Performance: do's and don'ts</a></p>
-<hr>
-<p>Last updated on 2025-02-09 |
-
-        <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/110-dos-and-donts.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-<div class="text-end">
-          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
-        </div>
-<div class="overview card">
-<h2 class="card-header">Overview</h2>
-<div class="row g-0">
-<div class="col-md-4">
-<div class="card-body">
-<div class="inner">
-<h3 class="card-title">Questions</h3>
-<ul>
-<li>Can you give me some guiding principles on how to keep Julia code
-performant?</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="col-md-8">
-<div class="card-body">
-<div class="inner bordered">
-<h3 class="card-title">Objectives</h3>
-<ul>
-<li>Identify potential problems with given code.</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</div>
-<p>The Julia documentation has a great chapter on <a href="https://docs.julialang.org/en/v1/manual/performance-tips/" class="external-link">Performance
-Tips</a>.</p>
-<p>We follow the population model of the Spruce Budworm by May ’77 (<a href="doi:10.1038/269471a0" class="uri">doi:10.1038/269471a0</a>).</p>
-<p><span class="math display">\[\frac{dN}{dt} = r N \left(1 -
-\frac[N}{K}]\right) - \frac{cN^2}{H^2 + N^2}\]</span></p>
-<div class="codewrapper sourceCode" id="cb1">
-<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="kw">abstract type</span> AbstractInput <span class="kw">end</span></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="bu">Broadcast</span>.<span class="fu">broadcastable</span>(input<span class="op">::</span><span class="dt">AbstractInput</span>) <span class="op">=</span> <span class="fu">Ref</span>(input)</span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="kw">struct</span> Input <span class="op">&lt;:</span><span class="dt"> AbstractInput</span></span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>    reproduction_rate<span class="op">::</span><span class="dt">Float64</span></span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>    predation<span class="op">::</span><span class="dt">Float64</span></span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>    carrying_capacity<span class="op">::</span><span class="dt">Float64</span></span>
-<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>    characteristic_population<span class="op">::</span><span class="dt">Float64</span></span>
-<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="kw">function</span> <span class="fu">growth_rate</span>(input, N)</span>
-<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>    r <span class="op">=</span> input.reproduction_rate</span>
-<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>    c <span class="op">=</span> input.predation</span>
-<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>    K <span class="op">=</span> input.carrying_capacity</span>
-<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>    H <span class="op">=</span> input.characteristic_population</span>
-<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>    <span class="cf">return</span> <span class="fu">r*N*</span>(<span class="fl">1</span> <span class="op">-</span> N<span class="op">/</span>K) <span class="op">-</span> c<span class="op">*</span>N<span class="op">^</span><span class="fl">2</span><span class="op">/</span>(H<span class="op">^</span><span class="fl">2</span> <span class="op">+</span> N<span class="op">^</span><span class="fl">2</span>)</span>
-<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
-</div>
-<p>We can analyse the behaviour of this model. We’ll fix the growth rate
-to 1.0, the carrying capacity to 10.0 and the characteristic population
-to 1.0, but vary the predation between 1 and 3.</p>
-<div class="codewrapper sourceCode" id="cb2">
-<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">GLMakie</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="kw">let</span></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>    N <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.01</span><span class="op">:</span><span class="fl">10.0</span></span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>    fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>    c_slider <span class="op">=</span> <span class="fu">Slider</span>(fig[<span class="fl">2</span>, <span class="fl">2</span>], range<span class="op">=</span><span class="fl">1.0</span><span class="op">:</span><span class="fl">0.01</span><span class="op">:</span><span class="fl">3.0</span>)</span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>    c_label <span class="op">=</span> <span class="fu">Label</span>(fig[<span class="fl">2</span>, <span class="fl">1</span>], <span class="fu">lift</span>(c<span class="op">-&gt;</span><span class="st">"c = </span><span class="sc">$</span>c<span class="st">"</span>, c_slider.value))</span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>    <span class="co">#r_slider = Slider(fig[3, 2], range=1.0:0.01:4.0)</span></span>
-<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>    <span class="co">#r_label = Label(fig[3, 1], lift(r-&gt;"r = $r", r_slider.value))</span></span>
-<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>    <span class="fu">input</span>(c) <span class="op">=</span> <span class="fu">Input</span>(<span class="fl">1.0</span>, c, <span class="fl">10.0</span>, <span class="fl">1.0</span>)</span>
-<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>    <span class="fu">dN</span>(c) <span class="op">=</span> <span class="fu">growth_rate</span>.(<span class="fu">input</span>(c), N)</span>
-<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>    ax <span class="op">=</span> Makie.<span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>], ylabel<span class="op">=</span><span class="st">"dN"</span>, xlabel<span class="op">=</span><span class="st">"N"</span>)</span>
-<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>    <span class="fu">lines!</span>(ax, N, <span class="fu">lift</span>(dN, c_slider.value))</span>
-<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>    fig</span>
-<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
-</div>
-<p>The points where the N-dN line crosses the axis are very important:
-these are equilibria, both stable and unstable ones. At a predation rate
-of around 2.6 something special happens: a stable equilibrium
-dissapears, leaving only the stable equilibrium with a much lower
-population. If the predation rises beyond this 2.6 value, we should
-observe a sudden collapse of the population, also called a
-<strong>catastrophe</strong>.</p>
-<div class="codewrapper sourceCode" id="cb3">
-<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">forward_euler</span>(dy, y0, t_range)</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>    y <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{typeof(y0)}</span>(<span class="cn">undef</span>, <span class="fu">length</span>(t_range))</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>    y[<span class="fl">1</span>] <span class="op">=</span> y0</span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>    t, t_rest<span class="op">...</span> <span class="op">=</span> t_range</span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>    <span class="cf">for</span> (i, t_next) <span class="kw">in</span> <span class="fu">enumerate</span>(t_rest)</span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>        dt <span class="op">=</span> t_next <span class="op">-</span> t</span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>        y[i<span class="op">+</span><span class="fl">1</span>] <span class="op">=</span> y[i] <span class="op">+</span> <span class="fu">dy</span>(t, y[i]) <span class="op">*</span> dt</span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>        t <span class="op">=</span> t_next</span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>    <span class="cf">return</span> y</span>
-<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
-</div>
-<div class="codewrapper sourceCode" id="cb4">
-<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="kw">let</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>    <span class="fu">input</span>(c) <span class="op">=</span> <span class="fu">Input</span>(<span class="fl">1.0</span>, c, <span class="fl">10.0</span>, <span class="fl">1.0</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>    t <span class="op">=</span> <span class="fl">0.0</span><span class="op">:</span><span class="fl">0.1</span><span class="op">:</span><span class="fl">25.0</span></span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>    N <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">0.01</span><span class="op">:</span><span class="fl">10.0</span></span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>    fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>    c_slider <span class="op">=</span> <span class="fu">Slider</span>(fig[<span class="fl">2</span>,<span class="fl">2</span><span class="op">:</span><span class="fl">3</span>], range<span class="op">=</span><span class="fl">1.0</span><span class="op">:</span><span class="fl">0.01</span><span class="op">:</span><span class="fl">3.0</span>)</span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>    <span class="fu">Label</span>(fig[<span class="fl">2</span>,<span class="fl">1</span>], <span class="fu">lift</span>(c<span class="op">-&gt;</span><span class="st">"c = </span><span class="sc">$</span>c<span class="st">"</span>, c_slider.value))</span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>    y0_slider <span class="op">=</span> <span class="fu">Slider</span>(fig[<span class="fl">3</span>,<span class="fl">2</span><span class="op">:</span><span class="fl">3</span>], range<span class="op">=</span><span class="fl">0.0</span><span class="op">:</span><span class="fl">0.01</span><span class="op">:</span><span class="fl">10.0</span>)</span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>    <span class="fu">Label</span>(fig[<span class="fl">3</span>,<span class="fl">1</span>], <span class="fu">lift</span>(y0<span class="op">-&gt;</span><span class="st">"y_0 = </span><span class="sc">$</span>y0<span class="st">"</span>, y0_slider.value))</span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>    <span class="fu">dN</span>(c) <span class="op">=</span> <span class="fu">growth_rate</span>.(<span class="fu">input</span>(c), N)</span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>    ax1 <span class="op">=</span> Makie.<span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>], ylabel<span class="op">=</span><span class="st">"dN"</span>, xlabel<span class="op">=</span><span class="st">"N"</span>)</span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>    <span class="fu">lines!</span>(ax1, N, <span class="fu">lift</span>(dN, c_slider.value))</span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a></span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>    ax2 <span class="op">=</span> Makie.<span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">3</span>], ylabel<span class="op">=</span><span class="st">"N"</span>, xlabel<span class="op">=</span><span class="st">"t"</span>, limits<span class="op">=</span>(<span class="cn">nothing</span>, (<span class="fl">0.0</span>, <span class="fl">8.0</span>)))</span>
-<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>    y <span class="op">=</span> <span class="fu">lift</span>(c_slider.value, y0_slider.value) <span class="cf">do</span> c, y0</span>
-<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>        <span class="fu">forward_euler</span>((t, y) <span class="op">-&gt;</span> <span class="fu">growth_rate</span>(<span class="fu">input</span>(c), y), y0, t)</span>
-<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>    <span class="fu">lines!</span>(ax2, t, y)</span>
-<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>    fig</span>
-<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
-</div>
-<section><h2 class="section-heading" id="type-stability">Type Stability<a class="anchor" aria-label="anchor" href="#type-stability"></a>
-</h2>
-<hr class="half-width">
 <div id="callout1" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
@@ -3806,13 +3809,12 @@ type-stable Julia code</a></p>
 <h3 class="callout-title">Key Points</h3>
 <div class="callout-content">
 <ul>
+<li>Type instabilities are the bane of efficient Julia</li>
+<li>We can discover type instability using <code>@profview</code>, and
+analyze further using <code>@code_warntype</code>.</li>
 <li>Don’t use mutable global variables.</li>
 <li>Write your code inside functions.</li>
 <li>Specify element types for containers and structs.</li>
-<li>Specialize functions instead of doing manual dispatch.</li>
-<li>Write functions that always return the same type (type
-stability).</li>
-<li>Don’t change the type of variables.</li>
 </ul>
 </div>
 </div>
@@ -3919,7 +3921,7 @@ plot?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3949,7 +3951,7 @@ plot?</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Plotting code </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -4092,7 +4094,7 @@ allocations inside loops contribute to run-time. The
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Plotting code </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb15">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -4178,7 +4180,7 @@ style!). Is this faster than using iterators?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb18">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -4302,7 +4304,7 @@ from preset neighbourhoods of the input array.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Image source </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -4410,7 +4412,7 @@ function is behaving as should.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -4499,7 +4501,7 @@ axis.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>Using iterators:</p>
 <div class="codewrapper sourceCode" id="cb12">
@@ -4676,7 +4678,7 @@ Makie</a>. Can you make an animation of the Game of Life? Use the
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <p>Here’s a cool solution with live animation and lots more, just for
 your enjoyment.</p>
@@ -4769,7 +4771,7 @@ for agent based modelling.</li>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Source code </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb20">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -5669,7 +5671,7 @@ implementation.</p>
   Collatz module
   </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb3" file="examples/Collatz/src/Collatz.jl">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -5743,7 +5745,7 @@ then diverges or not.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Show details </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb2" file="examples/JuliaFractal/src/JuliaFractal.jl">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>

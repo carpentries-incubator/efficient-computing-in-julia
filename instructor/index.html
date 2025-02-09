@@ -282,7 +282,7 @@
 <div class="accordion accordion-flush" id="accordionFlush9">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading9">
-        <a href="100-introduction-performance.html">8. Julia and performance</a>
+        <a href="100-introduction-performance.html">8. Type Stability</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -291,7 +291,7 @@
 <div class="accordion accordion-flush" id="accordionFlush10">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading10">
-        <a href="110-dos-and-donts.html">9. Performance: do's and don'ts</a>
+        <a href="120-allocations.html">9. Reducing allocations on the Logistic Map</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -300,7 +300,7 @@
 <div class="accordion accordion-flush" id="accordionFlush11">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading11">
-        <a href="120-allocations.html">10. Reducing allocations on the Logistic Map</a>
+        <a href="130-value-types-and-ca.html">10. Value types: game of life</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -309,7 +309,7 @@
 <div class="accordion accordion-flush" id="accordionFlush12">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading12">
-        <a href="130-value-types-and-ca.html">11. Value types: game of life</a>
+        <a href="140-threads-async-and-tasks.html">11. Threads, ASync and Tasks</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -318,7 +318,7 @@
 <div class="accordion accordion-flush" id="accordionFlush13">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading13">
-        <a href="140-threads-async-and-tasks.html">12. Threads, ASync and Tasks</a>
+        <a href="170-gpu-programming.html">12. GPU Programming</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -327,7 +327,7 @@
 <div class="accordion accordion-flush" id="accordionFlush14">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading14">
-        <a href="170-gpu-programming.html">13. GPU Programming</a>
+        <a href="180-cool-libraries.html">13. Recap and Recommended libraries</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -336,7 +336,7 @@
 <div class="accordion accordion-flush" id="accordionFlush15">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading15">
-        <a href="180-cool-libraries.html">14. Recap and Recommended libraries</a>
+        <a href="a01-collatz.html">14. Appendix: Iterators and type stability</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -345,7 +345,7 @@
 <div class="accordion accordion-flush" id="accordionFlush16">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading16">
-        <a href="a01-collatz.html">15. Appendix: Iterators and type stability</a>
+        <a href="a02-julia-fractals.html">15. Appendix: Generating Julia Fractals</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -354,16 +354,7 @@
 <div class="accordion accordion-flush" id="accordionFlush17">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading17">
-        <a href="a02-julia-fractals.html">16. Appendix: Generating Julia Fractals</a>
-    </div><!--/div.accordion-header-->
-
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush18">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading18">
-        <a href="a03-lorenz-attractor.html">17. Appendix: Lorenz attractor</a>
+        <a href="a03-lorenz-attractor.html">16. Appendix: Lorenz attractor</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -568,39 +559,28 @@ bit easier?<br>:::
 <span class="visually-hidden">Duration: </span>01h 50m
 </td>
 <td>
- 8. <a href="100-introduction-performance.html">Julia and
-performance</a>
+ 8. <a href="100-introduction-performance.html">Type Stability</a>
 </td>
 <td>
-How can Julia be so much faster than Python?<br>I can’t say Julia is
-slow, but why is it so sluggish?<br>How can I reason about
-performance?<br>:::
+What is type stability?<br>Why is type stability so important for
+performance?<br>What is the origin of type unstable code? How can I
+prevent it?<br>:::
 </td>
 </tr><tr><td>
 <span class="visually-hidden">Duration: </span>02h 00m
 </td>
 <td>
- 9. <a href="110-dos-and-donts.html">Performance: do’s and don’ts</a>
-</td>
-<td>
-Can you give me some guiding principles on how to keep Julia code
-performant?<br>:::
-</td>
-</tr><tr><td>
-<span class="visually-hidden">Duration: </span>02h 10m
-</td>
-<td>
-10. <a href="120-allocations.html">Reducing allocations on the Logistic
+ 9. <a href="120-allocations.html">Reducing allocations on the Logistic
 Map</a>
 </td>
 <td>
 How can I reduce the number of allocations?<br>:::
 </td>
 </tr><tr><td>
-<span class="visually-hidden">Duration: </span>02h 20m
+<span class="visually-hidden">Duration: </span>02h 10m
 </td>
 <td>
-11. <a href="130-value-types-and-ca.html">Value types: game of life</a>
+10. <a href="130-value-types-and-ca.html">Value types: game of life</a>
 </td>
 <td>
 How can I use dispatch to implement different versions of a
@@ -608,29 +588,29 @@ function?<br>How can I optimise against memory allocations of small
 arrays?<br>:::
 </td>
 </tr><tr><td>
-<span class="visually-hidden">Duration: </span>02h 30m
+<span class="visually-hidden">Duration: </span>02h 20m
 </td>
 <td>
-12. <a href="140-threads-async-and-tasks.html">Threads, ASync and
+11. <a href="140-threads-async-and-tasks.html">Threads, ASync and
 Tasks</a>
 </td>
 <td>
 How do we distribute work across threads?<br>:::
 </td>
 </tr><tr><td>
-<span class="visually-hidden">Duration: </span>02h 40m
+<span class="visually-hidden">Duration: </span>02h 30m
 </td>
 <td>
-13. <a href="170-gpu-programming.html">GPU Programming</a>
+12. <a href="170-gpu-programming.html">GPU Programming</a>
 </td>
 <td>
 Can I have some Cuda please?<br>:::
 </td>
 </tr><tr><td>
-<span class="visually-hidden">Duration: </span>02h 50m
+<span class="visually-hidden">Duration: </span>02h 40m
 </td>
 <td>
-14. <a href="180-cool-libraries.html">Recap and Recommended
+13. <a href="180-cool-libraries.html">Recap and Recommended
 libraries</a>
 </td>
 <td>
@@ -638,34 +618,34 @@ Is there a recommended set of standard libraries?<br>What is the
 equivalent of SciPy in Julia.<br>:::
 </td>
 </tr><tr><td>
-<span class="visually-hidden">Duration: </span>03h 00m
+<span class="visually-hidden">Duration: </span>02h 50m
 </td>
 <td>
-15. <a href="a01-collatz.html">Appendix: Iterators and type
+14. <a href="a01-collatz.html">Appendix: Iterators and type
 stability</a>
 </td>
 <td>
 I tried to be smart, but now my code is slow. What happened?<br>:::
 </td>
 </tr><tr><td>
-<span class="visually-hidden">Duration: </span>03h 10m
+<span class="visually-hidden">Duration: </span>03h 00m
 </td>
 <td>
-16. <a href="a02-julia-fractals.html">Appendix: Generating Julia
+15. <a href="a02-julia-fractals.html">Appendix: Generating Julia
 Fractals</a>
 </td>
 <td>
 </td>
 </tr><tr><td>
-<span class="visually-hidden">Duration: </span>03h 20m
+<span class="visually-hidden">Duration: </span>03h 10m
 </td>
 <td>
-17. <a href="a03-lorenz-attractor.html">Appendix: Lorenz attractor</a>
+16. <a href="a03-lorenz-attractor.html">Appendix: Lorenz attractor</a>
 </td>
 <td>
 </td>
 </tr><tr><td>
-<span class="visually-hidden">Duration: </span>03h 30m
+<span class="visually-hidden">Duration: </span>03h 20m
 </td>
 <td>
 Finish
