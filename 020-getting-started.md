@@ -60,6 +60,14 @@ Meta-programming, while very powerful, is also very easy to abuse, often leading
 Why are you interested in Julia? What is your current go-to for efficient computing?
 :::
 
+## Recommended materials
+
+If you want to learn more about computer programming in general, a great place to start is [Structure and Interpretation of Computer Programs](https://web.mit.edu/6.001/6.037/sicp.pdf), including the [Lectures on Youtube](https://www.youtube.com/playlist?list=PLE18841CABEA24090). These are old but wonderful and really teach some wisdom around designing complex software systems. Also, this might cure any latent adiction to object oriented programming.
+
+If you want to learn about efficient programming in Julia, check out [Parallel Computing and Scientific Machine Learning](https://www.youtube.com/playlist?list=PLCAl7tjCwWyGjdzOOnlbGnVNZk0kB8VSa). These go in much more detail than we can do in this lecture.
+
+The materials in this lesson are aimed somewhere in between SICP and PCSML. We'll look at real scientific examples to dive into computational concepts.
+
 ## Running Julia
 
 When working in Julia it is very common to do so from the REPL (Read-Eval-Print Loop). Please open the Julia REPL on your system
