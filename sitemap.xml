@@ -25,7 +25,13 @@
     <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/100-introduction-performance.html</loc>
   </url>
   <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/110-dos-and-donts.html</loc>
+  </url>
+  <url>
     <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/110-performance-analysis.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/120-allocations.html</loc>
   </url>
   <url>
     <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/120-dos-and-donts.html</loc>
@@ -106,7 +112,13 @@
     <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/100-introduction-performance.html</loc>
   </url>
   <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/110-dos-and-donts.html</loc>
+  </url>
+  <url>
     <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/110-performance-analysis.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/120-allocations.html</loc>
   </url>
   <url>
     <loc>https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/120-dos-and-donts.html</loc>

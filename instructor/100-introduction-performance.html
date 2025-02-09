@@ -269,12 +269,21 @@
 <div class="accordion accordion-flush" id="accordionFlushcurrent">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-headingcurrent">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsecurrent" aria-expanded="true" aria-controls="flush-collapsecurrent">
         <span class="visually-hidden">Current Chapter</span>
         <span class="current-chapter">
         8. Julia and performance
         </span>
-      
+      </button>
     </div><!--/div.accordion-header-->
+
+    <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
+      <div class="accordion-body">
+        <ul><li><a href="#type-stability">Type stability</a></li>
+<li><a href="#functions-in-structs">Functions in structs</a></li>
+<li><a href="#multi-threading-and-type-stability">Multi-threading and type stability</a></li>
+        </ul></div><!--/div.accordion-body-->
+    </div><!--/div.accordion-collapse-->
 
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
@@ -282,7 +291,7 @@
 <div class="accordion accordion-flush" id="accordionFlush10">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading10">
-        <a href="110-performance-analysis.html">9. Reducing allocations on the Logistic Map</a>
+        <a href="110-dos-and-donts.html">9. Performance: do's and don'ts</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -291,7 +300,7 @@
 <div class="accordion accordion-flush" id="accordionFlush11">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading11">
-        <a href="120-dos-and-donts.html">10. Performance: do's and don'ts</a>
+        <a href="120-allocations.html">10. Reducing allocations on the Logistic Map</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -403,7 +412,7 @@
   <div class="col-xl-8 col-lg-12 primary-content">
     <nav class="lesson-content mx-md-4" aria-label="Previous and Next Chapter"><!-- content for small screens --><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link" href="../instructor/090-best-practices.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
-        <a class="chapter-link float-end" href="../instructor/110-performance-analysis.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link float-end" href="../instructor/110-dos-and-donts.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
@@ -411,14 +420,14 @@
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>
           Previous: Best practices
         </a>
-        <a class="chapter-link float-end" href="../instructor/110-performance-analysis.html" rel="next">
-          Next: Reducing allocations...
+        <a class="chapter-link float-end" href="../instructor/110-dos-and-donts.html" rel="next">
+          Next: Performance: do's...
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i>
         </a>
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Julia and performance</h1>
-        <p>Last updated on 2024-04-19 |
+        <p>Last updated on 2025-02-09 |
 
         <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/100-introduction-performance.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -455,6 +464,235 @@
 </div>
 </div>
 </div>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">BenchmarkTools</span></span></code></pre>
+</div>
+<section><h2 class="section-heading" id="type-stability">Type stability<a class="anchor" aria-label="anchor" href="#type-stability"></a></h2>
+<hr class="half-width"><p>If types cannot be inferred at compile time, a function cannot be
+entirely compiled to machine code. This means that evaluation will be
+slow as molasses. One example of a type instability is when a function’s
+return type depends on run-time values:</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">safe_inv</span>(x<span class="op">::</span><span class="dt">T</span>) <span class="kw">where</span> {T}</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>    <span class="cf">if</span> x <span class="op">==</span> <span class="fu">zero</span>(T)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>        <span class="cn">nothing</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>        <span class="fu">one</span>(T) <span class="op">/</span> x</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="pp">@code_warntype</span> <span class="fu">safe_inv</span>(<span class="op">-</span><span class="fl">2</span><span class="op">:</span><span class="fl">2</span>)</span></code></pre>
+</div>
+<p>In this case we may observe that the induced type is
+<code>Union{Nothing, T}</code>. If we run <code>@code_warntype</code> we
+can see the yellow highlighting of the union type. The situation is much
+worse when mutable globals are in place.</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>x <span class="op">=</span> <span class="fl">5</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="fu">replace_x</span>(f, vs) <span class="op">=</span> [(<span class="fu">f</span>(v) ? x <span class="op">:</span> v) for v <span class="kw">in</span> vs]</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="fu">replace_x</span>((<span class="op">&lt;</span>)(<span class="fl">0</span>), <span class="op">-</span><span class="fl">2</span><span class="op">:</span><span class="fl">2</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="pp">@code_warntype</span> <span class="fu">replace_x</span>((<span class="op">&lt;</span>)(<span class="fl">0</span>), <span class="op">-</span><span class="fl">2</span><span class="op">:</span><span class="fl">2</span>)</span></code></pre>
+</div>
+<p>We can follow this up with:</p>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>x <span class="op">=</span> <span class="st">"sloppy code!"</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="fu">replace_x</span>((<span class="op">&lt;</span>)(<span class="fl">0</span>), <span class="op">-</span><span class="fl">2</span><span class="op">:</span><span class="fl">2</span>)</span></code></pre>
+</div>
+<div id="use-parameters-or-const" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<div id="use-parameters-or-const" class="callout-inner">
+<h3 class="callout-title">Use parameters or <code>const</code>
+</h3>
+<div class="callout-content">
+<p>Change the definition of <code>replace_x</code> by passing
+<code>x</code> as a parameter. Change the definition of <code>x</code>
+to a constant using <code>const</code>. Time the result against the type
+unstable version.</p>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="functions-in-structs">Functions in structs<a class="anchor" aria-label="anchor" href="#functions-in-structs"></a></h2>
+<hr class="half-width"><p>Every function has its own unique type.</p>
+</section><section><h2 class="section-heading" id="multi-threading-and-type-stability">Multi-threading and type stability<a class="anchor" aria-label="anchor" href="#multi-threading-and-type-stability"></a></h2>
+<hr class="half-width"><p>Here we have an algorithm that computes the value of π to high
+precision. We can make this algorithm parallel by recursively calling
+<code>Threads.@spawn</code>, and then <code>fetch</code> on each task.
+Unfortunately the return type of <code>fetch</code> is never known at
+compile time. We can keep the type instability localized by declaring
+the return types.</p>
+<p>The following algorithm is <a href="https://en.wikipedia.org/wiki/Chudnovsky_algorithm" class="external-link">copy-pasted
+from Wikipedia</a>.</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">binary_split_1</span>(a, b)</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>    Pab <span class="op">=</span> <span class="fu">-</span>(<span class="fl">6</span><span class="op">*</span>a <span class="op">-</span> <span class="fl">5</span>)<span class="fu">*</span>(<span class="fl">2</span><span class="op">*</span>a <span class="op">-</span> <span class="fl">1</span>)<span class="fu">*</span>(<span class="fl">6</span><span class="op">*</span>a <span class="op">-</span> <span class="fl">1</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>    Qab <span class="op">=</span> <span class="fl">10939058860032000</span> <span class="op">*</span> a<span class="op">^</span><span class="fl">3</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>    Rab <span class="op">=</span> Pab <span class="op">*</span> (<span class="fl">545140134</span><span class="op">*</span>a <span class="op">+</span> <span class="fl">13591409</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>    <span class="cf">return</span> Pab, Qab, Rab</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="fu">setprecision</span>(<span class="fl">20</span>, base<span class="op">=</span><span class="fl">30</span>) <span class="cf">do</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>    _, q, r <span class="op">=</span> <span class="fu">binary_split_1</span>(<span class="fu">big</span>(<span class="fl">1</span>), <span class="fu">big</span>(<span class="fl">2</span>))</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>    (<span class="fl">426880</span> <span class="op">*</span> <span class="fu">sqrt</span>(<span class="fu">big</span>(<span class="fl">10005.0</span>)) <span class="op">*</span> q) <span class="op">/</span> (<span class="fl">13591409</span><span class="op">*</span>q <span class="op">+</span> r)</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co"># The last few digits are wrong... check</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="fu">setprecision</span>(<span class="fl">20</span>, base<span class="op">=</span><span class="fl">30</span>) <span class="cf">do</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>    <span class="cn">π</span> <span class="op">|&gt;</span> <span class="dt">BigFloat</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co"># The algorithm refines by recursive binary splitting</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co"># Recursion is fine here: we go 2logN deep.</span></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="kw">function</span> <span class="fu">binary_split</span>(a, b)</span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a>    <span class="cf">if</span> b <span class="op">==</span> a <span class="op">+</span> <span class="fl">1</span></span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a>        <span class="fu">binary_split_1</span>(a, b)</span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a>        m <span class="op">=</span> <span class="fu">div</span>(a <span class="op">+</span> b, <span class="fl">2</span>)</span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a>        Pam, Qam, Ram <span class="op">=</span> <span class="fu">binary_split</span>(a, m)</span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a>        Pmb, Qmb, Rmb <span class="op">=</span> <span class="fu">binary_split</span>(m, b)</span>
+<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a>        </span>
+<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a>        Pab <span class="op">=</span> Pam <span class="op">*</span> Pmb</span>
+<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a>        Qab <span class="op">=</span> Qam <span class="op">*</span> Qmb</span>
+<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a>        Rab <span class="op">=</span> Qmb <span class="op">*</span> Ram <span class="op">+</span> Pam <span class="op">*</span> Rmb</span>
+<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a>        <span class="cf">return</span> Pab, Qab, Rab</span>
+<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a></span>
+<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a><span class="kw">function</span> <span class="fu">chudnovsky</span>(n)</span>
+<span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a>    P1n, Q1n, R1n <span class="op">=</span> <span class="fu">binary_split</span>(<span class="fu">big</span>(<span class="fl">1</span>), n)</span>
+<span id="cb6-38"><a href="#cb6-38" tabindex="-1"></a>    <span class="cf">return</span> (<span class="fl">426880</span> <span class="op">*</span> <span class="fu">sqrt</span>(<span class="fu">big</span>(<span class="fl">10005.0</span>)) <span class="op">*</span> Q1n) <span class="op">/</span> (<span class="fl">13591409</span><span class="op">*</span>Q1n <span class="op">+</span> R1n)</span>
+<span id="cb6-39"><a href="#cb6-39" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb6-40"><a href="#cb6-40" tabindex="-1"></a></span>
+<span id="cb6-41"><a href="#cb6-41" tabindex="-1"></a><span class="fu">setprecision</span>(<span class="fl">10000</span>)</span>
+<span id="cb6-42"><a href="#cb6-42" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">chudnovsky</span>(<span class="fu">big</span>(<span class="fl">20000</span>))</span>
+<span id="cb6-43"><a href="#cb6-43" tabindex="-1"></a></span>
+<span id="cb6-44"><a href="#cb6-44" tabindex="-1"></a><span class="co"># We can create a parallel version by spawning jobs. These are green threads.</span></span>
+<span id="cb6-45"><a href="#cb6-45" tabindex="-1"></a></span>
+<span id="cb6-46"><a href="#cb6-46" tabindex="-1"></a><span class="kw">function</span> <span class="fu">binary_split_td</span>(a<span class="op">::</span><span class="dt">T</span>, b<span class="op">::</span><span class="dt">T</span>) <span class="kw">where</span> {T}</span>
+<span id="cb6-47"><a href="#cb6-47" tabindex="-1"></a>    <span class="cf">if</span> b <span class="op">==</span> a <span class="op">+</span> <span class="fl">1</span></span>
+<span id="cb6-48"><a href="#cb6-48" tabindex="-1"></a>        <span class="fu">binary_split_1</span>(a, b)</span>
+<span id="cb6-49"><a href="#cb6-49" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb6-50"><a href="#cb6-50" tabindex="-1"></a>        m <span class="op">=</span> <span class="fu">div</span>(a <span class="op">+</span> b, <span class="fl">2</span>)</span>
+<span id="cb6-51"><a href="#cb6-51" tabindex="-1"></a>        t1 <span class="op">=</span> <span class="pp">@Threads</span>.spawn <span class="fu">binary_split_td</span>(a, m)</span>
+<span id="cb6-52"><a href="#cb6-52" tabindex="-1"></a>        t2 <span class="op">=</span> <span class="pp">@Threads</span>.spawn <span class="fu">binary_split_td</span>(m, b)</span>
+<span id="cb6-53"><a href="#cb6-53" tabindex="-1"></a></span>
+<span id="cb6-54"><a href="#cb6-54" tabindex="-1"></a>        Pam, Qam, Ram <span class="op">=</span> <span class="fu">fetch</span>(t1)</span>
+<span id="cb6-55"><a href="#cb6-55" tabindex="-1"></a>        Pmb, Qmb, Rmb <span class="op">=</span> <span class="fu">fetch</span>(t2)</span>
+<span id="cb6-56"><a href="#cb6-56" tabindex="-1"></a>        </span>
+<span id="cb6-57"><a href="#cb6-57" tabindex="-1"></a>        Pab <span class="op">=</span> Pam <span class="op">*</span> Pmb</span>
+<span id="cb6-58"><a href="#cb6-58" tabindex="-1"></a>        Qab <span class="op">=</span> Qam <span class="op">*</span> Qmb</span>
+<span id="cb6-59"><a href="#cb6-59" tabindex="-1"></a>        Rab <span class="op">=</span> Qmb <span class="op">*</span> Ram <span class="op">+</span> Pam <span class="op">*</span> Rmb</span>
+<span id="cb6-60"><a href="#cb6-60" tabindex="-1"></a>        <span class="cf">return</span> Pab, Qab, Rab</span>
+<span id="cb6-61"><a href="#cb6-61" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb6-62"><a href="#cb6-62" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb6-63"><a href="#cb6-63" tabindex="-1"></a></span>
+<span id="cb6-64"><a href="#cb6-64" tabindex="-1"></a><span class="kw">function</span> <span class="fu">chudnovsky_td</span>(n)</span>
+<span id="cb6-65"><a href="#cb6-65" tabindex="-1"></a>    P1n, Q1n, R1n <span class="op">=</span> <span class="fu">binary_split_td</span>(<span class="fu">big</span>(<span class="fl">1</span>), n)</span>
+<span id="cb6-66"><a href="#cb6-66" tabindex="-1"></a>    <span class="cf">return</span> (<span class="fl">426880</span> <span class="op">*</span> <span class="fu">sqrt</span>(<span class="fu">big</span>(<span class="fl">10005.0</span>)) <span class="op">*</span> Q1n) <span class="op">/</span> (<span class="fl">13591409</span><span class="op">*</span>Q1n <span class="op">+</span> R1n)</span>
+<span id="cb6-67"><a href="#cb6-67" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+</div>
+<p>The following may show why the parallel code isn’t faster yet.</p>
+<div class="codewrapper sourceCode" id="cb7">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">setprecision</span>(<span class="fl">10000</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">chudnovsky_td</span>(<span class="fu">big</span>(<span class="fl">20000</span>))</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="pp">@profview</span> <span class="fu">chudnovsky_td</span>(<span class="fu">big</span>(<span class="fl">200000</span>))</span></code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="pp">@code_warntype</span> <span class="fu">chudnovsky_td</span>(<span class="fu">big</span>(<span class="fl">6</span>))</span></code></pre>
+</div>
+<ul><li>The red areas in the flame graph show type unstable code (marked
+with <strong>run-time dispatch</strong>)</li>
+<li>Yellow regions are allocations.</li>
+<li>The same can be seen in the code, as a kind of histogram back
+drop.</li>
+</ul><p>The code is also inefficient because <code>poptask</code> is very
+prominent. We can make sure that each task is a bit beefier by reverting
+to the serial code at some point. Insert the following in
+<code>binary_split_td</code>:</p>
+<div class="codewrapper sourceCode" id="cb9">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>elseif b <span class="op">-</span> a <span class="op">&lt;=</span> <span class="fl">1024</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>    <span class="fu">binary_split</span>(a, b)</span></code></pre>
+</div>
+<p>We can limit the type instability by changing the <code>fetch</code>
+lines:</p>
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>Pam<span class="op">::</span><span class="dt">T</span>, Qam<span class="op">::</span><span class="dt">T</span>, Ram<span class="op">::</span><span class="dt">T </span><span class="op">=</span> <span class="fu">fetch</span>(t1)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>Pmb<span class="op">::</span><span class="dt">T</span>, Qmb<span class="op">::</span><span class="dt">T</span>, Rmb<span class="op">::</span><span class="dt">T </span><span class="op">=</span> <span class="fu">fetch</span>(t2)</span></code></pre>
+</div>
+<div id="rerun-the-profiler" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="rerun-the-profiler" class="callout-inner">
+<h3 class="callout-title">Rerun the profiler</h3>
+<div class="callout-content">
+<p>Rerun the profiler and <code>@code_warntype</code>. Is the type
+instability gone?</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div class="accordion-body">
+<div class="codewrapper sourceCode" id="cb11">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">binary_split_td</span>(a<span class="op">::</span><span class="dt">T</span>, b<span class="op">::</span><span class="dt">T</span>) <span class="kw">where</span> {T}</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>    <span class="cf">if</span> b <span class="op">==</span> a <span class="op">+</span> <span class="fl">1</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>        <span class="fu">binary_split_1</span>(a, b)</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>    <span class="cf">elseif</span> b <span class="op">-</span> a <span class="op">&lt;=</span> <span class="fl">1024</span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>        <span class="fu">binary_split</span>(a, b)</span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>        m <span class="op">=</span> <span class="fu">div</span>(a <span class="op">+</span> b, <span class="fl">2</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a>        t1 <span class="op">=</span> <span class="pp">@Threads</span>.spawn <span class="fu">binary_split_td</span>(a, m)</span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a>        t2 <span class="op">=</span> <span class="pp">@Threads</span>.spawn <span class="fu">binary_split_td</span>(m, b)</span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a>        Pam<span class="op">::</span><span class="dt">T</span>, Qam<span class="op">::</span><span class="dt">T</span>, Ram<span class="op">::</span><span class="dt">T </span><span class="op">=</span> <span class="fu">fetch</span>(t1)</span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a>        Pmb<span class="op">::</span><span class="dt">T</span>, Qmb<span class="op">::</span><span class="dt">T</span>, Rmb<span class="op">::</span><span class="dt">T </span><span class="op">=</span> <span class="fu">fetch</span>(t2)</span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a>        </span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a>        Pab <span class="op">=</span> Pam <span class="op">*</span> Pmb</span>
+<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a>        Qab <span class="op">=</span> Qam <span class="op">*</span> Qmb</span>
+<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a>        Rab <span class="op">=</span> Qmb <span class="op">*</span> Ram <span class="op">+</span> Pam <span class="op">*</span> Rmb</span>
+<span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a>        <span class="cf">return</span> Pab, Qab, Rab</span>
+<span id="cb11-18"><a href="#cb11-18" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb11-19"><a href="#cb11-19" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+</div>
+<p>Yes!</p>
+</div>
+</div>
+</div>
+</div>
 <hr><div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -471,13 +709,10 @@ specific type signature.</li>
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
-
-
-
-      </div> <!-- / div.lesson-content -->
+</section></div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter"><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link" href="../instructor/090-best-practices.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
-        <a class="chapter-link float-end" href="../instructor/110-performance-analysis.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link float-end" href="../instructor/110-dos-and-donts.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
@@ -485,8 +720,8 @@ any links that you are not going to use.
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>
           Previous: Best practices
         </a>
-        <a class="chapter-link float-end" href="../instructor/110-performance-analysis.html" rel="next">
-          Next: Reducing allocations...
+        <a class="chapter-link float-end" href="../instructor/110-dos-and-donts.html" rel="next">
+          Next: Performance: do's...
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i>
         </a>
       </div>
@@ -532,7 +767,7 @@ any links that you are not going to use.
   "url": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/100-introduction-performance.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/100-introduction-performance.html",
   "dateCreated": "2024-01-01",
-  "dateModified": "2024-04-19",
+  "dateModified": "2025-02-09",
   "datePublished": "2025-02-09"
 }
 

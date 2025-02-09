@@ -278,7 +278,7 @@
 <div class="accordion accordion-flush" id="accordionFlush10">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading10">
-        <a href="110-performance-analysis.html">9. Reducing allocations on the Logistic Map</a>
+        <a href="110-dos-and-donts.html">9. Performance: do's and don'ts</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -287,7 +287,7 @@
 <div class="accordion accordion-flush" id="accordionFlush11">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading11">
-        <a href="120-dos-and-donts.html">10. Performance: do's and don'ts</a>
+        <a href="120-allocations.html">10. Reducing allocations on the Logistic Map</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -410,14 +410,14 @@
         <!-- START: inst/pkgdown/templates/content-instructor.html -->
   <div class="col-xl-8 col-lg-12 primary-content">
     <nav class="lesson-content mx-md-4" aria-label="Previous and Next Chapter"><!-- content for small screens --><div class="d-block d-sm-block d-md-none">
-        <a class="chapter-link" href="../instructor/120-dos-and-donts.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
+        <a class="chapter-link" href="../instructor/120-allocations.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
         <a class="chapter-link float-end" href="../instructor/140-threads-async-and-tasks.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
-        <a class="chapter-link" href="../instructor/120-dos-and-donts.html" rel="prev">
+        <a class="chapter-link" href="../instructor/120-allocations.html" rel="prev">
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>
-          Previous: Performance: do's
+          Previous: Reducing allocations
         </a>
         <a class="chapter-link float-end" href="../instructor/140-threads-async-and-tasks.html" rel="next">
           Next: Threads, ASync and...
@@ -484,7 +484,7 @@ from preset neighbourhoods of the input array.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Image source </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -527,7 +527,7 @@ types.</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co">#| id: ca</span></span>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co">#| id: stencils</span></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="kw">abstract type</span> BoundaryType{dim} <span class="kw">end</span></span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="kw">struct</span> Periodic{dim} <span class="op">&lt;:</span><span class="dt"> BoundaryType{dim} </span><span class="kw">end</span></span>
@@ -590,16 +590,17 @@ function is behaving as should.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="kw">struct</span> Reflected{dim} <span class="op">&lt;:</span><span class="dt"> BoundaryType{dim} </span><span class="kw">end</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="pp">@inline</span> <span class="fu">get_bounded</span>(<span class="op">::</span><span class="dt">Type{Reflected{dim}}</span>, arr, idx) <span class="kw">where</span> {dim} <span class="op">=</span></span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>    <span class="fu">checkbounds</span>(<span class="dt">Bool</span>, arr, idx) ? arr[idx] <span class="op">:</span> </span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>    arr[<span class="fu">modflip</span>.(<span class="fu">Tuple</span>(idx), <span class="fu">size</span>(arr))<span class="op">...</span>]</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co">#| id: stencils</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="kw">struct</span> Reflected{dim} <span class="op">&lt;:</span><span class="dt"> BoundaryType{dim} </span><span class="kw">end</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="pp">@inline</span> <span class="fu">get_bounded</span>(<span class="op">::</span><span class="dt">Type{Reflected{dim}}</span>, arr, idx) <span class="kw">where</span> {dim} <span class="op">=</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>    <span class="fu">checkbounds</span>(<span class="dt">Bool</span>, arr, idx) ? arr[idx] <span class="op">:</span> </span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>    arr[<span class="fu">modflip</span>.(<span class="fu">Tuple</span>(idx), <span class="fu">size</span>(arr))<span class="op">...</span>]</span></code></pre>
 </div>
 </div>
 </div>
@@ -677,7 +678,7 @@ axis.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>Using iterators:</p>
 <div class="codewrapper sourceCode" id="cb12">
@@ -781,7 +782,7 @@ case.</p>
 <div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co">#| id: ca</span></span>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co">#| id: stencils</span></span>
 <span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="st">"""</span></span>
 <span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a><span class="st">    stencil!(f, &lt;: BoundaryType{dim}, Size{sz}, inp, out)</span></span>
 <span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a></span>
@@ -801,7 +802,13 @@ case.</p>
 <span id="cb16-18"><a href="#cb16-18" tabindex="-1"></a>    <span class="cf">return</span> out</span>
 <span id="cb16-19"><a href="#cb16-19" tabindex="-1"></a><span class="cf">end</span></span>
 <span id="cb16-20"><a href="#cb16-20" tabindex="-1"></a></span>
-<span id="cb16-21"><a href="#cb16-21" tabindex="-1"></a><span class="fu">rule</span>(n) <span class="op">=</span> <span class="fu">stencil!</span>(<span class="fu">eca</span>(n), Periodic{<span class="fl">1</span>}, <span class="fu">Size</span>(<span class="fl">3</span>))</span></code></pre>
+<span id="cb16-21"><a href="#cb16-21" tabindex="-1"></a><span class="fu">stencil!</span>(f, <span class="op">::</span><span class="dt">Type{BT}</span>, sz) <span class="kw">where</span> {BT} <span class="op">=</span></span>
+<span id="cb16-22"><a href="#cb16-22" tabindex="-1"></a>    (inp, out) <span class="op">-&gt;</span> <span class="fu">stencil!</span>(f, BT, sz, inp, out)</span></code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb17">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">rule</span>(n) <span class="op">=</span> <span class="fu">stencil!</span>(<span class="fu">eca</span>(n), Periodic{<span class="fl">1</span>}, <span class="fu">Size</span>(<span class="fl">3</span>))</span></code></pre>
 </div>
 </div>
 </section><section><h2 class="section-heading" id="game-of-life">Game of Life<a class="anchor" aria-label="anchor" href="#game-of-life"></a></h2>
@@ -810,18 +817,18 @@ the most famous one. We set the following rules:</p>
 <ul><li>if there are three live neighbours, the cell lives.</li>
 <li>if there are less than two or more than three live neighbours, the
 cell dies.</li>
-</ul><div class="codewrapper sourceCode" id="cb17">
+</ul><div class="codewrapper sourceCode" id="cb18">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co">#| id: ca</span></span>
-<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="fu">game_of_life</span>(a) <span class="op">=</span> <span class="kw">let</span> s <span class="op">=</span> <span class="fu">sum</span>(a) <span class="op">-</span> a[<span class="fl">2</span>, <span class="fl">2</span>]</span>
-<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>    s <span class="op">==</span> <span class="fl">3</span> <span class="op">||</span> (a[<span class="fl">2</span>, <span class="fl">2</span>] <span class="op">&amp;&amp;</span> s <span class="op">==</span> <span class="fl">2</span>)</span>
-<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a></span>
-<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>a <span class="op">=</span> <span class="fu">rand</span>(<span class="dt">Bool</span>, <span class="fl">64</span>, <span class="fl">64</span>)</span>
-<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a>b <span class="op">=</span> <span class="fu">zeros</span>(<span class="dt">Bool</span>, <span class="fl">64</span>, <span class="fl">64</span>)</span>
-<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a><span class="fu">stencil!</span>(game_of_life, Periodic{<span class="fl">2</span>}, <span class="fu">Size</span>(<span class="fl">3</span>, <span class="fl">3</span>), a, b) <span class="op">|&gt;</span> to_image</span>
-<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a>a, b <span class="op">=</span> b, a</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="co">#| id: ca</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="fu">game_of_life</span>(a) <span class="op">=</span> <span class="kw">let</span> s <span class="op">=</span> <span class="fu">sum</span>(a) <span class="op">-</span> a[<span class="fl">2</span>, <span class="fl">2</span>]</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>    s <span class="op">==</span> <span class="fl">3</span> <span class="op">||</span> (a[<span class="fl">2</span>, <span class="fl">2</span>] <span class="op">&amp;&amp;</span> s <span class="op">==</span> <span class="fl">2</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>a <span class="op">=</span> <span class="fu">rand</span>(<span class="dt">Bool</span>, <span class="fl">64</span>, <span class="fl">64</span>)</span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>b <span class="op">=</span> <span class="fu">zeros</span>(<span class="dt">Bool</span>, <span class="fl">64</span>, <span class="fl">64</span>)</span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a><span class="fu">stencil!</span>(game_of_life, Periodic{<span class="fl">2</span>}, <span class="fu">Size</span>(<span class="fl">3</span>, <span class="fl">3</span>), a, b) <span class="op">|&gt;</span> to_image</span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>a, b <span class="op">=</span> b, a</span></code></pre>
 </div>
 <div id="animated-life" class="callout challenge">
 <div class="callout-square">
@@ -842,65 +849,65 @@ Makie</a>. Can you make an animation of the Game of Life? Use the
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
 <p>Here’s a cool solution with live animation and lots more, just for
 your enjoyment.</p>
-<div class="codewrapper sourceCode" id="cb18">
+<div class="codewrapper sourceCode" id="cb19">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">tic</span>(f, dt, running_)</span>
-<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>    running<span class="op">::</span><span class="dt">Observable{Bool} </span><span class="op">=</span> running_</span>
-<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a></span>
-<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>    <span class="pp">@async</span> <span class="cf">begin</span></span>
-<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>        <span class="cf">while</span> running[]</span>
-<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>            <span class="fu">sleep</span>(dt[])</span>
-<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>            <span class="fu">f</span>()</span>
-<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a>        <span class="cf">end</span></span>
-<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a></span>
-<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a><span class="kw">function</span> <span class="fu">run_life</span>()</span>
-<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a>    fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
-<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a></span>
-<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a>    sz <span class="op">=</span> (<span class="fl">256</span>, <span class="fl">256</span>)</span>
-<span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a>    state <span class="op">=</span> <span class="fu">Observable</span>(<span class="fu">rand</span>(<span class="dt">Bool</span>, sz<span class="op">...</span>))</span>
-<span id="cb18-17"><a href="#cb18-17" tabindex="-1"></a>    temp <span class="op">=</span> <span class="fu">Array</span><span class="dt">{Bool, 2}</span>(<span class="cn">undef</span>, sz<span class="op">...</span>)</span>
-<span id="cb18-18"><a href="#cb18-18" tabindex="-1"></a>    foo <span class="op">=</span> <span class="fu">stencil!</span>(game_of_life, Periodic{<span class="fl">2</span>}, <span class="fu">Size</span>(<span class="fl">3</span>, <span class="fl">3</span>))</span>
-<span id="cb18-19"><a href="#cb18-19" tabindex="-1"></a></span>
-<span id="cb18-20"><a href="#cb18-20" tabindex="-1"></a>    <span class="kw">function</span> <span class="fu">next</span>()</span>
-<span id="cb18-21"><a href="#cb18-21" tabindex="-1"></a>        <span class="fu">foo</span>(state[], temp)</span>
-<span id="cb18-22"><a href="#cb18-22" tabindex="-1"></a>        state[], temp <span class="op">=</span> temp, state[] <span class="co"># copy(temp)</span></span>
-<span id="cb18-23"><a href="#cb18-23" tabindex="-1"></a>    <span class="kw">end</span></span>
-<span id="cb18-24"><a href="#cb18-24" tabindex="-1"></a></span>
-<span id="cb18-25"><a href="#cb18-25" tabindex="-1"></a>    ax <span class="op">=</span> Makie.<span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], aspect<span class="op">=</span><span class="fl">1</span>)</span>
-<span id="cb18-26"><a href="#cb18-26" tabindex="-1"></a>    gb <span class="op">=</span> <span class="fu">GridLayout</span>(fig[<span class="fl">2</span>, <span class="fl">1</span>], tellwidth<span class="op">=</span><span class="cn">false</span>)</span>
-<span id="cb18-27"><a href="#cb18-27" tabindex="-1"></a></span>
-<span id="cb18-28"><a href="#cb18-28" tabindex="-1"></a>    playing <span class="op">=</span> <span class="fu">Observable</span>(<span class="cn">false</span>)</span>
-<span id="cb18-29"><a href="#cb18-29" tabindex="-1"></a></span>
-<span id="cb18-30"><a href="#cb18-30" tabindex="-1"></a>    play_button_text <span class="op">=</span> <span class="fu">lift</span>(<span class="fu">p-&gt;</span>(p ? <span class="st">"Pause"</span> <span class="op">:</span> <span class="st">"Play"</span>), playing)</span>
-<span id="cb18-31"><a href="#cb18-31" tabindex="-1"></a>    play_button <span class="op">=</span> gb[<span class="fl">1</span>,<span class="fl">1</span>] <span class="op">=</span> <span class="fu">Button</span>(fig, label<span class="op">=</span>play_button_text)</span>
-<span id="cb18-32"><a href="#cb18-32" tabindex="-1"></a>    rand_button <span class="op">=</span> gb[<span class="fl">1</span>,<span class="fl">2</span>] <span class="op">=</span> <span class="fu">Button</span>(fig, label<span class="op">=</span><span class="st">"Randomize"</span>)</span>
-<span id="cb18-33"><a href="#cb18-33" tabindex="-1"></a>    speed_slider <span class="op">=</span> gb[<span class="fl">1</span>,<span class="fl">3</span>] <span class="op">=</span> <span class="fu">SliderGrid</span>(fig, (label<span class="op">=</span><span class="st">"delay"</span>, range <span class="op">=</span> <span class="fu">logrange</span>(<span class="fl">0.001</span>, <span class="fl">1.0</span>, <span class="fl">100</span>), startvalue<span class="op">=</span><span class="fl">0.1</span>))</span>
-<span id="cb18-34"><a href="#cb18-34" tabindex="-1"></a></span>
-<span id="cb18-35"><a href="#cb18-35" tabindex="-1"></a>    <span class="fu">on</span>(play_button.clicks) <span class="cf">do</span> _</span>
-<span id="cb18-36"><a href="#cb18-36" tabindex="-1"></a>        p <span class="op">=</span> !playing[]</span>
-<span id="cb18-37"><a href="#cb18-37" tabindex="-1"></a>        playing[] <span class="op">=</span> p</span>
-<span id="cb18-38"><a href="#cb18-38" tabindex="-1"></a>        <span class="cf">if</span> p</span>
-<span id="cb18-39"><a href="#cb18-39" tabindex="-1"></a>            <span class="fu">tic</span>(next, speed_slider.sliders[<span class="fl">1</span>].value, playing)</span>
-<span id="cb18-40"><a href="#cb18-40" tabindex="-1"></a>        <span class="cf">end</span></span>
-<span id="cb18-41"><a href="#cb18-41" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb18-42"><a href="#cb18-42" tabindex="-1"></a></span>
-<span id="cb18-43"><a href="#cb18-43" tabindex="-1"></a>    <span class="fu">on</span>(rand_button.clicks) <span class="cf">do</span> _</span>
-<span id="cb18-44"><a href="#cb18-44" tabindex="-1"></a>        state[] <span class="op">=</span> <span class="fu">rand</span>(<span class="dt">Bool</span>, sz<span class="op">...</span>)</span>
-<span id="cb18-45"><a href="#cb18-45" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb18-46"><a href="#cb18-46" tabindex="-1"></a></span>
-<span id="cb18-47"><a href="#cb18-47" tabindex="-1"></a>    <span class="fu">image!</span>(ax, <span class="fu">lift</span>(to_image, state), interpolate<span class="op">=</span><span class="cn">false</span>)</span>
-<span id="cb18-48"><a href="#cb18-48" tabindex="-1"></a></span>
-<span id="cb18-49"><a href="#cb18-49" tabindex="-1"></a>    fig</span>
-<span id="cb18-50"><a href="#cb18-50" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb18-51"><a href="#cb18-51" tabindex="-1"></a></span>
-<span id="cb18-52"><a href="#cb18-52" tabindex="-1"></a><span class="fu">run_life</span>()</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">tic</span>(f, dt, running_)</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>    running<span class="op">::</span><span class="dt">Observable{Bool} </span><span class="op">=</span> running_</span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>    <span class="pp">@async</span> <span class="cf">begin</span></span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>        <span class="cf">while</span> running[]</span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a>            <span class="fu">sleep</span>(dt[])</span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a>            <span class="fu">f</span>()</span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a></span>
+<span id="cb19-12"><a href="#cb19-12" tabindex="-1"></a><span class="kw">function</span> <span class="fu">run_life</span>()</span>
+<span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a>    fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
+<span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a>    sz <span class="op">=</span> (<span class="fl">256</span>, <span class="fl">256</span>)</span>
+<span id="cb19-16"><a href="#cb19-16" tabindex="-1"></a>    state <span class="op">=</span> <span class="fu">Observable</span>(<span class="fu">rand</span>(<span class="dt">Bool</span>, sz<span class="op">...</span>))</span>
+<span id="cb19-17"><a href="#cb19-17" tabindex="-1"></a>    temp <span class="op">=</span> <span class="fu">Array</span><span class="dt">{Bool, 2}</span>(<span class="cn">undef</span>, sz<span class="op">...</span>)</span>
+<span id="cb19-18"><a href="#cb19-18" tabindex="-1"></a>    foo <span class="op">=</span> <span class="fu">stencil!</span>(game_of_life, Periodic{<span class="fl">2</span>}, <span class="fu">Size</span>(<span class="fl">3</span>, <span class="fl">3</span>))</span>
+<span id="cb19-19"><a href="#cb19-19" tabindex="-1"></a></span>
+<span id="cb19-20"><a href="#cb19-20" tabindex="-1"></a>    <span class="kw">function</span> <span class="fu">next</span>()</span>
+<span id="cb19-21"><a href="#cb19-21" tabindex="-1"></a>        <span class="fu">foo</span>(state[], temp)</span>
+<span id="cb19-22"><a href="#cb19-22" tabindex="-1"></a>        state[], temp <span class="op">=</span> temp, state[] <span class="co"># copy(temp)</span></span>
+<span id="cb19-23"><a href="#cb19-23" tabindex="-1"></a>    <span class="kw">end</span></span>
+<span id="cb19-24"><a href="#cb19-24" tabindex="-1"></a></span>
+<span id="cb19-25"><a href="#cb19-25" tabindex="-1"></a>    ax <span class="op">=</span> Makie.<span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], aspect<span class="op">=</span><span class="fl">1</span>)</span>
+<span id="cb19-26"><a href="#cb19-26" tabindex="-1"></a>    gb <span class="op">=</span> <span class="fu">GridLayout</span>(fig[<span class="fl">2</span>, <span class="fl">1</span>], tellwidth<span class="op">=</span><span class="cn">false</span>)</span>
+<span id="cb19-27"><a href="#cb19-27" tabindex="-1"></a></span>
+<span id="cb19-28"><a href="#cb19-28" tabindex="-1"></a>    playing <span class="op">=</span> <span class="fu">Observable</span>(<span class="cn">false</span>)</span>
+<span id="cb19-29"><a href="#cb19-29" tabindex="-1"></a></span>
+<span id="cb19-30"><a href="#cb19-30" tabindex="-1"></a>    play_button_text <span class="op">=</span> <span class="fu">lift</span>(<span class="fu">p-&gt;</span>(p ? <span class="st">"Pause"</span> <span class="op">:</span> <span class="st">"Play"</span>), playing)</span>
+<span id="cb19-31"><a href="#cb19-31" tabindex="-1"></a>    play_button <span class="op">=</span> gb[<span class="fl">1</span>,<span class="fl">1</span>] <span class="op">=</span> <span class="fu">Button</span>(fig, label<span class="op">=</span>play_button_text)</span>
+<span id="cb19-32"><a href="#cb19-32" tabindex="-1"></a>    rand_button <span class="op">=</span> gb[<span class="fl">1</span>,<span class="fl">2</span>] <span class="op">=</span> <span class="fu">Button</span>(fig, label<span class="op">=</span><span class="st">"Randomize"</span>)</span>
+<span id="cb19-33"><a href="#cb19-33" tabindex="-1"></a>    speed_slider <span class="op">=</span> gb[<span class="fl">1</span>,<span class="fl">3</span>] <span class="op">=</span> <span class="fu">SliderGrid</span>(fig, (label<span class="op">=</span><span class="st">"delay"</span>, range <span class="op">=</span> <span class="fu">logrange</span>(<span class="fl">0.001</span>, <span class="fl">1.0</span>, <span class="fl">100</span>), startvalue<span class="op">=</span><span class="fl">0.1</span>))</span>
+<span id="cb19-34"><a href="#cb19-34" tabindex="-1"></a></span>
+<span id="cb19-35"><a href="#cb19-35" tabindex="-1"></a>    <span class="fu">on</span>(play_button.clicks) <span class="cf">do</span> _</span>
+<span id="cb19-36"><a href="#cb19-36" tabindex="-1"></a>        p <span class="op">=</span> !playing[]</span>
+<span id="cb19-37"><a href="#cb19-37" tabindex="-1"></a>        playing[] <span class="op">=</span> p</span>
+<span id="cb19-38"><a href="#cb19-38" tabindex="-1"></a>        <span class="cf">if</span> p</span>
+<span id="cb19-39"><a href="#cb19-39" tabindex="-1"></a>            <span class="fu">tic</span>(next, speed_slider.sliders[<span class="fl">1</span>].value, playing)</span>
+<span id="cb19-40"><a href="#cb19-40" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb19-41"><a href="#cb19-41" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb19-42"><a href="#cb19-42" tabindex="-1"></a></span>
+<span id="cb19-43"><a href="#cb19-43" tabindex="-1"></a>    <span class="fu">on</span>(rand_button.clicks) <span class="cf">do</span> _</span>
+<span id="cb19-44"><a href="#cb19-44" tabindex="-1"></a>        state[] <span class="op">=</span> <span class="fu">rand</span>(<span class="dt">Bool</span>, sz<span class="op">...</span>)</span>
+<span id="cb19-45"><a href="#cb19-45" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb19-46"><a href="#cb19-46" tabindex="-1"></a></span>
+<span id="cb19-47"><a href="#cb19-47" tabindex="-1"></a>    <span class="fu">image!</span>(ax, <span class="fu">lift</span>(to_image, state), interpolate<span class="op">=</span><span class="cn">false</span>)</span>
+<span id="cb19-48"><a href="#cb19-48" tabindex="-1"></a></span>
+<span id="cb19-49"><a href="#cb19-49" tabindex="-1"></a>    fig</span>
+<span id="cb19-50"><a href="#cb19-50" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb19-51"><a href="#cb19-51" tabindex="-1"></a></span>
+<span id="cb19-52"><a href="#cb19-52" tabindex="-1"></a><span class="fu">run_life</span>()</span></code></pre>
 </div>
 </div>
 </div>
@@ -930,18 +937,17 @@ for agent based modelling.</li>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Source code </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb19">
+<div class="codewrapper sourceCode" id="cb20">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="co">#| file: src/CA.jl</span></span>
-<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="kw">module</span> CA</span>
-<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>    <span class="im">using</span> <span class="bu">GLMakie</span></span>
-<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>    <span class="im">using</span> <span class="bu">StaticArrays</span></span>
-<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a></span>
-<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a>    <span class="op">&lt;&lt;</span>ca<span class="op">&gt;&gt;</span></span>
-<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="co">#| file: src/Stencils.jl</span></span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a><span class="kw">module</span> Stencils</span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>    <span class="im">using</span> <span class="bu">StaticArrays</span></span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a>    <span class="op">&lt;&lt;</span>stencils<span class="op">&gt;&gt;</span></span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -953,14 +959,14 @@ any links that you are not going to use.
  -->
 </section></div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter"><div class="d-block d-sm-block d-md-none">
-        <a class="chapter-link" href="../instructor/120-dos-and-donts.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
+        <a class="chapter-link" href="../instructor/120-allocations.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
         <a class="chapter-link float-end" href="../instructor/140-threads-async-and-tasks.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
-        <a class="chapter-link" href="../instructor/120-dos-and-donts.html" rel="prev">
+        <a class="chapter-link" href="../instructor/120-allocations.html" rel="prev">
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>
-          Previous: Performance: do's
+          Previous: Reducing allocations
         </a>
         <a class="chapter-link float-end" href="../instructor/140-threads-async-and-tasks.html" rel="next">
           Next: Threads, ASync and...

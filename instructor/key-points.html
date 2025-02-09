@@ -340,7 +340,7 @@
 <div class="accordion accordion-flush" id="accordionFlush10">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading10">
-        <a href="110-performance-analysis.html">9. Reducing allocations on the Logistic Map</a>
+        <a href="110-dos-and-donts.html">9. Performance: do's and don'ts</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -352,7 +352,7 @@
 <div class="accordion accordion-flush" id="accordionFlush11">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading11">
-        <a href="120-dos-and-donts.html">10. Performance: do's and don'ts</a>
+        <a href="120-allocations.html">10. Reducing allocations on the Logistic Map</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -529,12 +529,11 @@ Julia.</li>
 </ul></section><section id="060-simulating-solar-system"><h2 class="section-heading"><a href="060-simulating-solar-system.html">Simulating the Solar System</a></h2>
 <hr class="half-width">
 <ul>
-<li>
-<code>Plots.jl</code> is in some ways the ‘standard’ plotting
-package, but it is in fact quite horrible.</li>
-<li>
-<code>Makie.jl</code> offers a nice interface, pretty plots, is
-generally stable and very efficient once things have been compiled.</li>
+<li>standard functions like <code>rand</code>, <code>zero</code> and
+operators can be extended by libraries to work with new types</li>
+<li>functions (not objects) are central to programming Julia</li>
+<li>don’t over-specify argument types: Julia is dynamically typed,
+embrace it</li>
 </ul></section><section id="070-pkg"><h2 class="section-heading"><a href="070-pkg.html">Packages and environments</a></h2>
 <hr class="half-width">
 <ul>
@@ -569,12 +568,7 @@ fit shape.</li>
 <ul>
 <li>The Julia compiler compiles a function once its called with a
 specific type signature.</li>
-</ul></section><section id="110-performance-analysis"><h2 class="section-heading"><a href="110-performance-analysis.html">Reducing allocations on the Logistic Map</a></h2>
-<hr class="half-width">
-<ul>
-<li>Allocations are slow.</li>
-<li>Growing arrays dynamically induces allocations.</li>
-</ul></section><section id="120-dos-and-donts"><h2 class="section-heading"><a href="120-dos-and-donts.html">Performance: do's and don'ts</a></h2>
+</ul></section><section id="110-dos-and-donts"><h2 class="section-heading"><a href="110-dos-and-donts.html">Performance: do's and don'ts</a></h2>
 <hr class="half-width">
 <ul>
 <li>Don’t use mutable global variables.</li>
@@ -584,6 +578,11 @@ specific type signature.</li>
 <li>Write functions that always return the same type (type
 stability).</li>
 <li>Don’t change the type of variables.</li>
+</ul></section><section id="120-allocations"><h2 class="section-heading"><a href="120-allocations.html">Reducing allocations on the Logistic Map</a></h2>
+<hr class="half-width">
+<ul>
+<li>Allocations are slow.</li>
+<li>Growing arrays dynamically induces allocations.</li>
 </ul></section><section id="130-value-types-and-ca"><h2 class="section-heading"><a href="130-value-types-and-ca.html">Value types: game of life</a></h2>
 <hr class="half-width">
 <ul>

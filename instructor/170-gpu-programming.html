@@ -278,7 +278,7 @@
 <div class="accordion accordion-flush" id="accordionFlush10">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading10">
-        <a href="110-performance-analysis.html">9. Reducing allocations on the Logistic Map</a>
+        <a href="110-dos-and-donts.html">9. Performance: do's and don'ts</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -287,7 +287,7 @@
 <div class="accordion accordion-flush" id="accordionFlush11">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading11">
-        <a href="120-dos-and-donts.html">10. Performance: do's and don'ts</a>
+        <a href="120-allocations.html">10. Reducing allocations on the Logistic Map</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -505,7 +505,7 @@ using the above packages in conjunction with
 </button>
 </div>
 </nav><div id="nav-tabContent-1" class="tab-content">
-<div id="nav-tabpanel-1-Intel" class="tab-pane show active" aria-labelledby="nav-tab-1-Intel" role="tabpanel">
+<div id="nav-tabpanel-1-Intel" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-1-Intel">
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -514,7 +514,7 @@ using the above packages in conjunction with
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="im">using</span> <span class="bu">KernelAbstractions</span></span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-1-Metal" class="tab-pane" aria-labelledby="nav-tab-1-Metal" role="tabpanel">
+<div id="nav-tabpanel-1-Metal" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-Metal">
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -522,7 +522,7 @@ using the above packages in conjunction with
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="im">using</span> <span class="bu">KernelAbstractions</span></span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-1-NVidia" class="tab-pane" aria-labelledby="nav-tab-1-NVidia" role="tabpanel">
+<div id="nav-tabpanel-1-NVidia" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-NVidia">
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -530,7 +530,7 @@ using the above packages in conjunction with
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="im">using</span> <span class="bu">KernelAbstractions</span></span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-1-AMD" class="tab-pane" aria-labelledby="nav-tab-1-AMD" role="tabpanel">
+<div id="nav-tabpanel-1-AMD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-AMD">
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -585,7 +585,7 @@ arrays.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-2" class="tab-content">
-<div id="nav-tabpanel-2-Intel" class="tab-pane show active" aria-labelledby="nav-tab-2-Intel" role="tabpanel">
+<div id="nav-tabpanel-2-Intel" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-2-Intel">
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -594,7 +594,7 @@ arrays.</p>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>a_dev <span class="op">.+</span> b_dev</span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-2-Metal" class="tab-pane" aria-labelledby="nav-tab-2-Metal" role="tabpanel">
+<div id="nav-tabpanel-2-Metal" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-Metal">
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -603,7 +603,7 @@ arrays.</p>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>a_dev <span class="op">.+</span> b_dev</span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-2-NVidia" class="tab-pane" aria-labelledby="nav-tab-2-NVidia" role="tabpanel">
+<div id="nav-tabpanel-2-NVidia" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-NVidia">
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -612,7 +612,7 @@ arrays.</p>
 <span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>a_dev <span class="op">.+</span> b_dev</span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-2-AMD" class="tab-pane" aria-labelledby="nav-tab-2-AMD" role="tabpanel">
+<div id="nav-tabpanel-2-AMD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-AMD">
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>

@@ -228,6 +228,7 @@
         <ul><li><a href="#about-julia">About Julia</a></li>
 <li><a href="#functions">Functions</a></li>
 <li><a href="#if-statements-for-loops">If statements, for loops</a></li>
+<li><a href="#macros">Macros</a></li>
 <li><a href="#some-important-first-lessons">Some important first lessons</a></li>
         </ul></div><!--/div.accordion-body-->
     </div><!--/div.accordion-collapse-->
@@ -292,7 +293,7 @@
 <div class="accordion accordion-flush" id="accordionFlush10">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading10">
-        <a href="110-performance-analysis.html">9. Reducing allocations on the Logistic Map</a>
+        <a href="110-dos-and-donts.html">9. Performance: do's and don'ts</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -301,7 +302,7 @@
 <div class="accordion accordion-flush" id="accordionFlush11">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading11">
-        <a href="120-dos-and-donts.html">10. Performance: do's and don'ts</a>
+        <a href="120-allocations.html">10. Reducing allocations on the Logistic Map</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -479,7 +480,26 @@ languages.</p>
 </ul><p>Oddities for Pythonistas:</p>
 <ul><li>1-based indexing</li>
 <li>lexical scoping</li>
-</ul><div class="section level3">
+</ul><p>Better well stolen … Always ask when learning a new language: what
+are the primitives, the means of combination and the means of
+abstraction. Many languages are very similar in these regards, so we’ll
+look at things that are different:</p>
+<table class="table"><colgroup><col width="19%"><col width="38%"><col width="41%"></colgroup><thead><tr class="header"><th>What</th>
+<th>Procedures</th>
+<th>Data</th>
+</tr></thead><tbody><tr class="odd"><td>primitives</td>
+<td>standard library</td>
+<td>(numbers, strings, etc.) arrays, symbols, channels</td>
+</tr><tr class="even"><td>means of combination</td>
+<td>(<code>for</code>, <code>if</code> etc.) broadcasting,
+<code>do</code>
+</td>
+<td>tuples, <code>struct</code>, expressions</td>
+</tr><tr class="odd"><td>means of abstraction</td>
+<td>functions, dispatch, macros (no classes!)</td>
+<td>
+<code>abstract type</code>, generics</td>
+</tr></tbody></table><div class="section level3">
 <h3 id="eval">Eval<a class="anchor" aria-label="anchor" href="#eval"></a></h3>
 <p>How is Julia evaluated? Types only instantiate at run-time,
 triggering the compile time specialization of untyped functions.</p>
@@ -592,7 +612,7 @@ function to compute the squares of the first ten integers (use
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>Read the documentation of <code>map</code> using the <code>?</code>
 help mode, also available in Pluto.</p>
@@ -691,7 +711,7 @@ notation.</strong></p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -789,7 +809,7 @@ temporary variables to live in.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb15">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -810,6 +830,24 @@ temporary variables to live in.</p>
 </div>
 </div>
 </div>
+</section><section><h2 class="section-heading" id="macros">Macros<a class="anchor" aria-label="anchor" href="#macros"></a></h2>
+<hr class="half-width"><p>Julia has macros. These are invocations that change the behaviour of
+a given piece of code. In effect, arguments of a macro are syntactic
+forms that can be rewritten by the macro. These can reduce the amount of
+code you need to write to express certain concepts. You can recognize
+macro calls by the <code>@</code> sign in front of them.</p>
+<div class="codewrapper sourceCode" id="cb17">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="pp">@assert</span> <span class="cn">true</span> <span class="st">"This will always pass"</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="pp">@assert</span> <span class="cn">false</span> <span class="st">"Oh, noes!"</span></span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="pp">@macroexpand</span> <span class="pp">@assert</span> <span class="cn">false</span> <span class="st">"Oh, noes!"</span></span></code></pre>
+</div>
+<p>We will explain some macro’s as they are used. We won’t get into
+writing macros ourselves. They can be incredibly useful, but should also
+come with a warning: overuse of macros can make your code non-idiomatic
+and therefore harder to read. Also macro-heavy frameworks tend to be
+harder to debug, and often lack in composability.</p>
 </section><section><h2 class="section-heading" id="some-important-first-lessons">Some important first lessons<a class="anchor" aria-label="anchor" href="#some-important-first-lessons"></a></h2>
 <hr class="half-width"><div id="keypoints1" class="callout keypoints">
 <div class="callout-square">

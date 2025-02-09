@@ -278,7 +278,7 @@
 <div class="accordion accordion-flush" id="accordionFlush10">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading10">
-        <a href="110-performance-analysis.html">9. Reducing allocations on the Logistic Map</a>
+        <a href="110-dos-and-donts.html">9. Performance: do's and don'ts</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -287,7 +287,7 @@
 <div class="accordion accordion-flush" id="accordionFlush11">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading11">
-        <a href="120-dos-and-donts.html">10. Performance: do's and don'ts</a>
+        <a href="120-allocations.html">10. Reducing allocations on the Logistic Map</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -323,12 +323,23 @@
 <div class="accordion accordion-flush" id="accordionFlushcurrent">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-headingcurrent">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsecurrent" aria-expanded="true" aria-controls="flush-collapsecurrent">
         <span class="visually-hidden">Current Chapter</span>
         <span class="current-chapter">
         14. Recap and Recommended libraries
         </span>
-      
+      </button>
     </div><!--/div.accordion-header-->
+
+    <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
+      <div class="accordion-body">
+        <ul><li><a href="#notebooks">Notebooks</a></li>
+<li><a href="#reactive-programming">Reactive programming</a></li>
+<li><a href="#logging-and-progress-bars">Logging and Progress bars</a></li>
+<li><a href="#parallel-pipelines">Parallel pipelines</a></li>
+<li><a href="#sciml-verse">SciML-verse</a></li>
+        </ul></div><!--/div.accordion-body-->
+    </div><!--/div.accordion-collapse-->
 
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
@@ -418,7 +429,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Recap and Recommended libraries</h1>
-        <p>Last updated on 2025-01-29 |
+        <p>Last updated on 2025-02-09 |
 
         <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/180-cool-libraries.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -453,6 +464,78 @@
 </div>
 </div>
 <p>This is a nice closing episode.</p>
+<section><h2 class="section-heading" id="notebooks">Notebooks<a class="anchor" aria-label="anchor" href="#notebooks"></a></h2>
+<hr class="half-width"><p>Use <code>Pluto.jl</code>!</p>
+</section><section><h2 class="section-heading" id="reactive-programming">Reactive programming<a class="anchor" aria-label="anchor" href="#reactive-programming"></a></h2>
+<hr class="half-width"><p>At several points in this lesson we saw the use of
+<code>Observables.jl</code> to create interactive demos with
+<code>Makie.jl</code>. If you want to build more complicated interfaces,
+you may want to take a look at <code>GtkObservables.jl</code>.</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">Observables</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>x <span class="op">=</span> <span class="fu">Observable</span>(<span class="fl">3.0</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>y <span class="op">=</span> <span class="fu">map</span>(sqrt, x)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>x[] <span class="op">=</span> <span class="fl">25.0</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>y[]</span></code></pre>
+</div>
+</section><section><h2 class="section-heading" id="logging-and-progress-bars">Logging and Progress bars<a class="anchor" aria-label="anchor" href="#logging-and-progress-bars"></a></h2>
+<hr class="half-width"><p>Logging is done through the <a href="https://docs.julialang.org/en/v1/stdlib/Logging/" class="external-link"><code>Logging</code>
+library</a> that is part of the standard library.</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">Logging</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="pp">@warn</span> <span class="st">"Hello, World!"</span></span></code></pre>
+</div>
+<p>While there is a package called <code>ProgressBars.jl</code> that
+seems quite popular, it is better to use <code>ProgressLogging.jl</code>
+to log progress of a computation. This utility hooks into the logging
+system and integrates well with Pluto and VS Code.</p>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">ProgressLogging</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="pp">@progress</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>    <span class="fu">sleep</span>(<span class="fl">0.02</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="cf">end</span></span></code></pre>
+</div>
+</section><section><h2 class="section-heading" id="parallel-pipelines">Parallel pipelines<a class="anchor" aria-label="anchor" href="#parallel-pipelines"></a></h2>
+<hr class="half-width"><p>We’ve seen that we can use <code>IterTools.jl</code> to extend the
+functionality of standard Julia <code>Iterators</code>, at only a
+marginal performance hit.</p>
+<p>The <code>Transducers.jl</code> package is a fundamental when
+building pipelines for parallel processing. Transducers are an
+interesting concept from functional programming, developed by the great
+Rich Hickey of Clojure fame. Several packages build on top of
+<code>Transducers.jl</code> with a more imperative interface,
+<code>FLoops.jl</code> for instance.</p>
+</section><section><h2 class="section-heading" id="sciml-verse">SciML-verse<a class="anchor" aria-label="anchor" href="#sciml-verse"></a></h2>
+<hr class="half-width"><p>There is a large group of libraries managed by the same group under
+the nomer <code>SciML</code>. These libraries are focussed on scientific
+modelling and machine learning. Some of these libraries are incredibly
+useful on their own:</p>
+<ul><li>
+<code>Symbolics.jl</code> for symbolic computation</li>
+<li>
+<code>Integrals.jl</code> for numeric integration</li>
+<li>
+<code>DifferentialEquations.jl</code> for solving differential
+equations</li>
+<li>
+<code>MethodOfLines.jl</code> for solving PDEs</li>
+</ul><p>etc.</p>
+<p>These libraries are very powerful and offer highly abstracted
+interfaces to problems. The downside is that they pull in a massive
+amount of dependencies (While this is also true for a package like
+<code>Makie.jl</code>, plotting is usually not a core buisness for a
+package, so <code>Makie</code> will usually be an optional dependency.
+The same can’t be said of numerical algorithms). Also, the high level of
+abstraction means that code can be hard to debug.</p>
 <hr><div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -469,10 +552,7 @@
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
-
-
-
-      </div> <!-- / div.lesson-content -->
+</section></div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter"><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link" href="170-gpu-programming.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
         <a class="chapter-link float-end" href="a01-collatz.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
@@ -530,7 +610,7 @@ any links that you are not going to use.
   "url": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/180-cool-libraries.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/180-cool-libraries.html",
   "dateCreated": "2024-01-01",
-  "dateModified": "2025-01-29",
+  "dateModified": "2025-02-09",
   "datePublished": "2025-02-09"
 }
 

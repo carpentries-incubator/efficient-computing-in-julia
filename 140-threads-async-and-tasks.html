@@ -278,7 +278,7 @@
 <div class="accordion accordion-flush" id="accordionFlush10">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading10">
-        <a href="110-performance-analysis.html">9. Reducing allocations on the Logistic Map</a>
+        <a href="110-dos-and-donts.html">9. Performance: do's and don'ts</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -287,7 +287,7 @@
 <div class="accordion accordion-flush" id="accordionFlush11">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading11">
-        <a href="120-dos-and-donts.html">10. Performance: do's and don'ts</a>
+        <a href="120-allocations.html">10. Reducing allocations on the Logistic Map</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -418,7 +418,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Threads, ASync and Tasks</h1>
-        <p>Last updated on 2025-01-29 |
+        <p>Last updated on 2025-02-09 |
 
         <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/140-threads-async-and-tasks.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -448,6 +448,82 @@
 <ul><li>Change for-loops to run parallel.</li>
 <li>Launch tasks and generate results asynchronously.</li>
 </ul></div>
+</div>
+</div>
+</div>
+</div>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co">#| file: src/GrayScott.jl</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="kw">module</span> GrayScott</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+</div>
+<div id="accordionSpoiler1" class="accordion spoiler-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
+  <h3 class="accordion-header" id="headingSpoiler1">
+  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div>
+  Using SciML stack
+  </h3>
+</button>
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div class="accordion-body">
+<p>I’ve tried integrating the Gray-Scott model using libraries from the
+SciML toolkit. However, the following code, directly modified from their
+documentation doesn’t give anything within reasonable time. In my
+opinion this is symptomatic for most of the SciML stack. It never really
+works and you never discover why.</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">ModelingToolkit</span>, <span class="bu">MethodOfLines</span>, <span class="bu">DomainSets</span>, <span class="bu">OrdinaryDiffEq</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="kw">function</span> <span class="fu">gray_scott_model</span>(F, k, Du, Dv, N, order<span class="op">=</span><span class="fl">2</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>    <span class="pp">@parameters</span> x y t</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>    <span class="pp">@variables</span> <span class="fu">u</span>(<span class="op">..</span>) <span class="fu">v</span>(<span class="op">..</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>    Dt <span class="op">=</span> <span class="fu">Differential</span>(t)</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>    Dx <span class="op">=</span> <span class="fu">Differential</span>(x)</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>    Dy <span class="op">=</span> <span class="fu">Differential</span>(y)</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>    Dxx <span class="op">=</span> Dx<span class="op">^</span><span class="fl">2</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>    Dyy <span class="op">=</span> Dy<span class="op">^</span><span class="fl">2</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>    <span class="fu">Δ</span>(u) <span class="op">=</span> <span class="fu">Dxx</span>(u) <span class="op">+</span> <span class="fu">Dyy</span>(u)</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>    x_min <span class="op">=</span> y_min <span class="op">=</span> t_min <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>    x_max <span class="op">=</span> y_max <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>    t_max <span class="op">=</span> <span class="fl">10.0</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>    <span class="fu">u0</span>(x, y) <span class="op">=</span> <span class="fl">0.01</span> <span class="op">*</span> <span class="fu">exp</span>((<span class="fu">-</span>(x <span class="op">-</span> <span class="fl">0.5</span>)<span class="op">^</span><span class="fl">2</span> <span class="op">-</span> (y <span class="op">-</span> <span class="fl">0.5</span>)<span class="op">^</span><span class="fl">2</span>) <span class="op">/</span> (<span class="fl">2</span> <span class="op">*</span> <span class="fl">0.1</span><span class="op">^</span><span class="fl">2</span>)) <span class="op">/</span> (<span class="fu">sqrt</span>(<span class="fl">2</span>pi) <span class="op">*</span> <span class="fl">0.1</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>    <span class="fu">v0</span>(x, y) <span class="op">=</span> <span class="fl">1.0</span> <span class="op">-</span> <span class="fu">u0</span>(x, y)</span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>    eqs <span class="op">=</span> <span class="kw">let</span> v <span class="op">=</span> <span class="fu">v</span>(x, y, t),</span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a>              u <span class="op">=</span> <span class="fu">u</span>(x, y, t)</span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a>        [<span class="fu">Dt</span>(u) <span class="op">~</span> <span class="op">-</span>u <span class="op">*</span> v<span class="op">^</span><span class="fl">2</span> <span class="op">+</span> F <span class="op">*</span> (<span class="fl">1</span> <span class="op">-</span> u) <span class="op">+</span> Du <span class="op">*</span> <span class="fu">Δ</span>(u),</span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a>         <span class="fu">Dt</span>(v) <span class="op">~</span> u <span class="op">*</span> v<span class="op">^</span><span class="fl">2</span> <span class="op">-</span> (F <span class="op">+</span> k) <span class="op">*</span> v <span class="op">+</span> Dv <span class="op">*</span> <span class="fu">Δ</span>(v)]</span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a>    <span class="kw">end</span></span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a>    domains <span class="op">=</span> [x <span class="kw">in</span> <span class="fu">Interval</span>(x_min, x_max),</span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a>               y <span class="kw">in</span> <span class="fu">Interval</span>(y_min, y_max),</span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a>               t <span class="kw">in</span> <span class="fu">Interval</span>(t_min, t_max)]</span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a>    bcs <span class="op">=</span> [<span class="fu">u</span>(x,y,<span class="fl">0</span>) <span class="op">~</span> <span class="fu">u0</span>(x,y),</span>
+<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a>           <span class="fu">u</span>(<span class="fl">0</span>,y,t) <span class="op">~</span> <span class="fu">u</span>(<span class="fl">1</span>,y,t),</span>
+<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a>           <span class="fu">u</span>(x,<span class="fl">0</span>,t) <span class="op">~</span> <span class="fu">u</span>(x,<span class="fl">1</span>,t),</span>
+<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a>           <span class="fu">v</span>(x,y,<span class="fl">0</span>) <span class="op">~</span> <span class="fu">v0</span>(x,y),</span>
+<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a>           <span class="fu">v</span>(<span class="fl">0</span>,y,t) <span class="op">~</span> <span class="fu">v</span>(<span class="fl">1</span>,y,t),</span>
+<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a>           <span class="fu">v</span>(x,<span class="fl">0</span>,t) <span class="op">~</span> <span class="fu">v</span>(x,<span class="fl">1</span>,t)]</span>
+<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a></span>
+<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a>    <span class="pp">@named</span> pdesys <span class="op">=</span> <span class="fu">PDESystem</span>(eqs, bcs, domains, [x, y, t], [<span class="fu">u</span>(x, y, t), <span class="fu">v</span>(x, y, t)])</span>
+<span id="cb2-41"><a href="#cb2-41" tabindex="-1"></a>    discretization <span class="op">=</span> <span class="fu">MOLFiniteDifference</span>([x<span class="op">=&gt;</span>N, y<span class="op">=&gt;</span>N], t, approx_order<span class="op">=</span>order)</span>
+<span id="cb2-42"><a href="#cb2-42" tabindex="-1"></a>    <span class="cf">return</span> <span class="fu">discretize</span>(pdesys, discretization)</span>
+<span id="cb2-43"><a href="#cb2-43" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb2-44"><a href="#cb2-44" tabindex="-1"></a></span>
+<span id="cb2-45"><a href="#cb2-45" tabindex="-1"></a>problem <span class="op">=</span> <span class="fu">gray_scott_model</span>(<span class="fl">0.055</span>, <span class="fl">0.062</span>, <span class="fl">0.02</span>, <span class="fl">0.04</span>, <span class="fl">256</span>)</span>
+<span id="cb2-46"><a href="#cb2-46" tabindex="-1"></a><span class="fu">solve</span>(problem, <span class="fu">TRBDF2</span>(), saveat<span class="op">=</span><span class="fl">0.1</span>)</span></code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -531,7 +607,7 @@ any links that you are not going to use.
   "url": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/140-threads-async-and-tasks.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/140-threads-async-and-tasks.html",
   "dateCreated": "2024-01-01",
-  "dateModified": "2025-01-29",
+  "dateModified": "2025-02-09",
   "datePublished": "2025-02-09"
 }
 
