@@ -36,6 +36,14 @@ Oddities for Pythonistas:
 - 1-based indexing
 - lexical scoping
 
+Better well stolen ... Always ask when learning a new language: what are the primitives, the means of combination and the means of abstraction. Many languages are very similar in these regards, so we'll look at things that are different:
+
+| What | Procedures | Data        |
+|------|------------|-------------|
+| primitives | standard library | (numbers, strings, etc.) arrays, symbols, channels |
+| means of combination | (`for`, `if` etc.) broadcasting, `do` | tuples, `struct`, expressions |
+| means of abstraction | functions, dispatch, macros (no classes!) | `abstract type`, generics | 
+
 ### Eval
 How is Julia evaluated? Types only instantiate at run-time, triggering the compile time specialization of untyped functions.
 
@@ -273,6 +281,18 @@ If you like to collect those into a vector, try the following:
 ```
 ::::
 :::
+
+## Macros
+
+Julia has macros. These are invocations that change the behaviour of a given piece of code. In effect, arguments of a macro are syntactic forms that can be rewritten by the macro. These can reduce the amount of code you need to write to express certain concepts. You can recognize macro calls by the `@` sign in front of them.
+
+```julia
+@assert true "This will always pass"
+@assert false "Oh, noes!"
+@macroexpand @assert false "Oh, noes!"
+```
+
+We will explain some macro's as they are used. We won't get into writing macros ourselves. They can be incredibly useful, but should also come with a warning: overuse of macros can make your code non-idiomatic and therefore harder to read. Also macro-heavy frameworks tend to be harder to debug, and often lack in composability.
 
 ## Some important first lessons
 

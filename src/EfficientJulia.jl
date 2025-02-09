@@ -2,6 +2,8 @@ module EfficientJulia
 
 include("Gravity.jl")
 include("Plotter.jl")
-include("CA.jl")
+include("Stencils.jl")
+# include("GrayScott.jl")
+include("DaisyWorld.jl")
 
 end

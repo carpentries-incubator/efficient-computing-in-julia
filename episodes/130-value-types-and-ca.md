@@ -58,7 +58,7 @@ Our cellular automaton will live inside a box. And we want to be generic over di
 We can use multiple dispatch to implement different boundary types.
 
 ```julia
-#| id: ca
+#| id: stencils
 abstract type BoundaryType{dim} end
 
 struct Periodic{dim} <: BoundaryType{dim} end
@@ -110,6 +110,7 @@ end
 
 ::::solution
 ```julia
+#| id: stencils
 struct Reflected{dim} <: BoundaryType{dim} end
 
 @inline get_bounded(::Type{Reflected{dim}}, arr, idx) where {dim} =
@@ -262,7 +263,7 @@ Beware, that the array size should be a static (compile time) argument now. It m
 Rerun the timings in the previous exercise to show that this is the case.
 
 ```julia
-#| id: ca
+#| id: stencils
 """
     stencil!(f, <: BoundaryType{dim}, Size{sz}, inp, out)
 
@@ -282,6 +283,11 @@ function stencil!(f, ::Type{BT}, ::Size{sz}, inp::AbstractArray{T,dim}, out::Abs
     return out
 end
 
+stencil!(f, ::Type{BT}, sz) where {BT} =
+    (inp, out) -> stencil!(f, BT, sz, inp, out)
+```
+
+```julia
 rule(n) = stencil!(eca(n), Periodic{1}, Size(3))
 ```
 
@@ -383,12 +389,11 @@ There are some nice libraries that you may want to look into:
 ### Source code
 
 ```julia
-#| file: src/CA.jl
-module CA
-    using GLMakie
+#| file: src/Stencils.jl
+module Stencils
     using StaticArrays
 
-    <<ca>>
+    <<stencils>>
 end
 ```
 :::

@@ -13,6 +13,7 @@ title: Simulating the Solar System
 - Take the first steps with `Makie` for visualisation
 - Work with `const`
 - Define a `struct`
+- Get familiar with some idioms in Julia
 :::
 
 ::: instructor
@@ -38,6 +39,32 @@ With `Unitful` we can attach units to quantities using the `@u_str` syntax:
 ```julia
 2.0u"m" - 8.0u"cm"
 ```
+
+:::callout
+### Breaking down the syntax
+
+There is a bit of syntax to break down here. A number followed by an identifier are multiplied with the `*` operator. This is just syntactic sugar, but it makes certain expressions nicer.
+
+```julia
+gaussian(μ, σ) = x -> 1/√(2π)σ * exp(-(x - μ)^2 / 2σ^2)
+```
+
+At the same time, there is such a thing as `_str` macros.
+
+```julia
+macro twice_str(a)
+    :($a * $a)
+end
+
+twice"Hello"
+```
+
+Combining the `@u_str` macro, which is defined in `Unitful`, with the multiplication sugar gets us here:
+
+```julia
+@macroexpand 3u"m/s"
+```
+:::
 
 ::: challenge
 ### Try adding incompatible quantities
@@ -379,8 +406,9 @@ Plot the orbit of the moon around the earth. Make a `Dataframe` that contains al
 :::
 
 ::: keypoints
-- `Plots.jl` is in some ways the 'standard' plotting package, but it is in fact quite horrible.
-- `Makie.jl` offers a nice interface, pretty plots, is generally stable and very efficient once things have been compiled.
+- standard functions like `rand`, `zero` and operators can be extended by libraries to work with new types 
+- functions (not objects) are central to programming Julia
+- don't over-specify argument types: Julia is dynamically typed, embrace it
 :::
 
 ::: spoiler

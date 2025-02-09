@@ -10,6 +10,17 @@ title: Reducing allocations on the Logistic Map
 - Apply a code transformation to write to pre-allocated memory.
 :::
 
+## About Memory
+
+There are roughly two types of memory in a computer program:
+
+- stack: memory that lives statically inside a function. This memory is very fast, but the size is limited and has to be known at **compile time**. Examples: variables of known size created in a block scope, and released after.
+- heap: memory that is associated with the entire process. Needs to be allocated. Examples: arrays, strings. In general heap allocation (and freeing) is slow: the process has to ask the OS for memory.
+
+Later on we will talk some more about memory. In the current episode we'll see how we can reduce allocations.
+
+## Logistic map
+
 Logistic growth (in economy or biology) is sometimes modelled using the recurrence formula:
 
 $$N_{i+1} = r N_{i} (1 - N_{i}),$$
@@ -93,7 +104,7 @@ We can plot all points for an arbitrary sized orbit for all values of $r$ betwee
 
 ```julia
 using BenchmarkTools
-@btime take(iterated(logistic_map(3.5), 0.5), 10000) |> collect
+@btime take(iterated(logistic_map(3.5), 0.5), 1000) |> collect
 ```
 
 ```julia
@@ -106,7 +117,7 @@ function iterated_fn(f, x, n)
     return result
 end
 
-@btime iterated_fn(logistic_map(3.5), 0.5, 10000)
+@btime iterated_fn(logistic_map(3.5), 0.5, 1000)
 ```
 
 That seems to be slower than the original! Let's try to improve:
@@ -121,7 +132,8 @@ function iterated_fn(f, x, n)
     return result
 end
 
-@benchmark iterated_fn(logistic_map(3.5), 0.5, 10000)
+@benchmark iterated_fn(logistic_map(3.5), 0.5, 1000)
+@profview for _=1:100000; iterated_fn(logistic_map(3.5), 0.5, 1000); end
 ```
 
 We can do better if we don't need to allocate:
@@ -134,9 +146,12 @@ function iterated_fn!(f, x, out)
     end
 end
 
-out = Vector{Float64}(undef, 10000)
+out = Vector{Float64}(undef, 1000)
 @benchmark iterated_fn!(logistic_map(3.5), 0.5, out)
+@profview for _=1:100000; iterated_fn!(logistic_map(3.5), 0.5, out); end
 ```
+
+Try to change the 1000 into 10000. What is the conclusion? Small allocations inside loops contribute to run-time. The `iterator |> collect` pattern is usually good enough.
 
 ```julia
 #| id: logistic-map
@@ -148,7 +163,7 @@ end
 ```
     
 ```julia
-@btime takestrict(logistic_map_points(3.5, 1000), 1000) |> collect
+@benchmark take(logistic_map_points(3.5, 1000), 1000) |> collect
 ```
 
 ```julia
@@ -204,27 +219,42 @@ Script.main()
 :::
 
 ```julia
-@profview logistic_map_points(LinRange(2.6, 4.0, 1000), 1000, 1000) |> collect
+@profview for _=1:100 logistic_map_points(LinRange(2.6, 4.0, 1000), 1000, 1000) |> collect end
 ```
 
 ```julia
 function collect!(it, tgt)
+    # x = iterate(it)
+    # if x === nothing
+    #     return
+    # end
+    # (v, s) = x
+    # for i in eachindex(tgt)
+    #     tgt[i] = v
+    #     x = iterate(it, s)
+    #     if x === nothing
+    #         return
+    #     end
+    #     (v, s) = x
+    # end
     for (i, v) in zip(eachindex(tgt), it)
-        tgt[i] = v_map(r) = n -> r 
+       tgt[i] = v # _map(r) = n -> r 
     end
 end
 
 function logistic_map_points_td(rs::AbstractVector{R}, n_skip, n_take) where {R <: Real}
-    result = Matrix{Point2}(undef, n_take, length(rs))
+    result = Matrix{Point2d}(undef, n_take, length(rs))
     # Threads.@threads for i in eachindex(rs)
-    for i in eachindex(rs)
-        collect!(logistic_map_points(rs[i], n_skip), view(result, :, i))
+    for (r, c) in zip(rs, eachcol(result))
+        collect!(logistic_map_points(r, n_skip), c)
     end
     return reshape(result, :)
 end
 
+a = logistic_map_points_td(LinRange(2.6, 4.0, 1000), 1000, 1000)
+datashader(a)
 @benchmark logistic_map_points_td(LinRange(2.6, 4.0, 1000), 1000, 1000)
-@profview logistic_map_points_td(LinRange(2.6, 4.0, 10000), 1000, 1000)
+@profview logistic_map_points_td(LinRange(2.6, 4.0, 1000), 1000, 1000)
 ```
 
 :::challenge
@@ -260,6 +290,7 @@ end
 
 out = Vector{Point2d}(undef, 1000000)
 logistic_map_points_raw(LinRange(2.6, 4.0, 1000), 1000, 1000, out)
+datashader(out)
 @benchmark logistic_map_points_raw(LinRange(2.6, 4.0, 1000), 1000, 1000, out)
 ```
 ::::
