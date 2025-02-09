@@ -877,7 +877,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-030-julia-basics"><p>Content from <a href="030-julia-basics.html">Introduction to Julia</a></p>
 <hr>
-<p>Last updated on 2025-01-14 |
+<p>Last updated on 2025-02-09 |
 
         <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/030-julia-basics.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -892,7 +892,7 @@ any links that you are not going to use.
 <h3 class="card-title">Questions</h3>
 <ul>
 <li>How do I write elementary programs in Julia?</li>
-<li>What are the differences with Python/Matlab/R?</li>
+<li>What are the differences with Python/MATLAB/R?</li>
 </ul>
 </div>
 </div>
@@ -912,7 +912,7 @@ any links that you are not going to use.
 </div>
 </div>
 </div>
-<p>Unfortunately, it lies outside the scope of this workshop to give a
+<p>Unfortunately, it lies outside the scope of this workshop to give an
 introduction to the full Julia language. Instead, we’ll briefly show the
 basic syntax, and then focus on some key differences with other popular
 languages.</p>
@@ -921,7 +921,7 @@ languages.</p>
 <hr class="half-width">
 <p>These are some words that we will write down: never forget.</p>
 <ul>
-<li>A Just-in-time compiled, dynamically typed language</li>
+<li>A just-in-time compiled, dynamically typed language</li>
 <li>multiple dispatch</li>
 <li>expression based syntax</li>
 <li>rich macro system</li>
@@ -946,7 +946,7 @@ types.</li>
 compilation is triggered. Julia’s biggest means of abstraction:
 <em>multiple dispatch</em> is only an emergent property of this
 evaluation strategy.</p>
-<p>Julia has a herritage from functional programming languages (nowadays
+<p>Julia has a heritage from functional programming languages (nowadays
 well hidden not to scare people). What we get from this:</p>
 <ul>
 <li>expression based syntax: everything is an expression, meaning it
@@ -954,7 +954,7 @@ reduces to a value</li>
 <li>a rich macro system: we can extend the language itself to suit our
 needs (not covered in this workshop)</li>
 </ul>
-<p>Julia is designed to replace Matlab:</p>
+<p>Julia is designed to replace MATLAB:</p>
 <ul>
 <li>high degree of built-in support for multi-dimensional arrays and
 linear algebra</li>
@@ -963,7 +963,8 @@ linear algebra</li>
 <p>Julia is designed to replace Fortran:</p>
 <ul>
 <li>high performance</li>
-<li>accellerate using <code>Threads</code> or of the GPU interfaces</li>
+<li>accelerate using <code>Threads</code> or through the GPU
+interfaces</li>
 <li>scalable through <code>Distributed</code> or <code>MPI</code>
 </li>
 </ul>
@@ -1014,7 +1015,7 @@ constants:</p>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code><span><span class="fl">1.982084770423259e26</span></span></code></pre>
+<pre class="output" tabindex="0"><code><span><span class="fl">1.982084770423259e20</span></span></code></pre>
 </div>
 <p>There is a shorter syntax for functions that is useful for
 one-liners:</p>
@@ -1112,6 +1113,18 @@ evaluates to <code>[3, 4, 5, 6]</code>.</p>
 </div>
 </div>
 </div>
+<div id="more-on-for-loops" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="more-on-for-loops" class="callout-inner">
+<h3 class="callout-title">More on for-loops</h3>
+<div class="callout-content">
+<p>Loop iterations can be skipped using <code>continue</code>, or broken
+with <code>break</code>, identical to C or Python.</p>
+</div>
+</div>
+</div>
 <div id="challenge2" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
@@ -1189,18 +1202,6 @@ expression.</p>
 </div>
 </div>
 </div>
-<div id="more-on-for-loops" class="callout">
-<div class="callout-square">
-<i class="callout-icon" data-feather="bell"></i>
-</div>
-<div id="more-on-for-loops" class="callout-inner">
-<h3 class="callout-title">More on for-loops</h3>
-<div class="callout-content">
-<p>Loop iterations can be skipped using <code>continue</code>, or broken
-with <code>break</code>, identical to C or Python.</p>
-</div>
-</div>
-</div>
 <div id="lexical-scoping" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
@@ -1231,6 +1232,8 @@ means the following:</p>
 <span><span class="fl">1</span></span>
 <span><span class="fl">2</span></span>
 <span><span class="fl">3</span></span>
+<span><span class="fl">4</span></span>
+<span><span class="fl">5</span></span>
 <span><span class="fl">42</span></span></code></pre>
 </div>
 <p>In effect, the variable <code>s</code> inside the for-loop is said to
@@ -1280,10 +1283,6 @@ temporary variables to live in.</p>
 </section><section><h2 class="section-heading" id="some-important-first-lessons">Some important first lessons<a class="anchor" aria-label="anchor" href="#some-important-first-lessons"></a>
 </h2>
 <hr class="half-width">
-<ul>
-<li>Always enclose code in functions because functions are compiled</li>
-<li>Don’t use global mutable variables</li>
-</ul>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -1296,7 +1295,8 @@ temporary variables to live in.</p>
 <code>while</code>, <code>function</code> and <code>module</code> blocks
 that are not dissimilar from other languages.</li>
 <li>Blocks are all ended with <code>end</code>.</li>
-<li>…</li>
+<li>Always enclose code in functions because functions are compiled</li>
+<li>Don’t use global mutable variables</li>
 <li>Julia variables are not visible outside the block in which they’re
 defined (unlike Python).</li>
 </ul>
@@ -2475,7 +2475,7 @@ specific type signature.</li>
 </div>
 </div></section><section id="aio-110-performance-analysis"><p>Content from <a href="110-performance-analysis.html">Reducing allocations on the Logistic Map</a></p>
 <hr>
-<p>Last updated on 2025-01-22 |
+<p>Last updated on 2025-02-09 |
 
         <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/110-performance-analysis.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -2543,7 +2543,7 @@ try:</p>
 <p>Try different values of <span class="math inline">\(r\)</span>, what
 do you see?</p>
 <p>Extra (advanced!): see the <a href="https://docs.makie.org/stable/reference/blocks/slider" class="external-link">Makie
-documention on <code>Slider</code></a>. Can you make an interactive
+documentation on <code>Slider</code></a>. Can you make an interactive
 plot?</p>
 </div>
 </div>
@@ -2553,36 +2553,37 @@ plot?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="kw">let</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>    fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>    sl_r <span class="op">=</span> <span class="fu">Slider</span>(fig[<span class="fl">2</span>, <span class="fl">2</span>], range<span class="op">=</span><span class="fl">1.0</span><span class="op">:</span><span class="fl">0.001</span><span class="op">:</span><span class="fl">4.0</span>, startvalue<span class="op">=</span><span class="fl">2.0</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>    <span class="fu">Label</span>(fig[<span class="fl">2</span>,<span class="fl">1</span>], <span class="fu">lift</span>(r<span class="op">-&gt;</span><span class="st">"r = </span><span class="sc">$</span>r<span class="st">"</span>, sl_r.value))</span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>    points <span class="op">=</span> <span class="fu">lift</span>(sl_r.value) <span class="cf">do</span> r</span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>        <span class="fu">take</span>(<span class="fu">iterated</span>(<span class="fu">logistic_map</span>(r), <span class="fl">0.001</span>), <span class="fl">50</span>) <span class="op">|&gt;</span> collect</span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>    ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>], limits<span class="op">=</span>(<span class="cn">nothing</span>, (<span class="fl">0.0</span>, <span class="fl">1.0</span>)))</span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>    <span class="fu">plot!</span>(ax, points)</span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>    <span class="fu">lines!</span>(ax, points)</span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>    fig</span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">Printf</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="kw">let</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>    fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>    sl_r <span class="op">=</span> <span class="fu">Slider</span>(fig[<span class="fl">2</span>, <span class="fl">2</span>], range<span class="op">=</span><span class="fl">1.0</span><span class="op">:</span><span class="fl">0.001</span><span class="op">:</span><span class="fl">4.0</span>, startvalue<span class="op">=</span><span class="fl">2.0</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>    <span class="fu">Label</span>(fig[<span class="fl">2</span>,<span class="fl">1</span>], <span class="fu">lift</span>(r<span class="op">-&gt;</span><span class="pp">@sprintf</span>(<span class="st">"r = %.3f"</span>, r), sl_r.value))</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>    points <span class="op">=</span> <span class="fu">lift</span>(sl_r.value) <span class="cf">do</span> r</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>        <span class="fu">take</span>(<span class="fu">iterated</span>(<span class="fu">logistic_map</span>(r), <span class="fl">0.001</span>), <span class="fl">50</span>) <span class="op">|&gt;</span> collect</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>    ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>], limits<span class="op">=</span>(<span class="cn">nothing</span>, (<span class="fl">0.0</span>, <span class="fl">1.0</span>)))</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>    <span class="fu">plot!</span>(ax, points)</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>    <span class="fu">lines!</span>(ax, points)</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>    fig</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
 </div>
 </div>
 </div>
 </div>
 </div>
-<figure><img src="fig/logistic-map-orbits.png" alt="a grid of 8 different plots with qualitive different behaviour" class="figure mx-auto d-block"><div class="figcaption">Orbits of logistic map for 8 different values of
+<figure><img src="fig/logistic-map-orbits.png" alt="a grid of 8 different plots with qualitative different behaviour" class="figure mx-auto d-block"><div class="figcaption">Orbits of logistic map for 8 different values of
 <span class="math inline">\(r\)</span>.</div>
 </figure><div id="accordionSpoiler1" class="accordion spoiler-accordion accordion-flush">
 <div class="accordion-item">
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Plotting code </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2699,28 +2700,28 @@ function chain performs.</p>
 </h3>
 <pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="pp">@benchmark</span> <span class="fu">logistic_map_points</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">1000</span>), <span class="fl">1000</span>, <span class="fl">1000</span>) <span class="op">|&gt;</span> collect</span></code></pre>
 </div>
-<p>First of all, let’s visualize the output because its so pretty!</p>
+<p>First of all, let’s visualize the output because it’s so pretty!</p>
 <div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co">#| id: logistic-map</span></span>
 <span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="kw">function</span> <span class="fu">plot_bifurcation_diagram</span>()</span>
-<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  pts <span class="op">=</span> <span class="fu">logistic_map_points</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">10000</span>), <span class="fl">1000</span>, <span class="fl">10000</span>) <span class="op">|&gt;</span> collect</span>
-<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>	fig <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">1024</span>, <span class="fl">768</span>))</span>
-<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>	ax <span class="op">=</span> Makie.<span class="fu">Axis</span>(fig[<span class="fl">1</span>,<span class="fl">1</span>], limits<span class="op">=</span>((<span class="fl">2.6</span>, <span class="fl">4.0</span>), <span class="cn">nothing</span>), xlabel<span class="op">=</span><span class="st">"r"</span>, ylabel<span class="op">=</span><span class="st">"N"</span>)</span>
-<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>	<span class="fu">datashader!</span>(ax, pts, async<span class="op">=</span><span class="cn">false</span>, colormap<span class="op">=:</span>deep)</span>
-<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>	fig</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>    pts <span class="op">=</span> <span class="fu">logistic_map_points</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">10000</span>), <span class="fl">1000</span>, <span class="fl">10000</span>) <span class="op">|&gt;</span> collect</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>    fig <span class="op">=</span> <span class="fu">Figure</span>(size<span class="op">=</span>(<span class="fl">1024</span>, <span class="fl">768</span>))</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>    ax <span class="op">=</span> Makie.<span class="fu">Axis</span>(fig[<span class="fl">1</span>,<span class="fl">1</span>], limits<span class="op">=</span>((<span class="fl">2.6</span>, <span class="fl">4.0</span>), <span class="cn">nothing</span>), xlabel<span class="op">=</span><span class="st">"r"</span>, ylabel<span class="op">=</span><span class="st">"N"</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>    <span class="fu">datashader!</span>(ax, pts, async<span class="op">=</span><span class="cn">false</span>, colormap<span class="op">=:</span>deep)</span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>    fig</span>
 <span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="kw">end</span></span>
 <span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a></span>
 <span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a><span class="fu">plot_bifurcation_diagram</span>()</span></code></pre>
 </div>
-<figure><img src="fig/bifurcation-diagram.png" alt="undescribable beauty" class="figure mx-auto d-block"><div class="figcaption">The bifurcation diagram</div>
+<figure><img src="fig/bifurcation-diagram.png" alt="indescribable beauty" class="figure mx-auto d-block"><div class="figcaption">The bifurcation diagram</div>
 </figure><div id="accordionSpoiler2" class="accordion spoiler-accordion accordion-flush">
 <div class="accordion-item">
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Plotting code </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb15">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -2791,7 +2792,7 @@ style!). Is this faster than using iterators?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb18">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3079,7 +3080,7 @@ from preset neighbourhoods of the input array.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Image source </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3187,7 +3188,7 @@ function is behaving as should.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3275,7 +3276,7 @@ axis.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>Using iterators:</p>
 <div class="codewrapper sourceCode" id="cb12">
@@ -3446,7 +3447,7 @@ Makie</a>. Can you make an animation of the Game of Life? Use the
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
 <p>Here’s a cool solution with live animation and lots more, just for
 your enjoyment.</p>
@@ -3539,7 +3540,7 @@ for agent based modelling.</li>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Source code </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb19">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3858,7 +3859,7 @@ results.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3945,7 +3946,7 @@ image, in this case <code>480</code> seemed to work.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -4275,7 +4276,7 @@ implementation.</p>
   Collatz module
   </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb3" file="examples/Collatz/src/Collatz.jl">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -4512,8 +4513,8 @@ parameters.</p>
   "url": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/aio.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/aio.html",
   "dateCreated": "2024-01-01",
-  "dateModified": "2025-02-04",
-  "datePublished": "2025-02-04"
+  "dateModified": "2025-02-09",
+  "datePublished": "2025-02-09"
 }
 
   </script><script>
