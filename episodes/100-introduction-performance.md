@@ -62,9 +62,8 @@ Change the definition of `x` to a constant using `const`.
 Time the result against the type unstable version.
 :::
 
-## Functions
-
-
+## Functions in structs
+Every function has its own unique type. 
 
 
 ## Multi-threading and type stability
@@ -172,11 +171,12 @@ Pam::T, Qam::T, Ram::T = fetch(t1)
 Pmb::T, Qmb::T, Rmb::T = fetch(t2)
 ```
 
-:::challenge
+::: challenge
 ### Rerun the profiler
 Rerun the profiler and `@code_warntype`. Is the type instability gone?
 
-::::solution
+:::: solution
+
 ```julia
 function binary_split_td(a::T, b::T) where {T}
     if b == a + 1
@@ -201,7 +201,9 @@ end
 
 Yes!
 ::::
+
 :::
+
 ---
 
 ::: keypoints
