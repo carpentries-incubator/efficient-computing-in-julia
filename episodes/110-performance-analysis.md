@@ -35,14 +35,15 @@ take(iterated(logistic_map(3.0), 0.001), 200) |> collect |> lines
 ### Vary `r`
 Try different values of $r$, what do you see?
 
-Extra (advanced!): see the [Makie documention on `Slider`](https://docs.makie.org/stable/reference/blocks/slider). Can you make an interactive plot?
+Extra (advanced!): see the [Makie documentation on `Slider`](https://docs.makie.org/stable/reference/blocks/slider). Can you make an interactive plot?
 
 :::: solution
 ```julia
+using Printf
 let
     fig = Figure()
     sl_r = Slider(fig[2, 2], range=1.0:0.001:4.0, startvalue=2.0)
-    Label(fig[2,1], lift(r->"r = $r", sl_r.value))
+    Label(fig[2,1], lift(r->@sprintf("r = %.3f", r), sl_r.value))
     points = lift(sl_r.value) do r
         take(iterated(logistic_map(r), 0.001), 50) |> collect
     end
@@ -55,7 +56,7 @@ end
 ::::
 :::
 
-![Orbits of logistic map for 8 different values of $r$.](fig/logistic-map-orbits.png){alt="a grid of 8 different plots with qualitive different behaviour"}
+![Orbits of logistic map for 8 different values of $r$.](fig/logistic-map-orbits.png){alt="a grid of 8 different plots with qualitative different behaviour"}
 
 ::: spoiler
 ### Plotting code
@@ -161,22 +162,22 @@ end
 @benchmark logistic_map_points(LinRange(2.6, 4.0, 1000), 1000, 1000) |> collect
 ```
 
-First of all, let's visualize the output because its so pretty!
+First of all, let's visualize the output because it's so pretty!
 
 ```julia
 #| id: logistic-map
 function plot_bifurcation_diagram()
-  pts = logistic_map_points(LinRange(2.6, 4.0, 10000), 1000, 10000) |> collect
-	fig = Figure(size=(1024, 768))
-	ax = Makie.Axis(fig[1,1], limits=((2.6, 4.0), nothing), xlabel="r", ylabel="N")
-	datashader!(ax, pts, async=false, colormap=:deep)
-	fig
+    pts = logistic_map_points(LinRange(2.6, 4.0, 10000), 1000, 10000) |> collect
+    fig = Figure(size=(1024, 768))
+    ax = Makie.Axis(fig[1,1], limits=((2.6, 4.0), nothing), xlabel="r", ylabel="N")
+    datashader!(ax, pts, async=false, colormap=:deep)
+    fig
 end
 
 plot_bifurcation_diagram()
 ```
 
-![The bifurcation diagram](fig/bifurcation-diagram.png){alt="undescribable beauty"}
+![The bifurcation diagram](fig/bifurcation-diagram.png){alt="indescribable beauty"}
 
 ::: spoiler
 ### Plotting code
