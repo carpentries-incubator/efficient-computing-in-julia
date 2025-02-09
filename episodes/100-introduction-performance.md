@@ -1,16 +1,20 @@
 ---
-title: Julia and performance
+title: Type Stability
 ---
 
 ::: questions
-- How can Julia be so much faster than Python?
-- I can't say Julia is slow, but why is it so sluggish?
-- How can I reason about performance?
+- What is type stability?
+- Why is type stability so important for performance?
+- What is the origin of type unstable code? How can I prevent it?
 :::
 
 ::: objectives
-- Understand the strategy of JIT compilation.
+- Learn to diagnose type stability using `@code_warntype` and `@profview`
+- Understand how and why to avoid global mutable variables.
+- Analyze the problem when passing functions as members of a struct.
 :::
+
+In this episode we will look into **type stability**, a very important topic when it comes to writing efficient Julia. We will first show some small examples, trying to explain what type stability means and how you can create code that is not type stable. Then we will have two examples: one computing the growth of a coral reef under varying sea level, the other computing the value of $\pi$ using the Chudnovsky algorithm.
 
 ```julia
 using BenchmarkTools
@@ -34,7 +38,8 @@ end
 @code_warntype safe_inv(-2:2)
 ```
 
-In this case we may observe that the induced type is `Union{Nothing, T}`. If we run `@code_warntype` we can see the yellow highlighting of the union type.
+In this case we may observe that the induced type is `Union{Nothing, T}`. If we run `@code_warntype` we can see the yellow highlighting of the union type. Having union-types can be hint that the compiler is in uncertain territory. However, union types are at the very core of how Julia approaches iteration and therefore for-loops, so usually this will not lead to run-time dispatches being triggered.
+
 The situation is much worse when mutable globals are in place.
 
 ```julia
@@ -63,8 +68,120 @@ Time the result against the type unstable version.
 :::
 
 ## Functions in structs
-Every function has its own unique type. 
+Every function has its own unique type. This can be a problem when we want to get some functional user input. The following computes the sedimentation history of a coral reef, following a paper by Bosscher & Schlager 1992:
 
+$$\frac{\partial y}{\partial t} = g_m \tanh \left(\frac{I_0 \exp(-kw)}{I_k}\right),$$
+
+where $g_m$ is the maximum growth rate, $I_0$ is the insolation (light intensity at sea-level), $I_k$ the saturation intensity, $k$ the extinction coefficient and $w$ the waterdepth, being $sl(t) - y + \sigma*t$, where $sl(t)$ is the sea level and $\sigma$ is the subsidence rate. The model uses the $\tanh$ function to interpolate between maximum growth and zero growth, modified by the exponential extinction of sun light as we go deeper into the water. Details don't matter much, the point being that we'd like to be able to specify the sea level as an input parameter in functional form.
+
+```julia
+using Unitful
+using GLMakie
+
+@kwdef struct Input
+    "The sea level as a function of time"
+    sea_level = _ -> 0.0u"m"
+
+    "Maximum growth rate of the coral, in m/Myr"
+    maximum_growth_rate::typeof(1.0u"m/Myr") = 0.2u"mm/yr"
+
+    "The light intensity at which maximum growth is attained, in W/m^2"
+    saturation_intensity::typeof(1.0u"W/m^2") = 50.0u"W/m^2"
+
+    "The rate at which growth rate drops every meter of water depth, in 1/m"
+    extinction_coefficient::typeof(1.0u"m^-1") = 0.05u"m^-1"
+
+    "The light intensity of the Sun, in W/m^2"
+    insolation::typeof(1.0u"W/m^2") = 400.0u"W/m^2"
+
+    "Subsidence rate is the rate at which the plateau drops, in m/Myr"
+    subsidence_rate::typeof(1.0u"m/Myr") = 50.0u"m/Myr"
+end
+
+function growth_rate(input)
+    sea_level = input.sea_level
+    function df(y, t)
+        # w = input.sea_level(t) - y + input.subsidence_rate * t
+        w = sea_level(t) - y + input.subsidence_rate * t
+        g_m = input.maximum_growth_rate
+        I_0 = input.insolation
+        I_k = input.saturation_intensity
+        k = input.extinction_coefficient
+
+        w > 0u"m" ? g_m * tanh(I_0 * exp(-k * w) / I_k) : 0.0u"m/Myr"
+    end
+end
+```
+
+```julia
+function forward_euler(df, y0::T, t) where {T}
+    result = Vector{T}(undef, length(t) + 1)
+    result[1] = y = y0
+    dt = step(t)
+
+    for i in eachindex(t)
+        y = y + df(y, t[i]) * dt
+        result[i+1] = y
+    end
+    
+    return result
+end
+```
+
+```julia
+let input = Input(sea_level=t->20.0u"m" * sin(2π*t/200u"kyr"))
+    initial_topography = (0.0:-1.0:-100.0)u"m"
+    result = stack(forward_euler(growth_rate(input), y0, (0.0:0.001:1.0)u"Myr")
+        for y0 in initial_topography) .- 1.0u"Myr" * input.subsidence_rate
+    fig = Figure()
+    ax = Axis(fig[1, 1], xlabel="y0", ylabel="y", xreversed=true)
+    for r in eachrow(result[1:20:end,:])
+        lines!(ax, initial_topography/u"m", r/u"m", color=:black)
+    end
+    fig
+end
+```
+
+What is wrong with this code?
+
+```julia
+let input = Input(sea_level=t->20.0u"m" * sin(2π*t/200u"kyr")),
+    y0 = -50.0u"m"
+    @code_warntype forward_euler(growth_rate(input), y0, (0.0:0.001:1.0)u"Myr")
+end
+```
+
+The function in `Input` is untyped. We could try to type the argument with a type parameter, but that doesn't work so well with `@kwdef` (we'd have to redefine the constructor). The problem is also fixed if we recapture the `sea_level` parameter in the local scope of the `growth_rate` function, see [Performance Tips](https://docs.julialang.org/en/v1/manual/performance-tips/#man-performance-captured).
+
+:::challenge
+### Fix the code
+Modify the `growth_rate` function such that the `sea_level` look-up becomes type stable. Assign the parameter to a value with local scope.
+
+::::solution
+
+```julia
+function growth_rate(input)
+    sea_level = input.sea_level
+    function df(y, t)
+        w = sea_level(t) - y + input.subsidence_rate * t
+        g_m = input.maximum_growth_rate
+        I_0 = input.insolation
+        I_k = input.saturation_intensity
+        k = input.extinction_coefficient
+
+        w > 0u"m" ? g_m * tanh(I_0 * exp(-k * w) / I_k) : 0.0u"m/Myr"
+    end
+end
+```
+
+```julia
+let input = Input(sea_level=t->20.0u"m" * sin(2π*t/200u"kyr")),
+    y0 = -50.0u"m"
+    @code_warntype forward_euler(growth_rate(input), y0, (0.0:0.001:1.0)u"Myr")
+end
+```
+::::
+:::
 
 ## Multi-threading and type stability
 Here we have an algorithm that computes the value of π to high precision. We can make this algorithm parallel by recursively calling `Threads.@spawn`, and then `fetch` on each task. Unfortunately the return type of `fetch` is never known at compile time. We can keep the type instability localized by declaring the return types.
@@ -204,10 +321,19 @@ Yes!
 
 :::
 
+:::callout
+A good summary on type stability can be found in the following blog post:
+- [Writing type-stable Julia code](https://www.juliabloggers.com/writing-type-stable-julia-code/)
+:::
+
 ---
 
 ::: keypoints
-- The Julia compiler compiles a function once its called with a specific type signature.
+- Type instabilities are the bane of efficient Julia
+- We can discover type instability using `@profview`, and analyze further using `@code_warntype`.
+- Don't use mutable global variables.
+- Write your code inside functions.
+- Specify element types for containers and structs.
 :::
 
 
