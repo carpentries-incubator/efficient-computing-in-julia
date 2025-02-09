@@ -13,13 +13,13 @@ title: "Value types: game of life"
 - Apply `StaticArrays` to optimise certain operations.
 :::
 
-Let's build cellular automata! Cellular automata are discrete systems consisting of cells that behave according to some well defined rules locally, but then often show surprising behaviour globally. We'll look at two examples: 1-dimensional so called **Elementary Cellular Automata**, and the 2-dimensional **Game of Life**.
+Let's build cellular automata! Cellular automata are discrete systems consisting of cells that behave according to some well defined rules locally, but then often show surprising behaviour globally. We'll look at two examples: 1-dimensional so-called **Elementary Cellular Automata**, and the 2-dimensional **Game of Life**.
 
 To implement these cellular automata we'll implement a generic function for performing **stencil operations**: these are operations that take an array as input, and then compute an output array from preset neighbourhoods of the input array. 
 
-| map | stencil |
-|-----|---------|
-| ![](fig/map_operation.svg){alt="boxes and arraws"} | ![](fig/stencil_operation.svg){alt="boxes and arrows"} |
+| map                                                | stencil |
+|----------------------------------------------------|---------|
+| ![](fig/map_operation.svg){alt="boxes and arrows"} | ![](fig/stencil_operation.svg){alt="boxes and arrows"} |
 
 ::: spoiler
 ### Image source

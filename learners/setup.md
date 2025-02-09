@@ -40,7 +40,7 @@ Press `]` to enter package mode:
 
 ```julia
 (@v1.11) pkg> activate .
-(EfficientJulia) pkg> add GLMakie DataFrames BenchmarkTools GeometryBasics IterTools Revise Unitful
+(EfficientJulia) pkg> add GLMakie DataFrames BenchmarkTools GeometryBasics IterTools Revise Unitful StaticArrays Images FileIO
 ```
 
 This may take a while (which is why you need to do it in advance).
