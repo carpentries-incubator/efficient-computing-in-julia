@@ -251,12 +251,22 @@
 <div class="accordion accordion-flush" id="accordionFlushcurrent">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-headingcurrent">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsecurrent" aria-expanded="true" aria-controls="flush-collapsecurrent">
         <span class="visually-hidden">Current Chapter</span>
         <span class="current-chapter">
         6. Package development
         </span>
-      
+      </button>
     </div><!--/div.accordion-header-->
+
+    <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
+      <div class="accordion-body">
+        <ul><li><a href="#installing-bestietemplate.jl">Installing <code>BestieTemplate.jl</code></a></li>
+<li><a href="#generating-a-fresh-new-julia-package">Generating a fresh new Julia package</a></li>
+<li><a href="#structure-of-your-new-empty-package">Structure of your new (empty) package</a></li>
+<li><a href="#developing-the-package">Developing the package</a></li>
+        </ul></div><!--/div.accordion-body-->
+    </div><!--/div.accordion-collapse-->
 
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
@@ -418,7 +428,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Package development</h1>
-        <p>Last updated on 2024-04-19 |
+        <p>Last updated on 2025-02-09 |
 
         <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/080-package-development.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -437,7 +447,9 @@
 <div class="card-body">
 <div class="inner">
 <h3 class="card-title">Questions</h3>
-<ul><li>What is the best workflow for developing a Julia package?</li>
+<ul><li>How do I generate a new Julia package that follows best
+practices?</li>
+<li>What is the best workflow for developing a Julia package?</li>
 <li>How can I prevent having to recompile every time I make a
 change?</li>
 </ul></div>
@@ -447,12 +459,346 @@ change?</li>
 <div class="card-body">
 <div class="inner bordered">
 <h3 class="card-title">Objectives</h3>
-<ul><li>Quick start with pkg&gt; generate</li>
+<ul><li>Quick start with using the BestieTemplate to generate a package</li>
 <li>Basic structure of a package</li>
-<li>VSCode</li>
 <li>Revise.jl</li>
 </ul></div>
 </div>
+</div>
+</div>
+</div>
+<p>We will use a Julia template called <code>BestieTemplate</code>. The
+template code can be found on <code>GitHub</code>: <a href="https://github.com/JuliaBesties/BestieTemplate.jl" class="external-link uri">https://github.com/JuliaBesties/BestieTemplate.jl</a>.</p>
+<p>Using the template automates the process of setting up the Julia
+package structure and adding all the small files and tools to help with
+applying best practices.</p>
+<section><h2 class="section-heading" id="installing-bestietemplate-jl">Installing <code>BestieTemplate.jl</code>
+<a class="anchor" aria-label="anchor" href="#installing-bestietemplate-jl"></a></h2>
+<hr class="half-width"><p>In order to use <code>BestieTemplate</code> to create our new
+package, we first need to install it.</p>
+<p>Open the <code>Julia</code> interpreter and enter <code>pkg</code>
+mode by pressing <code>]</code>. Then use <code>add</code> as we have
+done in previous exercises:</p>
+<pre class="shell"><code>julia&gt; # press ]
+pkg&gt; add BestieTemplate</code></pre>
+<p>This might take a couple of minutes to download.</p>
+</section><section><h2 class="section-heading" id="generating-a-fresh-new-julia-package">Generating a fresh new Julia package<a class="anchor" aria-label="anchor" href="#generating-a-fresh-new-julia-package"></a></h2>
+<hr class="half-width"><p>We then use the <code>BestieTemplate</code> package to generate a new
+(empty) package at the specified path.</p>
+<pre class="shell"><code>pkg&gt; # Press backspace to get out of pkg mode
+julia&gt; using BestieTemplate
+julia&gt; BestieTemplate.generate("MyPackage.jl")</code></pre>
+<div id="callout1" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Callout</h3>
+<div class="callout-content">
+<p>It is actually posible to apply this template to existing packages
+too:</p>
+<pre class="shell"><code><span><span class="fu">BestieTemplate.apply</span><span class="op">(</span><span class="st">"path/to/YourExistingPackage.jl"</span><span class="op">)</span></span></code></pre>
+<p>However, for clarity we generate a completely new package in this
+lesson.</p>
+</div>
+</div>
+</div>
+<p>You will now be presented with a series of questions, some required
+and some optional.</p>
+<ol style="list-style-type: decimal"><li><p>Firstly you will be asked to choose a universally unique
+identifier (UUID) for the new package. This is a label to uniquely
+identify your package, thus avoiding relying on the package name
+(identically named packages are fairly likely to occur in a programming
+community). Luckily, <code>BestieTemplate</code> has auto-generated one
+for you. Press enter to select it.</p></li>
+<li><p>Type in your GitHub username, if you have one. If you don’t, then
+make one up as it does not really matter for this example. This allows
+BestieTemplate.jl to correctly generate URLs to your (potential) package
+repository (Julia typically expects packages to be on GitHub)</p></li>
+<li><p>Add the comma separated list of authors. You can type your own
+name and email here.</p></li>
+<li><p>Add the minimum Julia version that will be supported by your new
+package. BestieTemplate automatically suggests the latest Long Term
+Support (LTS) version, so we will press enter to use that one.</p></li>
+<li><p>Choose a license for your package. This is up to the user. Use
+the arrow keys to select e.g. <code>Apache-2.0</code>.</p></li>
+<li><p>Add the names of the copyright holders - again, this should be
+pre-filled with the name you typed earlier.</p></li>
+</ol><p>You will then be provided with the option to only answer a small
+number of ‘Recommended’ questions (first choice). Select this and choose
+the default (pre-filled) values for each.</p>
+<p>Your new package structure will now be created, with configuration
+files set up according to the answers provided to the previous
+questions.</p>
+</section><section><h2 class="section-heading" id="structure-of-your-new-empty-package">Structure of your new (empty) package<a class="anchor" aria-label="anchor" href="#structure-of-your-new-empty-package"></a></h2>
+<hr class="half-width"><ul><li><p><code>.copier-answers.yml</code> Here you can see the answers you
+provided when setting up your package with the
+<code>BestieTemplate</code>.</p></li>
+<li><p><code>Project.toml</code> The <code>Project.toml</code> file
+specifies the name of our package, UUID and authors (as given in our
+answers when setting up the template). It also specifies the package’s
+current version and dependencies.</p></li>
+<li><p><code>README.md</code> Standard place to document the purpose of
+the package, installation instructions, links to more extensive
+documentation etc.</p></li>
+<li><p><code>CODE_OF_CONDUCT.md</code> A clear description about how
+contributors are expected to behave and what processes are available in
+the event of a breach of conduct.</p></li>
+<li><p><code>LICENSE</code> Contains the text for the software license
+you chose for this package.</p></li>
+<li><p><code>CITATION.cff</code> Stores any authors or contributors to
+the package, allowing the software itself to be citable.</p></li>
+<li><p>Formatting tool configuration files:
+<code>.JuliaFormatter.toml</code>, <code>.pre-commit-config.yaml</code>,
+<code>.yamllint.yml</code>, <code>.markdownlint.json</code> These
+configure the behaviour of linters and other code-style enforcement
+tools. They are important for keeping a clean and tidy code
+base.</p></li>
+<li><p><code>src/</code> The location of source code files.</p></li>
+<li><p><code>test/</code> The location of unit tests for the code in
+this package.</p></li>
+<li><p><code>docs/</code> The location of scripts for automatically
+building documentation for the functions in your package (e.g. based on
+docstrings). In the <code>docs/src/</code> directory you can also see
+some documentation pages explaining how to contribute to the
+package.</p></li>
+<li><p><code>.github/</code> This will only come into use if you push
+your package to GitHub. This directory contains some automated workflows
+that do things like run tests, build documentation etc.</p></li>
+</ul><div class="section level3">
+<h3 id="activating-the-generated-package">Activating the generated package<a class="anchor" aria-label="anchor" href="#activating-the-generated-package"></a></h3>
+<p>Now that we have generated our new package and inspected its contents
+and structure, we would like to use it.</p>
+<p>In the shell, let’s enter the the directory of the new package, and
+open the <code>Julia</code> REPL:</p>
+<pre class="shell"><code>cd MyPackage.jl/
+julia</code></pre>
+<p>We will start by checking what environment we are actually currently
+using. We do this with the <code>pkg&gt; status</code> command:</p>
+<pre class="shell"><code>julia&gt; # press ]
+pkg&gt; status</code></pre>
+<p>The output will show something like the following:</p>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>Status `~/.julia/environments/v1.11/Project.toml`</code></pre>
+</div>
+<p>This tells us that we are currently using the base environment for
+the currently installed <code>Julia</code> version (in the above case,
+<code>v1.11</code>. In a sense, you can think of this as the “default”
+or “global” environment used by <code>Julia</code>, if no other has been
+specified by the user.</p>
+<p>The output of <code>pkg&gt; status</code> will also output the
+dependencies (and precise versions) that are currently installed in that
+environment. For example, you should see the <code>BestieTemplate</code>
+package that we installed earlier to generate our new package.</p>
+<p>But we don’t currently want this environment. We would like to use,
+and work on, our new project. We do this by “activating” it:</p>
+<pre class="shell"><code>pkg&gt; activate .</code></pre>
+<p>Now let us check the <code>pkg</code> status again:</p>
+<pre class="shell"><code><span><span class="va">pkg</span><span class="op">&gt;</span> <span class="va">status</span></span></code></pre>
+<p>The output should now show <code>Project MyPackage v0.1.0</code>,
+indicating that we are indeed using our new package. The “Status” line
+will also now give the path to the <code>MyPackage.jl</code>’s
+<code>Project.toml</code>, which is another sign that everything is in
+order. However, the end of the line will say
+<code>(empty project)</code>, because there are currently no
+dependencies of our package.</p>
+</div>
+<div class="section level3">
+<h3 id="adding-dependencies">Adding dependencies<a class="anchor" aria-label="anchor" href="#adding-dependencies"></a></h3>
+<p>As before, we can try adding the <code>Random</code> package.</p>
+<pre class="shell"><code>pkg&gt; add Random</code></pre>
+<p>Checking the new contents of <code>Project.toml</code>, we see that a
+<code>[deps]</code> section has appeared:</p>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>[deps]
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"</code></pre>
+</div>
+<p>This shows that the <code>Random</code> package is a dependency of
+our package, and also specifies the UUID that precisely identifies the
+package. Remember that our package, <code>MyPackage.jl</code> also has
+such a UUID.</p>
+<p>Running <code>pkg&gt; status</code> again will now also list this
+dependency, instead of “(empty project)”.</p>
+<p>You should now see that a <code>Manifest.toml</code> file is also in
+the package directory. In this file, you should see something like the
+following:</p>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code># This file is machine-generated - editing it directly is not advised
+
+julia_version = "1.11.3"
+manifest_format = "2.0"
+project_hash = "edf6df7b02a39be5254eb0c7ce37b253a09a1e4c"
+
+[[deps.Random]]
+deps = ["SHA"]
+uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+version = "1.11.0"
+
+[[deps.SHA]]
+uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
+version = "0.7.0"</code></pre>
+</div>
+<p>As before, we can now remove this <code>Random</code> package because
+we do not need it.</p>
+<pre class="shell"><code>pkg&gt; remove Random</code></pre>
+<p>If we check <code>pkg&gt; status</code> again, we see that we have
+returned to the “(empty project)” state. Similarly, looking inside
+<code>Project.toml</code> we see that the dependency has indeed
+disappeared from the project.</p>
+</div>
+</section><section><h2 class="section-heading" id="developing-the-package">Developing the package<a class="anchor" aria-label="anchor" href="#developing-the-package"></a></h2>
+<hr class="half-width"><p>Now that we have our empty package set up, we would like to develop
+some code for it!</p>
+<p>Navigate to <code>src/MyPackage.jl</code> to see some dummy code has
+already been generated by the template:</p>
+<div class="codewrapper sourceCode" id="cb13">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="kw">module</span> MyPackage</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="st">    hi = hello_world()</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="st">A simple function to return "Hello, World!"</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a><span class="kw">function</span> <span class="fu">hello_world</span>()</span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"Hello, World!"</span></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+</div>
+<p>In the REPL we can try running this:</p>
+<pre class="shell"><code>julia&gt; using MyPackage
+julia&gt; MyPackage.hello_world()</code></pre>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code><span><span class="st">"Hello, World!"</span></span></code></pre>
+</div>
+<p>Note that we needed <code>using MyPackage</code> to tell Julia to
+make the name <code>MyPackage</code> available for us to refer to. We
+then called the <code>hello_world</code> function that is part of that
+module.</p>
+<div id="the-world-is-not-enough" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="the-world-is-not-enough" class="callout-inner">
+<h3 class="callout-title">The world is not enough</h3>
+<div class="callout-content">
+<p>But perhaps the “World” is not inclusive enough. Let’s try saying
+hello to the whole universe. Try modifying the function to say “Hello,
+Universe!” then call it in the REPL again.</p>
+<p>Before doing this - what do you think the result will be?</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div class="accordion-body">
+<div class="codewrapper sourceCode" id="cb16">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">hello_world</span>()</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"Hello, Universe!"</span></span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+</div>
+<pre class="shell"><code><span><span class="va">julia</span><span class="op">&gt;</span> <span class="fu">MyPackage.hello_world</span><span class="op">(</span><span class="op">)</span></span></code></pre>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code><span><span class="st">"Hello, World!"</span></span></code></pre>
+</div>
+<p>Why did this happen? The answer is that Julia is using the version of
+the package as it existed when it was first loaded. The modifications
+you have made have not been tracked or recompiled, so the original
+function is still being called.</p>
+<p>If you reload Julia (exit then open the REPL again) and try again,
+you will see the result now says “Universe” as desired.</p>
+<p>Change the message back to <code>Hello, World!</code> for now.</p>
+</div>
+</div>
+</div>
+</div>
+<p>Julia uses the package <code>MyPackage</code> in whatever state it is
+when <code>using</code> is first called. Subsequent changes to the
+source code do not trigger automatic recompilation, unless e.g. Julia is
+restarted. This is problematic since, during development, we often want
+to make changes to our code without restarting the Julia session to
+check it. We can achieve this with <code>Revise.jl</code>.</p>
+<div class="section level3">
+<h3 id="installing-revise-jl">Installing <code>Revise.jl</code>
+<a class="anchor" aria-label="anchor" href="#installing-revise-jl"></a></h3>
+<p>Make sure you are in the default environment when you install
+<code>Revise.jl</code>, as we generally do not want developer
+dependencies to be a part of the package. Anything you install in the
+default shared environment will be available in specific environments
+too due to what is called “environment stacking”.</p>
+<pre class="shell"><code>pkg&gt; activate # No argument, so as to pick the default environment
+pkg&gt; status
+pkg&gt; add Revise</code></pre>
+</div>
+<div class="section level3">
+<h3 id="trying-out-revise-jl">Trying out <code>Revise.jl</code>
+<a class="anchor" aria-label="anchor" href="#trying-out-revise-jl"></a></h3>
+<p>Now we are ready to try out <code>Revise</code>. Exit the Julia REPL
+and reload it, then indicate we wish to use <code>Revise</code>.</p>
+<pre class="shell"><code>julia
+julia&gt; using Revise
+pkg&gt; activate . # Start using our local package environment again</code></pre>
+<div id="callout2" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Callout</h3>
+<div class="callout-content">
+<p>You must load <code>Revise</code> <em>before</em> loading any
+packages you want it to track.</p>
+</div>
+</div>
+</div>
+<p>Try loading and using our package again.</p>
+<pre class="shell"><code>julia&gt; using MyPackage
+julia&gt; MyPackage.hello_world()</code></pre>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code><span><span class="st">"Hello, World!"</span></span></code></pre>
+</div>
+<p>Now try editing the message to say <code>Goodbye, World!</code>.
+Remember to save your changes.</p>
+<pre class="shell"><code><span><span class="va">julia</span><span class="op">&gt;</span> <span class="fu">MyPackage.hello_world</span><span class="op">(</span><span class="op">)</span></span></code></pre>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code><span><span class="st">"Goodbye, World!"</span></span></code></pre>
+</div>
+<p>Now, thanks to <code>Revise</code>, the change to the package’s code
+was being tracked and was automatically recompiled. This means you can
+make changes to the package and have them be active without needing to
+reload the Julia REPL.</p>
+<div id="callout3" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Callout</h3>
+<div class="callout-content">
+<p>While <code>Revise</code> does its best to track any changes made,
+there are some limits to what can be done in a single Julia session. For
+example, changes to type definitions or <code>const</code>s (among
+others) will probably still necessitate restarting your Julia
+session.</p>
 </div>
 </div>
 </div>
@@ -463,7 +809,9 @@ change?</li>
 <div class="callout-inner">
 <h3 class="callout-title">Key Points</h3>
 <div class="callout-content">
-<ul><li>Currently, the editor with (by far) the best support is VSCode.</li>
+<ul><li>You can use the <code>BestieTemplate</code> to generate a new
+package structure complete with tooling for best practices in Julia
+development.</li>
 <li>The <code>Revise.jl</code> module can automatically reload parts of
 your code that have changed.</li>
 <li>Best practice: file names should reflect module names.</li>
@@ -474,10 +822,8 @@ your code that have changed.</li>
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
-
-
-
-      </div> <!-- / div.lesson-content -->
+</div>
+</section></div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter"><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link" href="070-pkg.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
         <a class="chapter-link float-end" href="090-best-practices.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
@@ -535,7 +881,7 @@ any links that you are not going to use.
   "url": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/080-package-development.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/080-package-development.html",
   "dateCreated": "2024-01-01",
-  "dateModified": "2024-04-19",
+  "dateModified": "2025-02-09",
   "datePublished": "2025-02-09"
 }
 

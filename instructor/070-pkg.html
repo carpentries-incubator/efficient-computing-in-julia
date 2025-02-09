@@ -242,12 +242,21 @@
 <div class="accordion accordion-flush" id="accordionFlushcurrent">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-headingcurrent">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapsecurrent" aria-expanded="true" aria-controls="flush-collapsecurrent">
         <span class="visually-hidden">Current Chapter</span>
         <span class="current-chapter">
         5. Packages and environments
         </span>
-      
+      </button>
     </div><!--/div.accordion-header-->
+
+    <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
+      <div class="accordion-body">
+        <ul><li><a href="#make-a-new-project">Make a new project</a></li>
+<li><a href="#adding-dependencies-to-your-project">Adding dependencies to your project</a></li>
+<li><a href="#project.toml-and-manifest.toml"><code>Project.toml</code> and <code>Manifest.toml</code></a></li>
+        </ul></div><!--/div.accordion-body-->
+    </div><!--/div.accordion-collapse-->
 
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
@@ -418,7 +427,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Packages and environments</h1>
-        <p>Last updated on 2024-04-19 |
+        <p>Last updated on 2025-02-09 |
 
         <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/070-pkg.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -465,6 +474,242 @@
 </div>
 </div>
 </div>
+<p>In general software development, it often makes sense to make use of
+existing packages rather than implementing everything yourself. The
+Julia world is no different, and provides a standard way to manage this,
+via the <code>Pkg</code> system.</p>
+<p>In the following, we will explore using the Julia REPL to set up a
+project and manage adding dependencies.</p>
+<section><h2 class="section-heading" id="make-a-new-project">Make a new project<a class="anchor" aria-label="anchor" href="#make-a-new-project"></a></h2>
+<hr class="half-width"><p>We will first make a directory and move to it:</p>
+<pre class="shell"><code>mkdir Dummy
+cd Dummy</code></pre>
+<p>We open the Julia REPL and enter <code>pkg</code> mode by pressing
+<code>]</code>:</p>
+<pre class="shell"><code>julia
+julia&gt; # press ]
+pkg&gt;</code></pre>
+<p>In this mode, we can run a variety of commands for managing our
+project’s dependencies.</p>
+<p>First we will use <code>pkg&gt; status</code> to check what the
+current situation is, according to Julia:</p>
+<pre class="shell"><code><span><span class="va">pkg</span><span class="op">&gt;</span> <span class="va">status</span></span></code></pre>
+<p>The output gives us details about the current environment we are
+using. There will be a list of any dependencies that have been
+installed, and their versions.</p>
+<p>The first line of output may look something like this:</p>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>Status `~/.julia/environments/v1.11/Project.toml`</code></pre>
+</div>
+<p>This shows the path to the current environment definition, which is
+in a file called <code>Project.toml</code> (we will discuss this later).
+From the path we see that this is the default environment for our
+version of Julia (in the above case, <code>v1.11</code>). This is the
+environment that will be used unless the user specifies a different
+one.</p>
+<p>In practice, we generally make specific environments for specific
+projects. This avoids issues of multiple/clashing versions of
+dependencies, removes unused dependencies (keeping the project
+environemtn clean) and allows you to easily publish your project as a
+package, if desired.</p>
+<p>Therefore, let us indicate to Julia that we wish to use an
+environment for our <code>Dummy</code> project. We do this using the
+<code>pkg&gt; activate</code> command:</p>
+<pre class="shell"><code>pkg&gt; activate .</code></pre>
+<p>Note that the <code>.</code> is important here, as we are supplying a
+path as an argument to <code>activate</code>. This tells Julia that we
+want to use the current (<code>./</code>) directory as a location for a
+project. Julia will confirm that you are activating a new project at
+your current location (the <code>Dummy/</code> directory).</p>
+<p>As before, we can use <code>pkg&gt; status</code> at any time to
+check what environment we are in:</p>
+<pre class="shell"><code><span><span class="va">pkg</span><span class="op">&gt;</span> <span class="va">status</span></span></code></pre>
+<p>This will now output “Status” followed by a path to the
+<code>Dummy/</code> directory. This indicates that we have successfully
+begun working in an environment based there.</p>
+<p>The output also indicates that this is an
+<code>(empty project)</code>. This is because we have not added any
+dependencies yet.</p>
+</section><section><h2 class="section-heading" id="adding-dependencies-to-your-project">Adding dependencies to your project<a class="anchor" aria-label="anchor" href="#adding-dependencies-to-your-project"></a></h2>
+<hr class="half-width"><p>If we wish to use functionality of another package in our code, we
+can add it as a dependency of our project. For example, let us say we
+wish to add Julia’s <code>Random</code> package as a dependency. We can
+do this using <code>pkg&gt; add</code>:</p>
+<pre class="shell"><code>pkg&gt; add Random</code></pre>
+<p>Julia will now download a version of this package and pre-compile
+it.</p>
+<pre class="shell"><code><span><span class="va">pkg</span><span class="op">&gt;</span> <span class="va">status</span></span></code></pre>
+<p>Running <code>pkg&gt; status</code> now will list ‘Random’ as a
+dependency, instead of showing “(empty project)” as it did before.</p>
+<p>You may notice that a line in the output also indicates that a
+<code>Project.toml</code> file has been updated.</p>
+</section><section><h2 class="section-heading" id="project-toml-and-manifest-toml">
+<code>Project.toml</code> and <code>Manifest.toml</code>
+<a class="anchor" aria-label="anchor" href="#project-toml-and-manifest-toml"></a></h2>
+<hr class="half-width"><p>Looking in the previously empty <code>Dummy/</code> directory, you
+should now see the appearance of two files: <code>Project.toml</code>
+and <code>Manifest.toml</code>.</p>
+<p>From the terminal, you can open these in your currently running
+vscode window using <code>code -r</code>:</p>
+<pre class="shell"><code>code -r Project.toml</code></pre>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>[deps]
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"</code></pre>
+</div>
+<p>Inspecting <code>Project.toml</code>, we see that it has a
+<code>[deps]</code> section, which stands for “dependencies”. There is a
+single dependency, <code>Random</code>, along with a long string of
+letters and numbers. This is the Universally Unique Identifier (UUID) of
+the package. This will be covered in a later episode.</p>
+<p>Next, we inspect <code>Manifest.toml</code>.</p>
+<pre class="shell"><code>code -r Manifest.toml</code></pre>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code># This file is machine-generated - editing it directly is not advised
+
+julia_version = "1.11.3"
+manifest_format = "2.0"
+project_hash = "fa3e19418881bf344f5796e1504923a7c80ab1ed"
+
+[[deps.Random]]
+deps = ["SHA"]
+uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+version = "1.11.0"
+
+[[deps.SHA]]
+uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
+version = "0.7.0"</code></pre>
+</div>
+<p>Initially, we see that it contains some information that is similar
+to the contents of <code>Project.toml</code>. We see the
+<code>Random</code> package we added earlier, and its UUID, but now also
+a specific version for that package. We also a dependency of the
+<code>Random</code> package itself.</p>
+<p>So both <code>Project.toml</code> and <code>Manifest.toml</code>
+appear to specify the dependencies of the project. Generally speaking,
+dependencies may have many versions which may be acceptable
+(compatible). <code>Project.toml</code> gives the requirements of the
+project on a comparatively high-level, whereas
+<code>Manifest.toml</code> specifies exact versions for each dependency,
+as well as a hash of the entire project. Therefore,
+<code>Manifest.toml</code> specifies a particular working installation
+of the package. For most projects, many <code>Manifest.toml</code>
+configurations could be possible.</p>
+<p>Note: As the comment at the top of <code>Manifest.toml</code> states,
+the file is automatically generated and should generally not be edited
+directly.</p>
+<div class="section level3">
+<h3 id="removing-dependencies">Removing dependencies<a class="anchor" aria-label="anchor" href="#removing-dependencies"></a></h3>
+<p>If a dependency was added by mistake, or if we no longer need it, we
+may wish to remove it. In our case, we only added the
+<code>Random</code> package as an example - we have no plans to use it.
+So let’s remove it as a dependency.</p>
+<pre class="shell"><code>pkg&gt; remove Random</code></pre>
+<p>If we check <code>pkg&gt; status</code> again, we see that we have
+returned to the “(empty project)” state. Similarly, looking inside
+<code>Project.toml</code> we see that the dependency has indeed
+disappeared from the project.</p>
+<pre class="shell"><code><span><span class="va">pkg</span><span class="op">&gt;</span> <span class="va">status</span></span></code></pre>
+<div id="add-and-remove-the-dates-package-3-min" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="add-and-remove-the-dates-package-3-min" class="callout-inner">
+<h3 class="callout-title">Add and remove the Dates package (3 min)</h3>
+<div class="callout-content">
+<p>There is a <code>Dates</code> standard Julia package. Try adding this
+as a dependency, then check <code>Project.toml</code> and
+<code>Manifest.toml</code> to see what has changed.</p>
+<p>Then remove the <code>Dates</code> dependency when you are done.</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div class="accordion-body">
+<pre class="shell"><code>pkg&gt; add Dates
+pkg&gt; status
+pkg&gt; code -r Project.toml Manifest.toml
+pkg&gt; remove Dates</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="activating-the-default-environment-again">Activating the default environment again<a class="anchor" aria-label="anchor" href="#activating-the-default-environment-again"></a></h3>
+<p>Sometimes you may wish to return to using the default environment for
+your Julia version.</p>
+<p>If your version is e.g. <code>1.11</code> then the command would look
+like:</p>
+<pre class="shell"><code><span><span class="va">pkg</span><span class="op">&gt;</span> <span class="va">activate</span> <span class="op">@</span><span class="va">v1.11</span></span></code></pre>
+<div id="callout1" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Callout</h3>
+<div class="callout-content">
+<p>Note the <code>@</code> symbol before the environment name. This
+tells us that it is a “shared” environment. That means it can be loaded
+by name (i.e. without specifying the path to the
+<code>Project.toml</code> file explicitly. You can make your own shared
+environments for various reasons but that is beyond the scope of the
+present lesson.</p>
+</div>
+</div>
+</div>
+<p>You can also simply type <code>activate</code> with no arguments and
+Julia will also return to the default environment.</p>
+</div>
+<div class="section level3">
+<h3 id="temporary-environments">Temporary environments<a class="anchor" aria-label="anchor" href="#temporary-environments"></a></h3>
+<p>In some cases, you may wish to work with a “throwaway” environment -
+one in which you can add dependencies without it affecting your current
+project.</p>
+<p>You can do this using <code>pkg&gt; activate --temp</code>:</p>
+<pre class="shell"><code><span><span class="va">pkg</span><span class="op">&gt;</span> <span class="va">activate</span> <span class="op">-</span><span class="op">-</span><span class="va">temp</span></span></code></pre>
+<p>This will output something like
+<code>Activating new project at</code>/tmp/jl_4xvh88`.</p>
+<p>You can now work with this as with any other environment, but without
+the fear that changes you make are messing up the
+<code>Project.toml</code> of the project you are working on.</p>
+<p>As an example, let’s add the <code>Random</code> package again.</p>
+<pre class="shell"><code>pkg&gt; status
+pkg&gt; add Random
+pkg&gt; status</code></pre>
+<p>We see that <code>Random</code> is installed in our temporary
+environment.</p>
+<p>We can now exit the Julia REPL and open our <code>Project.toml</code>
+file as before:</p>
+<pre class="shell"><code>code -r Project.toml</code></pre>
+<p>We see that this is empty (no dependencies), confirming that the
+project has not been affected by changes made to the temp
+environment.</p>
+</div>
+<div class="section level3">
+<h3 id="using-another-project">Using another project<a class="anchor" aria-label="anchor" href="#using-another-project"></a></h3>
+<p>Simply activating a project does not actually make Julia download and
+install any dependencies that may be listed in <code>Project.toml</code>
+(and <code>Manifest.toml</code>) but are missing on your machine.</p>
+<p>You may have this sitation if someone you are developing with has
+added a new dependency to the package, or shared their
+<code>Manifest.toml</code> with you.</p>
+<p>In such a case, you can make Julia fetch and install any dependencies
+you need using the <code>pkg&gt; instantiate</code> command, to install
+exactly the packages specified in the <code>Manifest.toml</code>.</p>
+<pre class="shell"><code><span><span class="va">pkg</span><span class="op">&gt;</span> <span class="va">instantiate</span></span></code></pre>
+<p><code>pkg&gt; instantiate</code> will not do anything if you already
+have everything you need, so it is safe to use.</p>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -487,10 +732,8 @@ environment with exact versions.</li>
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
-
-
-
-      </div> <!-- / div.lesson-content -->
+</div>
+</section></div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter"><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link" href="../instructor/060-simulating-solar-system.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
         <a class="chapter-link float-end" href="../instructor/080-package-development.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
@@ -548,7 +791,7 @@ any links that you are not going to use.
   "url": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/070-pkg.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/070-pkg.html",
   "dateCreated": "2024-01-01",
-  "dateModified": "2024-04-19",
+  "dateModified": "2025-02-09",
   "datePublished": "2025-02-09"
 }
 
