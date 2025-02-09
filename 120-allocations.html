@@ -118,11 +118,11 @@
   Efficient Computing in Julia
 </div>
 
-<aside class="col-md-12 lesson-progress"><div style="width: 60%" class="percentage">
-    60%
+<aside class="col-md-12 lesson-progress"><div style="width: 67%" class="percentage">
+    67%
   </div>
   <div class="progress incubator">
-    <div class="progress-bar incubator" role="progressbar" style="width: 60%" aria-valuenow="60" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar incubator" role="progressbar" style="width: 67%" aria-valuenow="67" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
     </div>
   </div>
 </aside><div class="container">
@@ -341,24 +341,6 @@
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
-<div class="accordion accordion-flush" id="accordionFlush16">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading16">
-        <a href="a02-julia-fractals.html">15. Appendix: Generating Julia Fractals</a>
-    </div><!--/div.accordion-header-->
-
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
-
-<div class="accordion accordion-flush" id="accordionFlush17">
-  <div class="accordion-item">
-    <div class="accordion-header" id="flush-heading17">
-        <a href="a03-lorenz-attractor.html">16. Appendix: Lorenz attractor</a>
-    </div><!--/div.accordion-header-->
-
-  </div><!--/div.accordion-item-->
-</div><!--/div.accordion-flush-->
-
                 </div>
               </div>
             </div>
@@ -509,7 +491,7 @@ plot?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -539,7 +521,7 @@ plot?</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Plotting code </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -682,7 +664,7 @@ allocations inside loops contribute to run-time. The
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Plotting code </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb15">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -718,37 +700,24 @@ allocations inside loops contribute to run-time. The
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">collect!</span>(it, tgt)</span>
-<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>    <span class="co"># x = iterate(it)</span></span>
-<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>    <span class="co"># if x === nothing</span></span>
-<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>    <span class="co">#     return</span></span>
-<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>    <span class="co"># end</span></span>
-<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>    <span class="co"># (v, s) = x</span></span>
-<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a>    <span class="co"># for i in eachindex(tgt)</span></span>
-<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a>    <span class="co">#     tgt[i] = v</span></span>
-<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a>    <span class="co">#     x = iterate(it, s)</span></span>
-<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a>    <span class="co">#     if x === nothing</span></span>
-<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a>    <span class="co">#         return</span></span>
-<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a>    <span class="co">#     end</span></span>
-<span id="cb17-13"><a href="#cb17-13" tabindex="-1"></a>    <span class="co">#     (v, s) = x</span></span>
-<span id="cb17-14"><a href="#cb17-14" tabindex="-1"></a>    <span class="co"># end</span></span>
-<span id="cb17-15"><a href="#cb17-15" tabindex="-1"></a>    <span class="cf">for</span> (i, v) <span class="kw">in</span> <span class="fu">zip</span>(<span class="fu">eachindex</span>(tgt), it)</span>
-<span id="cb17-16"><a href="#cb17-16" tabindex="-1"></a>       tgt[i] <span class="op">=</span> v <span class="co"># _map(r) = n -&gt; r </span></span>
-<span id="cb17-17"><a href="#cb17-17" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb17-18"><a href="#cb17-18" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb17-19"><a href="#cb17-19" tabindex="-1"></a></span>
-<span id="cb17-20"><a href="#cb17-20" tabindex="-1"></a><span class="kw">function</span> <span class="fu">logistic_map_points_td</span>(rs<span class="op">::</span><span class="dt">AbstractVector{R}</span>, n_skip, n_take) <span class="kw">where</span> {R <span class="op">&lt;:</span><span class="dt"> Real</span>}</span>
-<span id="cb17-21"><a href="#cb17-21" tabindex="-1"></a>    result <span class="op">=</span> <span class="fu">Matrix</span><span class="dt">{Point2d}</span>(<span class="cn">undef</span>, n_take, <span class="fu">length</span>(rs))</span>
-<span id="cb17-22"><a href="#cb17-22" tabindex="-1"></a>    <span class="co"># Threads.@threads for i in eachindex(rs)</span></span>
-<span id="cb17-23"><a href="#cb17-23" tabindex="-1"></a>    <span class="cf">for</span> (r, c) <span class="kw">in</span> <span class="fu">zip</span>(rs, <span class="fu">eachcol</span>(result))</span>
-<span id="cb17-24"><a href="#cb17-24" tabindex="-1"></a>        <span class="fu">collect!</span>(<span class="fu">logistic_map_points</span>(r, n_skip), c)</span>
-<span id="cb17-25"><a href="#cb17-25" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb17-26"><a href="#cb17-26" tabindex="-1"></a>    <span class="cf">return</span> <span class="fu">reshape</span>(result, <span class="op">:</span>)</span>
-<span id="cb17-27"><a href="#cb17-27" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb17-28"><a href="#cb17-28" tabindex="-1"></a></span>
-<span id="cb17-29"><a href="#cb17-29" tabindex="-1"></a>a <span class="op">=</span> <span class="fu">logistic_map_points_td</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">1000</span>), <span class="fl">1000</span>, <span class="fl">1000</span>)</span>
-<span id="cb17-30"><a href="#cb17-30" tabindex="-1"></a><span class="fu">datashader</span>(a)</span>
-<span id="cb17-31"><a href="#cb17-31" tabindex="-1"></a><span class="pp">@benchmark</span> <span class="fu">logistic_map_points_td</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">1000</span>), <span class="fl">1000</span>, <span class="fl">1000</span>)</span>
-<span id="cb17-32"><a href="#cb17-32" tabindex="-1"></a><span class="pp">@profview</span> <span class="fu">logistic_map_points_td</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">1000</span>), <span class="fl">1000</span>, <span class="fl">1000</span>)</span></code></pre>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>    <span class="cf">for</span> (i, v) <span class="kw">in</span> <span class="fu">zip</span>(<span class="fu">eachindex</span>(tgt), it)</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>       tgt[i] <span class="op">=</span> v</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a><span class="kw">function</span> <span class="fu">logistic_map_points_td</span>(rs<span class="op">::</span><span class="dt">AbstractVector{R}</span>, n_skip, n_take) <span class="kw">where</span> {R <span class="op">&lt;:</span><span class="dt"> Real</span>}</span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a>    result <span class="op">=</span> <span class="fu">Matrix</span><span class="dt">{Point2d}</span>(<span class="cn">undef</span>, n_take, <span class="fu">length</span>(rs))</span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a>    <span class="co"># Threads.@threads for i in eachindex(rs)</span></span>
+<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a>    <span class="cf">for</span> (r, c) <span class="kw">in</span> <span class="fu">zip</span>(rs, <span class="fu">eachcol</span>(result))</span>
+<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a>        <span class="fu">collect!</span>(<span class="fu">logistic_map_points</span>(r, n_skip), c)</span>
+<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb17-13"><a href="#cb17-13" tabindex="-1"></a>    <span class="cf">return</span> <span class="fu">reshape</span>(result, <span class="op">:</span>)</span>
+<span id="cb17-14"><a href="#cb17-14" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb17-15"><a href="#cb17-15" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" tabindex="-1"></a>a <span class="op">=</span> <span class="fu">logistic_map_points_td</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">1000</span>), <span class="fl">1000</span>, <span class="fl">1000</span>)</span>
+<span id="cb17-17"><a href="#cb17-17" tabindex="-1"></a><span class="fu">datashader</span>(a)</span>
+<span id="cb17-18"><a href="#cb17-18" tabindex="-1"></a><span class="pp">@benchmark</span> <span class="fu">logistic_map_points_td</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">1000</span>), <span class="fl">1000</span>, <span class="fl">1000</span>)</span>
+<span id="cb17-19"><a href="#cb17-19" tabindex="-1"></a><span class="pp">@profview</span> <span class="fu">logistic_map_points_td</span>(<span class="fu">LinRange</span>(<span class="fl">2.6</span>, <span class="fl">4.0</span>, <span class="fl">1000</span>), <span class="fl">1000</span>, <span class="fl">1000</span>)</span></code></pre>
 </div>
 <div id="rewrite-the-logistic_map_points-function" class="callout challenge">
 <div class="callout-square">
@@ -768,7 +737,7 @@ style!). Is this faster than using iterators?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb18">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
