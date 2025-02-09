@@ -5,7 +5,7 @@ title: Introduction to Julia
 ::: questions
 
 - How do I write elementary programs in Julia?
-- What are the differences with Python/Matlab/R?
+- What are the differences with Python/MATLAB/R?
 :::
 
 ::: objectives
@@ -15,18 +15,18 @@ title: Introduction to Julia
 - scoping
 :::
 
-Unfortunately, it lies outside the scope of this workshop to give a introduction to the full Julia language. Instead, we'll briefly show the basic syntax, and then focus on some key differences with other popular languages.
+Unfortunately, it lies outside the scope of this workshop to give an introduction to the full Julia language. Instead, we'll briefly show the basic syntax, and then focus on some key differences with other popular languages.
 
 ::: instructor
 Much of the content of the lesson relies on "Show, don't tell". This introduction feels far from complete, but that's Ok.
-It is just enough to teach the forms of function definitions, and some peculiarities that might trip-up people that are used to a different language:
+It is just enough to teach the forms of function definitions, and some peculiarities that might trip-up people that are used to a different language.
 :::
 
 ## About Julia
 
 These are some words that we will write down: never forget.
 
-- A Just-in-time compiled, dynamically typed language
+- A just-in-time compiled, dynamically typed language
 - multiple dispatch
 - expression based syntax
 - rich macro system
@@ -44,12 +44,12 @@ How is Julia evaluated? Types only instantiate at run-time, triggering the compi
 
 When a function is called with a hitherto new type signature, compilation is triggered. Julia's biggest means of abstraction: *multiple dispatch* is only an emergent property of this evaluation strategy.
 
-Julia has a herritage from functional programming languages (nowadays well hidden not to scare people). What we get from this:
+Julia has a heritage from functional programming languages (nowadays well hidden not to scare people). What we get from this:
 
 - expression based syntax: everything is an expression, meaning it reduces to a value
 - a rich macro system: we can extend the language itself to suit our needs (not covered in this workshop)
 
-Julia is designed to replace Matlab:
+Julia is designed to replace MATLAB:
 
 - high degree of built-in support for multi-dimensional arrays and linear algebra
 - ecosystem of libraries around numeric modelling
@@ -57,7 +57,7 @@ Julia is designed to replace Matlab:
 Julia is designed to replace Fortran:
 
 - high performance
-- accellerate using `Threads` or of the GPU interfaces
+- accelerate using `Threads` or through the GPU interfaces
 - scalable through `Distributed` or `MPI`
 
 Julia is designed to replace Conda:
@@ -97,7 +97,7 @@ gravitational_force(EARTH_MASS, LUNAR_MASS, LUNAR_DISTANCE)
 ```
 
 ```output
-1.982084770423259e26
+1.982084770423259e20
 ```
 
 There is a shorter syntax for functions that is useful for one-liners:
@@ -166,6 +166,12 @@ end
 The `for` loop iterates over the range `2:isqrt(x)`. We'll see that Julia indexes sequences starting at integer value `1`. This usually implies that ranges are given inclusive on both ends: for example, `collect(3:6)` evaluates to `[3, 4, 5, 6]`.
 :::
 
+:::callout
+### More on for-loops
+
+Loop iterations can be skipped using `continue`, or broken with `break`, identical to C or Python.
+:::
+
 ::: challenge
 The `i == j && continue` is a short-cut notation for
 
@@ -214,12 +220,6 @@ The fact that the `return` statement is optional for normal function exit is par
 :::
 
 :::callout
-### More on for-loops
-
-Loop iterations can be skipped using `continue`, or broken with `break`, identical to C or Python.
-:::
-
-:::callout
 ### Lexical scoping
 
 Julia is **lexically scoped**. This means that variables do not outlive the block that they're defined in. In a nutshell, this means the following:
@@ -241,6 +241,8 @@ Julia is **lexically scoped**. This means that variables do not outlive the bloc
   1
   2
   3
+  4
+  5
   42
   ```
 
@@ -274,13 +276,12 @@ If you like to collect those into a vector, try the following:
 
 ## Some important first lessons
 
-- Always enclose code in functions because functions are compiled
-- Don't use global mutable variables
 
 ::: keypoints
 
 - Julia has `if-else`, `for`, `while`, `function` and `module` blocks that are not dissimilar from other languages.
 - Blocks are all ended with `end`.
-- ...
+- Always enclose code in functions because functions are compiled
+- Don't use global mutable variables
 - Julia variables are not visible outside the block in which they're defined (unlike Python).
 :::
