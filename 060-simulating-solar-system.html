@@ -898,6 +898,9 @@ seen everywhere in Julia code bases.</p>
 <span id="cb27-9"><a href="#cb27-9" tabindex="-1"></a>    <span class="fu">DataFrame</span>(<span class="op">:</span>time <span class="op">=&gt;</span> (<span class="fl">1</span><span class="op">:</span>n)dt, (<span class="fu">Symbol</span>.(<span class="st">"p"</span>, <span class="fu">keys</span>(particles)) <span class="op">.=&gt;</span> <span class="fu">eachcol</span>(result))<span class="op">...</span>)</span>
 <span id="cb27-10"><a href="#cb27-10" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
 </div>
+<p>Note the use of ellipsis (<code>...</code>) here. This is similar to
+tuple unpacking in Python. The iterator before the ellipsis is expanded
+into separate arguments to the <code>DataFrame</code> function call.</p>
 <div class="section level3">
 <h3 id="frame-of-reference">Frame of reference<a class="anchor" aria-label="anchor" href="#frame-of-reference"></a></h3>
 <p>We need to make sure that our entire system doesn’t have a net
