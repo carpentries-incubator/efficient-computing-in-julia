@@ -216,7 +216,8 @@
 
     <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
       <div class="accordion-body">
-        <ul><li><a href="#why-julia">Why Julia</a></li>
+        <ul><li><a href="#overview-of-the-workshop">Overview of the Workshop</a></li>
+<li><a href="#why-julia">Why Julia</a></li>
 <li><a href="#recommended-materials">Recommended materials</a></li>
 <li><a href="#running-julia">Running Julia</a></li>
 <li><a href="#pluto">Pluto</a></li>
@@ -403,7 +404,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Getting Started</h1>
-        <p>Last updated on 2025-02-09 |
+        <p>Last updated on 2025-02-10 |
 
         <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/020-getting-started.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -445,7 +446,7 @@
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Teaching strategy </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Julia is easy to get into because it centers around a few easy to
 understand core concepts: functions, multiple-dispatch, array
@@ -473,7 +474,27 @@ with your audience.</p>
 </div>
 </div>
 </div>
-<section><h2 class="section-heading" id="why-julia">Why Julia<a class="anchor" aria-label="anchor" href="#why-julia"></a></h2>
+<section><h2 class="section-heading" id="overview-of-the-workshop">Overview of the Workshop<a class="anchor" aria-label="anchor" href="#overview-of-the-workshop"></a></h2>
+<hr class="half-width"><p>It is not feasible to teach all of Julia in just two days. We’ll try
+to get you on your journey with Julia by showing lots of real world
+examples. Meanwhile, you’ll be Roughly:</p>
+<ol style="list-style-type: decimal"><li>(3h) Get you started with Julia by simulating gravity: the three
+body problem. You’ll get familiar with the basic syntax of Julia and the
+little nooks and crannies that set this language appart from Python or
+MATLAB.</li>
+<li>(3h) Learn to work with Julia’s packaging system and best
+practices.</li>
+<li>(4h) Benchmarking, profiling, type stability and allocations. We
+will work with many different examples here. You’ll learn the most
+important tools and concepts that matter when you want to write Julia
+code that runs efficiently.</li>
+<li>(2h) Parallel and GPU programming: computing the Julia fractal.</li>
+</ol><p>Some of the examples may be a bit hard to grasp. For example, we’ll
+see a very difficult to understand algorithm to compute <span class="math inline">\(\pi\)</span>. In these cases we’ll treat the given
+code as black boxes that we can poke at. The power of a good computer
+program is often that we don’t need to know everything to be able to
+work with it.</p>
+</section><section><h2 class="section-heading" id="why-julia">Why Julia<a class="anchor" aria-label="anchor" href="#why-julia"></a></h2>
 <hr class="half-width"><p>Most of the participants will be coming from Python, MATLAB or a
 lower level language like C/C++ or Fortran. Why should you be interested
 in learning Julia?</p>
@@ -607,7 +628,7 @@ along. Find out what the <code>add</code> command does.</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <ol style="list-style-type: lower-alpha"><li>
 <code>]help add</code>, the <code>add</code> command installs
@@ -695,7 +716,7 @@ upon?</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <ol style="list-style-type: lower-alpha"><li>In Julia exponentiation is <code>^</code>.</li>
 <li>Just like you’re used to <code>x = 3</code>.</li>
@@ -749,7 +770,7 @@ VS Code, and make sure that the correct environment is there.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Figure code </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <p>To create the above figure:</p>
 <div class="codewrapper sourceCode" id="cb8">
@@ -842,7 +863,7 @@ any links that you are not going to use.
   "url": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/020-getting-started.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/020-getting-started.html",
   "dateCreated": "2024-01-01",
-  "dateModified": "2025-02-09",
+  "dateModified": "2025-02-10",
   "datePublished": "2025-02-10"
 }
 
