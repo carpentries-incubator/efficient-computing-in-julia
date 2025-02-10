@@ -295,26 +295,6 @@ y = sin.(x) ./ x
 
 The compiler will fuse chained broadcasting operations into a single loop. We could spend half the workshop on getting good at array based operations, but we won't. Instead, we refer to the [Julia documentation on arrays](https://docs.julialang.org/en/v1/manual/arrays/). During the rest of the workshop you will be exposed to array based computation here and there.
 
-## Composite types and data structures
-
-There are two ways to combine primitive data into composite data: tuples, and structures (There is also named tuples if you want). Tuples differ from arrays in that they can contain unboxed heterogeneous data, but their size should be known at compile time.
-
-```julia
-using Unitful
-
-struct Planet
-    name::String
-    mass::typeof(1.0u"kg")
-end
-```
-
-By default, a `struct` type has immutable fields.
-
-```julia
-earth = Planet("Earth", 5.97219e24u"kg")
-println("$(earth.name) weighs $(earth.mass)")
-```
-
 ::: keypoints
 
 - Julia has `if-else`, `for`, `while`, `function` and `module` blocks that are not dissimilar from other languages.
