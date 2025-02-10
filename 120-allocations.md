@@ -36,6 +36,7 @@ logistic_map(r) = n -> r * n * (1 - n)
 using IterTools
 using GLMakie
 using .Iterators: take, flatten
+using GeometryBasics
 ```
 
 ```julia
@@ -85,7 +86,7 @@ function main()
     logistic_map(r) = n -> r * n * (1 - n)
     fig = Figure(size=(1024, 512))
     for (i, r) in enumerate(LinRange(2.6, 4.0, 8))
-        ax = Axis(fig[div(i-1, 4)+1, mod1(i, 4)], title="r=$$r")
+        ax = Makie.Axis(fig[div(i-1, 4)+1, mod1(i, 4)], title="r=$$r")
         pts = take(iterated(logistic_map(r), 0.001), 50) |> collect
         lines!(ax, pts, alpha=0.5)
         plot!(ax, pts, markersize=5.0)
@@ -120,7 +121,18 @@ end
 @btime iterated_fn(logistic_map(3.5), 0.5, 1000)
 ```
 
-That seems to be slower than the original! Let's try to improve:
+That seems to be slower than the original! Let's try to improve. We can pre-allocate exactly the amount of memory needed. This will save some allocations and copies that are needed when using `push!` repeatedly.
+
+:::callout
+### Dynamicly growing vectors
+The strategy for dynamically growing vectors is as follows:
+
+- allocate more memory than is asked for.
+- as long as new elements fit in the allocated size of the vector, everything is fine.
+- when the allocated memory no longer fits the vector, allocate a new vector, twice the size of the old one, and copy the old data to the new vector.
+
+This strategy turns out to be acceptable in many real world applications.
+:::
 
 ```julia
 function iterated_fn(f, x, n)
@@ -241,7 +253,7 @@ end
 a = logistic_map_points_td(LinRange(2.6, 4.0, 1000), 1000, 1000)
 datashader(a)
 @benchmark logistic_map_points_td(LinRange(2.6, 4.0, 1000), 1000, 1000)
-@profview logistic_map_points_td(LinRange(2.6, 4.0, 1000), 1000, 1000)
+@profview for _=1:100 logistic_map_points_td(LinRange(2.6, 4.0, 1000), 1000, 1000) end
 ```
 
 :::challenge
