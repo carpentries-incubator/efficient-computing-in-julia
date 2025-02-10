@@ -198,7 +198,70 @@ The standard package for building beautiful documentation websites for Julia pac
 
 In `docs/make.jl` we see `Documenter` being used to build the documentation website, that is then deployed to GitHub Pages where it is served from.
 
-However, presently the code makes a lot of assumptions about being used with git on GitHub, and local builds tend not to render nicely. For a taste of how it looks when fully rendered, see e.g. <https://partitionedarrays.github.io/PartitionedArrays.jl/stable/>.
+However, presently the code makes a lot of assumptions about being used with git on GitHub. For the purposes of this lesson, we will make a small modification to the `docs/make.jl` file:
+```
+repo = "https://github.com/[...your username and package...]", # REMOVE this line
+remotes = nothing, # ADD this line
+```
+
+This change will make the docs building ignore that we are not currently using `git` or hosting on GitHub.
+
+Now we will add `Documenter.jl` (the package used for building the documentation) and `LiveServer` (a package that lets us serve the pages locally):
+
+```shell
+pkg> add Documenter LiveServer
+```
+
+Then we can build the documentation and serve it using the following:
+```shell
+julia> using LiveServer
+julia> servedocs()
+```
+
+There will be a lot of output and some warnings, but hopefully you will eventually see:
+```output
+✓ LiveServer listening on http://localhost:8000/ ...
+```
+Or something similar. Open this link in your web browser to see the rendered documentation.
+
+:::challenge
+# Documenting `cubic_roots`
+In the "Reference" section of the documentation website we just generated, you will find the `hello_world()` function with its docstring nicely rendered.
+
+Now try documenting your `cubic_roots()` function similarly, and rebuild the documentation.
+
+::::solution
+
+Let's add a docstring explaining what the function does, as well as an example of using it:
+
+````julia
+"""
+    roots = cubic_roots(a, b, c, d)
+
+    Returns the roots of a cubic polynomial defined by ax^3 + bx^2 + cx + d = 0
+
+```jldoctest
+julia> roots = MyPackage.cubic_roots(0, 0, 0, 0)
+(0.0 + 0.0im, NaN + NaN*im, NaN + NaN*im)
+```
+"""
+function cubic_roots(a, b, c, d)
+````
+
+Now `Ctrl+C` to stop the running server and return to `julia>` prompt. Build the documentation again:
+```shell
+julia> servedocs()
+```
+
+Refreshing the browser on the docs page should now show the new documentation rendered.
+
+As an additional example of a nice feature - the example given in the `jldoctest` is actually run and the output checked during documentation building.
+You can test this yourself by changing the arguments to `cubic_roots()` and running again. The output will no longer match that in the comment and the
+documentation build will fail. This is a nice solution to a common problem in many languages where the documentation examples fall out of sync with the
+package development.
+
+::::
+:::
 
 ### Formatting
 A good automatic formatter for Julia is `JuliaFormatter.jl`
