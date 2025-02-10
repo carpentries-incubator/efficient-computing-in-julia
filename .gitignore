@@ -57,3 +57,5 @@ scratch
 # IntelliJ IDEA files
 .idea
 **.iml
+
+exercises.md
