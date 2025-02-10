@@ -229,7 +229,7 @@ In Julia it is custom to have an exclamation mark at the end of names of functio
 
 :::callout
 ### Use `eachindex`
-Note the way we used `eachindex`. This idiom guarantees that we can't make out-of-bounds errors. Also this kind of indexing is generic over other collections than vectors. However, this is immediately destroyed by our next loop.
+Note the way we used `eachindex`. This idiom guarantees that we can't make out-of-bounds errors. Also this kind of indexing is generic over other collections than vectors. However, this generality is lost in the inner loop, where we use explicit numeric bounds. In this case those bounds actually half the amount of work we need to do, so the sacrifice is justified.
 :::
 
 :::challenge
@@ -278,6 +278,14 @@ Note that we defined the `drift!` function twice, for different arguments. We're
 ### Fixing arguments
 One pattern that you can find repeatedly in the standard library is that of *fixing* arguments of functions to make them more composable.
 For instance, most comparison operators allow you to give a single argument, saving the second argument for a second invocation.
+
+```julia
+smaller_than_3 = <(3)
+smaller_than_3(1)
+smaller_than_3(5)
+```
+
+This can be useful to write filter operations consisely:
 
 ```julia
 filter(x -> x < 3, 1:5)
