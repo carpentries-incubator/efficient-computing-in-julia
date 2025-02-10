@@ -29,6 +29,17 @@ Julia is easy to get into because it centers around a few easy to understand cor
   You may want to explain this general strategy to participants before starting on the main content. This will build both patience and trust with your audience.
 :::
 
+## Overview of the Workshop
+
+It is not feasible to teach all of Julia in just two days. We'll try to get you on your journey with Julia by showing lots of real world examples. Meanwhile, you'll be Roughly:
+
+1. (3h) Get you started with Julia by simulating gravity: the three body problem. You'll get familiar with the basic syntax of Julia and the little nooks and crannies that set this language appart from Python or MATLAB.
+2. (3h) Learn to work with Julia's packaging system and best practices.
+3. (4h) Benchmarking, profiling, type stability and allocations. We will work with many different examples here. You'll learn the most important tools and concepts that matter when you want to write Julia code that runs efficiently.
+4. (2h) Parallel and GPU programming: computing the Julia fractal.
+
+Some of the examples may be a bit hard to grasp. For example, we'll see a very difficult to understand algorithm to compute $\pi$. In these cases we'll treat the given code as black boxes that we can poke at. The power of a good computer program is often that we don't need to know everything to be able to work with it.
+
 ## Why Julia
 
 Most of the participants will be coming from Python, MATLAB or a lower level language like C/C++ or Fortran. Why should you be interested in learning Julia?

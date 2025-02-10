@@ -92,22 +92,6 @@ function gravitational_force(m1, m2, r)
 end
 ```
 
-Let's compute the force between Earth and Moon, given the following constants:
-
-```julia
-const EARTH_MASS = 5.97219e24
-const LUNAR_MASS = 7.34767e22
-const LUNAR_DISTANCE = 384_400_000.0
-```
-
-```julia
-gravitational_force(EARTH_MASS, LUNAR_MASS, LUNAR_DISTANCE)
-```
-
-```output
-1.982084770423259e20
-```
-
 There is a shorter syntax for functions that is useful for one-liners:
 
 ```julia
@@ -137,7 +121,7 @@ F_g = (m1, m2, r) -> G * m1 * m2 / r^2
 Use the `map` function in combination with an anonymous function to compute the squares of the first ten integers (use `1:10` to create that range).
 
 :::: solution
-Read the documentation of `map` using the `?` help mode, also available in Pluto.
+Read the documentation of `map` using the `?` help mode in the REPL.
 
 ```julia
 map(x -> x^2, 1:10)
@@ -294,8 +278,42 @@ Julia has macros. These are invocations that change the behaviour of a given pie
 
 We will explain some macro's as they are used. We won't get into writing macros ourselves. They can be incredibly useful, but should also come with a warning: overuse of macros can make your code non-idiomatic and therefore harder to read. Also macro-heavy frameworks tend to be harder to debug, and often lack in composability.
 
-## Some important first lessons
+## Arrays and broadcasting
 
+Julia has built-in support for multi-dimensional arrays. Any function that can be applied to single values, can also be applied to entire arrays using the concept of **broadcasting**.
+
+```julia
+x = -2π:0.01:2π
+y = sin.(x)
+```
+
+Notice that the broadcasting mechanism works transparently over ranges as well as arrays. We can sequence broadcasted operations:
+
+```julia
+y = sin.(x) ./ x
+```
+
+The compiler will fuse chained broadcasting operations into a single loop. We could spend half the workshop on getting good at array based operations, but we won't. Instead, we refer to the [Julia documentation on arrays](https://docs.julialang.org/en/v1/manual/arrays/). During the rest of the workshop you will be exposed to array based computation here and there.
+
+## Composite types and data structures
+
+There are two ways to combine primitive data into composite data: tuples, and structures (There is also named tuples if you want). Tuples differ from arrays in that they can contain unboxed heterogeneous data, but their size should be known at compile time.
+
+```julia
+using Unitful
+
+struct Planet
+    name::String
+    mass::typeof(1.0u"kg")
+end
+```
+
+By default, a `struct` type has immutable fields.
+
+```julia
+earth = Planet("Earth", 5.97219e24u"kg")
+println("$(earth.name) weighs $(earth.mass)")
+```
 
 ::: keypoints
 

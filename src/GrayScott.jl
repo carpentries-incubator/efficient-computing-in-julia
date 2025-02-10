@@ -43,19 +43,25 @@ struct Reader{T}
     func::T
 end
 
-macro reader(formal, func)
-    println(formal)
+macro reader(formals, func)
+    env = (:($f = r.$f) for f in formals.args)
     if @capture(shortdef(func), name_(args__) = body_)
-        return :($name($(args...)) = Reader($formal -> $body))
+        return :($name($(args...)) = Reader(function (r)
+            $(env...)
+            $(body)
+        end))
     end
     if @capture(shortdef(func), name_(args__) where {T_} = body_)
-        return :($name($(args...)) where {$T} = Reader($formal -> $body))
+        return :($name($(args...)) where {$T} = Reader(function (r)
+            $(env...)
+            $(body)
+        end))
     end
 end
 
-@reader r dx(u) = (u[1, 0] - u[-1, 0]) / (2 * r.Δx)
-@reader r dy(u) = (u[0, 1] - u[-1, 0]) / (2 * r.Δx)
-@reader r Δ(u) = (u[1, 0] + u[0, 1] + u[-1, 0] + u[0, -1] - 4u[0, 0]) / r.Δx^2
+@reader [Δx] dx(u) = (u[1, 0] - u[-1, 0]) / (2Δx)
+@reader [Δx] dy(u) = (u[0, 1] - u[-1, 0]) / (2Δx)
+@reader [Δx] Δ(u) = (u[1, 0] + u[0, 1] + u[-1, 0] + u[0, -1] - 4u[0, 0]) / Δx^2
 
 @inline (a::Reader{A})(r) where {A} = a.func(r)
 @inline Base.map(f, a::Reader{A}, b::Reader{B}) where {A, B} = Reader(r->f(a(r), b(r)))
