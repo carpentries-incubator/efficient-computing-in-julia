@@ -78,7 +78,7 @@ end
 
 ```julia
 let p = Point2(1, 3)
-  println("Point at ${p.x}, ${p.y}")
+  println("Point at $(p.x), $(p.y)")
 end
 ```
 
@@ -90,7 +90,9 @@ dot(a::Point2, b::Point2) = a.x*b.x + a.y*b.y
 
 :::challenge
 
-### 3d Point
+### 3D Point
+
+Create a structure that represents a point in 3D space and implement the dot product for it.
 
 ::::solution
 
@@ -136,15 +138,44 @@ end
 struct Bike <: Vehicle
 end
 
-function travel_time(v::Vehicle, distance::Float64)
+bike = Bike()
+car = Car()
+
+function direction(v::Vehicle)
+  return "forward"
 end
 
-function fuel_cost(v::Vehicle, ::Float64)
+println("A bike moves: $(direction(bike))")
+println("A car moves: $(direction(car))")
+
+function fuel_cost(v::Bike, distance::Float64)
   return 0.0
 end
 
 function fuel_cost(v::Car, distance::Float64)
+  return 5.0 * distance
 end
+
+println("Cost for riding a bike for 10km: $(fuel_cost(bike, 10.0))")
+println("Cost for driving a car for 10km: $(fuel_cost(car, 10.0))")
+```
+
+```output
+A bike moves: forward
+A car moves: forward
+Cost for riding a bike for 10km: 0.0
+Cost for driving a car for 10km: 50.0
+```
+
+An abstract type cannot be instantiated directly:
+
+```julia
+vehicle = Vehicle()
+```
+
+```output
+ERROR: MethodError: no constructors have been defined for Vehicle
+The type `Vehicle` exists, but no method is defined for this combination of argument types when trying to construct it.
 ```
 
 :::
