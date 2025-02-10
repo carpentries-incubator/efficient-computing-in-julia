@@ -409,6 +409,7 @@ Plot the orbit of the moon around the earth. Make a `Dataframe` that contains al
 - standard functions like `rand`, `zero` and operators can be extended by libraries to work with new types 
 - functions (not objects) are central to programming Julia
 - don't over-specify argument types: Julia is dynamically typed, embrace it
+- `eachindex` and relatives are good ways iterate collections
 :::
 
 ::: spoiler
