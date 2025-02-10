@@ -255,6 +255,34 @@ run_eca_builder2(30, 1024) |> to_image |> FileIO.save("episodes/fig/rule30.png")
 
 ![](fig/rule30.png){alt="a curious collection of chaotic pixels"}
 
+:::challenge
+### Rows vs Columns
+In the last solution we generated the image column by column. Try to change the algorithm to write out row by row. The image will appear rotated. Did this affect the performance? Why do you think that is?
+
+::::solution
+
+```julia
+function run_eca_builder2(r::Int, n::Int)
+    x = zeros(Bool, n)
+    x[n÷2] = 1
+    b = Vector{Bool}(undef, n)
+
+    result = Array{Bool,2}(undef, n ÷ 2, n)
+    result[1, :] .= x
+
+    for i in 2:(n÷2)
+        @views rule(r)(x, b)
+        x, b = b, x
+        result[i, :] .= x
+    end
+    return result
+end
+```
+
+This should be significantly slower. Columns are consecutive in memory, making copying operations much easier for the CPU.
+::::
+:::
+
 ### StaticArrays
 We've actually already seen static arrays in use, when we used the `Vec3d` type to store three dimensional vectors in our gravity simulation. Static arrays can be very useful to reduce allocations of small arrays. In our case, the `nb` array can be made into a static array.
 

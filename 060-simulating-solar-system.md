@@ -329,6 +329,8 @@ function run_simulation(particles, dt, n)
 end
 ```
 
+Note the use of ellipsis (`...`) here. This is similar to tuple unpacking in Python. The iterator before the ellipsis is expanded into separate arguments to the `DataFrame` function call.
+
 ### Frame of reference
 We need to make sure that our entire system doesn't have a net velocity. Otherwise it will be hard to visualize our results!
 
