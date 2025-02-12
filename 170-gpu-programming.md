@@ -179,13 +179,7 @@ heatmap(out_host)
 @benchmark julia_host(c, 1f0/600, 1024, out_host)
 ```
 
-Hint 1: you need to convert the `@index(Global)` index into a `(i, j)` pair. You can do this by computing the quotient and remainder to the image width.
-
-```julia
-idx = @index(Global)
-i = (idx-1) % w + 1
-j = (idx-1) ÷ w + 1
-```
+Hint 1: There exists a `@index(Global, Cartesian)` macro.
 
 Hint 2: on Intel we needed a gang size that divides the width of the image, in this case `480` seemed to work.
 
@@ -194,11 +188,10 @@ Hint 2: on Intel we needed a gang size that divides the width of the image, in t
 ```julia
 @kernel function julia_dev(c::ComplexF32, s::Float32, maxit::Int, out)
 	w, h = size(out)
-	idx = @index(Global)
-	i = (idx-1) % w + 1
-	j = (idx-1) ÷ w + 1
-	x = (i - w ÷ 2) * s
-	y = (j - h ÷ 2) * s
+	idx = @index(Global, Cartesian)
+	
+    x = (idx[1] - w ÷ 2) * s
+	y = (idx[2] - h ÷ 2) * s
 	z = x + 1f0im * y
 
 	out[idx] = maxit
