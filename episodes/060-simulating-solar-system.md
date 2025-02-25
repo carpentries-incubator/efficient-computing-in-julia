@@ -16,10 +16,6 @@ title: Simulating the Solar System
 - Get familiar with some idioms in Julia
 :::
 
-::: instructor
-
-:::
-
 In this episode we'll be building a simulation of the solar system. That is, we'll only consider the Sun, Earth and Moon, but feel free to add other planets to the mix later on! To do this we need to work with the laws of gravity. We will be going on extreme tangents, exposing interesting bits of the Julia language as we go.
 
 ## Introduction to `Unitful`
@@ -40,8 +36,21 @@ With `Unitful` we can attach units to quantities using the `@u_str` syntax:
 2.0u"m" - 8.0u"cm"
 ```
 
-:::callout
+At the moment it is not important to precisely understand the syntax. Just notice that the information on the units is stored in Julia's type system:
+
+```julia
+typeof(2.0u"m")
+```
+
+```output
+Quantity{Float64, 𝐋, Unitful.FreeUnits{(m,), 𝐋, nothing}}
+```
+
+We see a `Quantity` represented by a double precision floating-point value, having dimension of length, and units of meters. All of the unit information is captured in the type system, which only acts at compile time. At run-time, this is an ordinary `Float64`.
+
+:::instructor
 ### Breaking down the syntax
+You may get questions about the syntax. If you have time, this is how to break it down.
 
 There is a bit of syntax to break down here. A number followed by an identifier are multiplied with the `*` operator. This is just syntactic sugar, but it makes certain expressions nicer.
 
@@ -57,6 +66,10 @@ macro twice_str(a)
 end
 
 twice"Hello"
+```
+
+```output
+"HelloHello"
 ```
 
 Combining the `@u_str` macro, which is defined in `Unitful`, with the multiplication sugar gets us here:
@@ -129,7 +142,13 @@ where $\hat{r} = \vec{r} / |r|$, so in total we get a third power, $|r|^3 = (r^2
 
 ```julia
 #| id: gravity
-gravitational_force(m1, m2, r::AbstractVector) = r * (G * m1 * m2 * (r ⋅ r)^(-1.5))
+"""
+    gravitational_force(m1, m2, r)
+
+Returns the gravitational force as a function of masses `m1` and `m2` and `r` the distance vector between them. The force will be in the direction of `r`.
+"""
+gravitational_force(m1, m2, r::AbstractVector) =
+    r * (G * m1 * m2 * (r ⋅ r)^(-1.5))
 ```
 	
 ```julia
@@ -141,8 +160,8 @@ Not all of you will be jumping up and down for doing high-school physics.
 We will get to other sciences than physics later in this workshop, I promise!
 :::
 
-
-:::callout
+:::instructor
+### Unnessecary detail about the `dot` operator
 The `⋅` operator (enter using `\cdot<TAB>`) performs the `LinearAlgebra.dot` function. We could have done `sum(r * r)`. However, the `sum` function works on iterators and has a generic implementation. We could define our own `dot` function:
 
 ```julia
@@ -182,24 +201,83 @@ There also is the `one` function which returns the multiplicative identity of a 
 :::
 
 ## Particles
-We are now ready to define the `Particle` type.
+We are now ready to define the `Particle` type. First we define some constants so that our code remains readable.
 
 ```julia
 #| id: gravity
-using Unitful: Mass, Length, Velocity
+
+const Mass = typeof(1.0u"kg")
+const MomentumVector = typeof(Vec3d(1)u"kg*m/s")
+const PositionVector = typeof(Vec3d(1)u"m")
+const VelocityVector = typeof(Vec3d(1)u"m/s")
+```
+
+```julia
+#| id: gravity
 mutable struct Particle
-    mass::typeof(1.0u"kg")
-    position::typeof(Vec3d(1)u"m")
-    momentum::typeof(Vec3d(1)u"kg*m/s")
+    mass::Mass
+    position::PositionVector
+    momentum::MomentumVector
 end
+```
 
-Particle(mass::Mass, position::Vec3{L}, velocity::Vec3{V}) where {L<:Length,V<:Velocity} =
-    Particle(mass, position, velocity * mass)
+We can write a function to generate random particles with some spread and (velocity) dispersion:
 
+```julia
+#| id: gravity
+random_particle(mass=1e6u"kg", spread=1.0u"m", dispersion=2.0u"mm/s") =
+    Particle(mass, randn(Vec3d) * spread, randn(Vec3d) * dispersion * mass)
+
+function random_particles(n; seed=0, args...)
+    Random.seed!(seed)
+    [random_particle(args...) for _ in 1:n]
+end
+```
+
+Note the ellipsis `...`. Those do variadic argument capture.
+We can also define a function to  obtain the velocity of a particle:
+
+```julia
 velocity(p::Particle) = p.momentum / p.mass
 ```
 
-We store the momentum of the particle, so that what follows is slightly simplified.
+:::challenge
+### Getters
+
+a, Create $N$ random particles (say $N=3$, but it really doesn't matter), and get their velocity in a one-liner. Don't use for-loops, just broadcasting.
+b. Can you do the same for obtaining the position and/or momentum? Implement a getter for those properties.
+c. We can also meaningfully extend the getter for `momentum` on collections of particles. The total momentum of a set of particles is the sum of their individual momenta. Read the documention on the `sum` function. Can you find a particularly nice way to implement `momentum(p::AbstractArray{Particle})`?
+d. Do the same for the total mass of a set of particles. Can you now generalize the definition for `velocity`, so that the same function works for particles and collections of particles?
+
+::::solution
+
+```julia
+velocity.(random_particles(3))
+```
+
+or
+    
+```julia
+random_particles(3) .|> velocity
+```
+
+```julia
+#| id: gravity
+mass(p::Particle) = p.mass
+position(p::Particle) = p.position
+momentum(p::Particle) = p.momentum
+
+# random_particles(3) .|> momentum
+# etc...
+
+mass(p::AbstractArray{Particle}) = sum(mass, p)
+momentum(p::AbstractArray{Particle}) = sum(momentum, p)
+velocity(p) = momentum(p) / mass(p)
+```
+
+By abstracting struct member access into functions, we could write some very elegant code to compute the total net velocity of a group of particles! In general, it is considered good practice to create accessor functions like this, so that functions that rely on member access then become more portable (i.e. they can be made to work on other types by extending the accessor methods).
+::::
+:::
 
 It is custom to divide the computation of orbits into a *kick* and *drift* function. (There are deep mathematical reasons for this that we won't get into.)
 We'll first implement the `kick!` function, that updates a collection of particles, given a certain time step.
@@ -232,7 +310,7 @@ In Julia it is custom to have an exclamation mark at the end of names of functio
 Note the way we used `eachindex`. This idiom guarantees that we can't make out-of-bounds errors. Also this kind of indexing is generic over other collections than vectors. However, this generality is lost in the inner loop, where we use explicit numeric bounds. In this case those bounds actually half the amount of work we need to do, so the sacrifice is justified.
 :::
 
-:::challenge
+:::callout
 ### Broadcasting vs. specialization
 We're subtracting two vectors. We could have written that with dot-notation indicating a broadcasted function application. Generate two random numbers:
 
@@ -266,7 +344,7 @@ function drift!(p::Particle, dt)
 end
 
 function drift!(particles, dt)
-    for p in values(particles)
+    for p in particles
         drift!(p, dt)
     end
     return particles
@@ -275,6 +353,7 @@ end
 
 Note that we defined the `drift!` function twice, for different arguments. We're using the dispatch mechanism to write clean/readable code.
 
+:::instructor
 ### Fixing arguments
 One pattern that you can find repeatedly in the standard library is that of *fixing* arguments of functions to make them more composable.
 For instance, most comparison operators allow you to give a single argument, saving the second argument for a second invocation.
@@ -321,23 +400,79 @@ leap_frog!(particles, dt) = particles |> kick!(dt) |> drift!(dt)
 leap_frog!(dt) = Base.Fix2(leap_frog!, dt)
 ```
 
+:::
+
+```julia
+#| id: gravity
+
+"""
+    leap_frog!(particles, dt)
+
+One leap-frog integration time step `dt` for `particles` under
+gravity.
+"""
+function leap_frog!(particles, dt)
+    drift!(particles, dt/2)
+    kick!(particles, dt)
+    drift!(particles, dt/2)
+end
+```
+
 ## With random particles
 Let's run a simulation with some random particles
 
 ```julia
 #| id: gravity
-function run_simulation(particles, dt, n)
-    result = Matrix{typeof(Vec3d(1)u"m")}(undef, n, length(particles))
+function run_simulation(particles, dt, n_steps)
     x = deepcopy(particles)
-    for c in eachrow(result)
-        x = leap_frog!(dt)(x)
-        c[:] = [p.position for p in values(x)]
-    end
-    DataFrame(:time => (1:n)dt, (Symbol.("p", keys(particles)) .=> eachcol(result))...)
+    [deepcopy(leap_frog!(x, dt)) for _ in 1:n_steps]
+end
+
+function random_orbits(n, mass; dt=1.0u"s", steps=5000, args...)
+    particles = random_particles(n; args...)
+    run_simulation(particles, dt, steps) |> collect
 end
 ```
 
-Note the use of ellipsis (`...`) here. This is similar to tuple unpacking in Python. The iterator before the ellipsis is expanded into separate arguments to the `DataFrame` function call.
+:::spoiler
+
+### Plot
+
+```julia
+#| classes: ["task"]
+#| file: scripts/plot-two-body-drift.jl
+#| creates: episodes/fig/two-body-drift.svg
+#| collect: figures
+module Script
+
+using Unitful
+using CairoMakie
+using EfficientJulia.Gravity
+
+function main()
+    fig = Figure()
+    ax = Axis3(fig[1, 1])
+
+    orbits = run_simulation(
+        random_particles(2), 1.0u"s", 5000)
+    for i in 1:2
+        orbit = position.(getindex.(orbits, i))
+        lines!(ax, orbit / u"m")
+    end
+    save("episodes/fig/two-body-drift.svg", fig)
+end
+
+end
+
+Script.main()
+```
+
+:::
+
+![orbits](fig/two-body-drift.svg){alt="Orbits of two particles are drifting."}
+
+As you see, the random particles we generated have a non-zero total momentum.
+
 
 ### Frame of reference
 We need to make sure that our entire system doesn't have a net velocity. Otherwise it will be hard to visualize our results!
@@ -345,68 +480,77 @@ We need to make sure that our entire system doesn't have a net velocity. Otherwi
 ```julia
 #| id: gravity
 function set_still!(particles)
-    total_momentum = sum(p.momentum for p in values(particles))
-    total_mass = sum(p.mass for p in values(particles))
-    correction = total_momentum / total_mass
-    for p in values(particles)
-        p.momentum -= correction * p.mass
+    v = velocity(particles)
+    for p in particles
+        p.momentum -= v * mass(p)
     end
     return particles
 end
 ```
 
-### Plotting
+:::spoiler
+
+### Plot
 
 ```julia
-#| id: gravity
-using DataFrames
-using GLMakie
+#| classes: ["task"]
+#| file: scripts/plot-two-body-still.jl
+#| creates: episodes/fig/random-orbits.svg
+#| collect: figures
+module Script
 
-function plot_orbits(orbits::DataFrame)
-    fig = Figure()
-    ax = Axis3(fig[1, 1], limits=((-5, 5), (-5, 5), (-5, 5)))
+using Unitful
+using CairoMakie
+using EfficientJulia.Gravity
 
-    for colname in names(orbits)[2:end]
-        scatter!(ax, [orbits[1, colname] / u"m"])
-        lines!(ax, orbits[!, colname] / u"m")
+function main()
+    fig = Figure(size=(1000, 500))
+    ax1 = Axis3(fig[1, 1])
+
+    orbits = run_simulation(
+        set_still!(random_particles(2)), 1.0u"s", 5000)
+    for i in 1:2
+        orbit = position.(getindex.(orbits, i))
+        lines!(ax1, orbit / u"m")
     end
 
-    fig
+    ax2 = Axis3(fig[1, 2])
+    orbits = run_simulation(
+        set_still!(random_particles(3, seed=3)), 1.0u"s", 5000)
+    for i in 1:3
+        orbit = position.(getindex.(orbits, i))
+        lines!(ax2, orbit / u"m")
+        scatter!(ax2, orbit[end] / u"m")
+    end
+    save("episodes/fig/random-orbits.svg", fig)
 end
-```
 
-Try a few times with two random particles. You may want to use the `set_still!` function to negate any collective motion.
-
-```julia
-#| id: gravity
-function random_orbits(n, mass)
-    random_particle() = Particle(mass, randn(Vec3d)u"m", randn(Vec3d)u"mm/s")
-    particles = set_still!([random_particle() for _ in 1:n])
-    run_simulation(particles, 1.0u"s", 5000)
 end
-```
-	
-```julia
-random_orbits(3, 1e6u"kg") |> plot_orbits
+
+Script.main()
 ```
 
-![Possible random orbits for two and three particles.](fig/random-orbits.png){alt="the three-body problem"}
+:::
+
+![Orbits of particles set still. Two particles give elliptic orbits, three make total chaos.](fig/random-orbits.svg){alt="Orbits of particles set still. Two particles give elliptic orbits, three make total chaos."}
+
+
 
 ## Solar System
 
 ```julia
 #| id: gravity
-const SUN = Particle(2e30u"kg",
-    Vec3d(0.0)u"m",
-    Vec3d(0.0)u"m/s")
+# const SUN = Particle(2e30u"kg",
+#     Vec3d(0.0)u"m",
+#     Vec3d(0.0)u"m/s")
 
-const EARTH = Particle(6e24u"kg",
-    Vec3d(1.5e11, 0, 0)u"m",
-    Vec3d(0, 3e4, 0)u"m/s")
+# const EARTH = Particle(6e24u"kg",
+#     Vec3d(1.5e11, 0, 0)u"m",
+#     Vec3d(0, 3e4, 0)u"m/s")
 
-const MOON = Particle(7.35e22u"kg",
-    EARTH.position + Vec3d(3.844e8, 0.0, 0.0)u"m",
-    velocity(EARTH) + Vec3d(0, 1e3, 0)u"m/s")
+# const MOON = Particle(7.35e22u"kg",
+#     EARTH.position + Vec3d(3.844e8, 0.0, 0.0)u"m",
+#     velocity(EARTH) + Vec3d(0, 1e3, 0)u"m/s")
 ```
 
 ::: challenge
@@ -429,11 +573,16 @@ Plot the orbit of the moon around the earth. Make a `Dataframe` that contains al
 #| file: src/Gravity.jl
 module Gravity
 
-using GLMakie
 using Unitful
 using GeometryBasics
 using DataFrames
 using LinearAlgebra
+using Random
+
+import Base: position
+
+export random_partcle, random_particles, velocity, mass, momentum, position
+export run_simulation, set_still!
 
 <<gravity>>
 
@@ -441,7 +590,7 @@ end
 ```
 
 ```julia
-#| classes: ["task"]
+##| classes: ["task"]
 #| creates: episodes/fig/random-orbits.png
 #| collect: figures
 

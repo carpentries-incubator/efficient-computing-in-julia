@@ -19,3 +19,8 @@ name = "Output"
 identifiers = ["output"]
 comment = { open = "#" }
 
+[[languages]]
+name = "Shell"
+identifiers = ["shell"]
+comment = { open = "#" }
+

@@ -2,6 +2,23 @@ module DaisyWorld
 
 using LinearAlgebra
 
+module ODE
+
+function forward_euler(df, y0, t)
+    result = Vector{typeof(y0)}(undef, length(t) + 1)
+    result[1] = y = y0
+    dt = step(t)
+
+    for i in eachindex(t)
+        y = y + df(y, t) * dt
+        result[i+1] = y
+    end
+    
+    return result
+end
+
+end
+
 abstract type AbstractInput end
 Broadcast.broadcastable(input::AbstractInput) = Ref(input)
 
@@ -50,7 +67,7 @@ module Analysis
 using Makie
 using GeometryBasics
 using ..DaisyWorld
-using ...ODE: forward_euler
+using ..ODE: forward_euler
 
 function plot_birth_rate()
     p = DaisyWorld.Parameters()
@@ -89,19 +106,3 @@ end
 end
 
 
-module ODE
-
-function forward_euler(df, y0, t)
-    result = Vector{typeof(y0)}(undef, length(t) + 1)
-    result[1] = y = y0
-    dt = step(t)
-
-    for i in eachindex(t)
-        y = y + df(y, t) * dt
-        result[i+1] = y
-    end
-    
-    return result
-end
-
-end

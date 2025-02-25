@@ -2,111 +2,105 @@
   "files": [
     {
       "deps": [
+        "episodes/120-allocations.md",
+        "episodes/120-allocations.md",
         "episodes/020-getting-started.md",
         "episodes/060-simulating-solar-system.md",
-        "episodes/110-performance-analysis.md",
-        "episodes/110-performance-analysis.md"
+        "episodes/060-simulating-solar-system.md"
       ],
-      "hexdigest": "bb8f669d3f724241b2d6caae9503cec675a9c9a460ab6a335d8aa09d4292da0f",
-      "modified": "2025-01-23T16:40:10.701899",
+      "hexdigest": "72f10f1b71ef3082bc1efa46cccaa9e21f32f76f576deaac49a1b4b9906975f8",
+      "modified": "2025-02-25T16:13:23.986755",
       "path": ".entangled/tasks.json",
-      "size": 4389
+      "size": 3827
     },
     {
       "deps": null,
-      "hexdigest": "a1f9d20deab0d89ec37bfbc2091551303989befaf23d421abeef10fb8da2c626",
-      "modified": "2025-01-14T16:06:22.171072",
+      "hexdigest": "1e90a576e088f930e96a477550a815f7b961c0c517ba7e9afef9362e853d9036",
+      "modified": "2025-02-10T20:25:36.333972",
       "path": "episodes/020-getting-started.md",
-      "size": 8032
+      "size": 10201
     },
     {
       "deps": null,
-      "hexdigest": "6aa0d6a9e126d8fe59caf7e8c822896db84d78019a957335f5a82885d53e6147",
-      "modified": "2025-01-14T16:06:22.171072",
+      "hexdigest": "de3c5e25ebbee8c6df5b96df64741acb7c43f30ec439219bda787396d7020f20",
+      "modified": "2025-02-10T20:29:09.540921",
       "path": "episodes/030-julia-basics.md",
-      "size": 7218
+      "size": 9042
     },
     {
       "deps": null,
-      "hexdigest": "2d303f4669ca13a7b7203ec81730d78c60b4a75260ea5153c182c06b8668ebc0",
-      "modified": "2025-01-14T16:06:22.170072",
+      "hexdigest": "96849c5b6af97618678b5464ca37f1812ab5d5ddd1ffae5341b1f098f2336837",
+      "modified": "2025-02-10T20:25:36.325972",
       "path": "episodes/040-dispatch-and-types.md",
-      "size": 2434
+      "size": 3226
     },
     {
       "deps": null,
-      "hexdigest": "d4ec4268874428a0bcba8d8ce52f96bc6c4ca8d1330c1f0d0188b507feba31eb",
-      "modified": "2025-01-14T16:06:22.171072",
+      "hexdigest": "6c82db8a7c66b46801b630b4c321a06fe07a9f38f5773e99f21c8b1e8f5e2a32",
+      "modified": "2025-02-25T16:38:56.369591",
       "path": "episodes/060-simulating-solar-system.md",
-      "size": 12300
+      "size": 17377
     },
     {
       "deps": null,
-      "hexdigest": "b4d91f71a85ac7a0fff5833a732068b77ea0f8594dec65366a587e04420937c1",
-      "modified": "2025-01-14T16:06:22.170072",
+      "hexdigest": "61d21c8b8f5c932760d98d52a83493793e0629f9951f5d233e01850858b9c7d5",
+      "modified": "2025-02-09T18:14:43.402460",
       "path": "episodes/070-pkg.md",
-      "size": 670
+      "size": 9056
     },
     {
       "deps": null,
-      "hexdigest": "348ca5f3d5ee49608b44afb4d33d62f31339bf3d708b5b7c9ba586dc74a05ef4",
-      "modified": "2025-01-14T16:06:22.170072",
+      "hexdigest": "9a6812809e3e6e942505cf857ce6de77c1eba36466c9a8b1ae2a1043e78ef22b",
+      "modified": "2025-02-09T18:14:43.402460",
       "path": "episodes/080-package-development.md",
-      "size": 518
+      "size": 11695
     },
     {
       "deps": null,
-      "hexdigest": "b9641a2821999091e65ae8a7541a468b16a51de7e8458602cf3692e7b7296300",
-      "modified": "2025-01-14T16:06:22.170072",
+      "hexdigest": "dcf4f8f51666c172ef05b30855a09b8012721c80d8695a75c789803cc214f4a7",
+      "modified": "2025-02-10T20:25:36.325972",
       "path": "episodes/090-best-practices.md",
-      "size": 1960
+      "size": 9469
     },
     {
       "deps": null,
-      "hexdigest": "99189c1f019a139c45330e5d76c6ff773c3c053a803c72934f4c575b88d8d673",
-      "modified": "2025-01-14T16:06:22.170072",
+      "hexdigest": "9b3edde0111ca8f6f8506e2f5c20730f4694d1dcd7d6d8af61bb78bd285664b4",
+      "modified": "2025-02-09T21:31:49.735731",
       "path": "episodes/100-introduction-performance.md",
-      "size": 378
+      "size": 10645
     },
     {
       "deps": null,
-      "hexdigest": "e2b7e0791198d7d02601ac9316a6d0485fbb180935b684f2d0209e6a619e210a",
-      "modified": "2025-01-20T10:16:59.258857",
-      "path": "episodes/110-performance-analysis.md",
-      "size": 6898
+      "hexdigest": "73b496f93b6e7a5526dbe3c1b96191e305a9e5a77a0644a9186ebabb15ed718f",
+      "modified": "2025-02-10T22:14:45.513231",
+      "path": "episodes/120-allocations.md",
+      "size": 8634
     },
     {
       "deps": null,
-      "hexdigest": "c325ed91523fc2467a7c3b63cb30c00a08d1e703b723a34d192e2b784a77bc19",
-      "modified": "2025-01-29T10:45:11.595647",
-      "path": "episodes/120-dos-and-donts.md",
-      "size": 3643
-    },
-    {
-      "deps": null,
-      "hexdigest": "fbcd1922037ce166983ca5083f965245a8b16b6d2c740c539a860b5208071248",
-      "modified": "2025-01-30T14:44:19.208205",
+      "hexdigest": "b471485e2c9749cc810b33312d99a0700686741ab1694a04b8dc2c16e633d289",
+      "modified": "2025-02-10T21:40:59.337537",
       "path": "episodes/130-value-types-and-ca.md",
-      "size": 11301
+      "size": 12197
     },
     {
       "deps": null,
-      "hexdigest": "850aed2367bf251022c1ae28c3827737c395bbe54b1e277448b64604edd4c95e",
-      "modified": "2025-01-30T14:56:05.556961",
+      "hexdigest": "df211520623a53290e226efed488804bd84476edf84c8097554f1e10d184b05e",
+      "modified": "2025-02-24T15:29:46.901779",
       "path": "episodes/140-threads-async-and-tasks.md",
-      "size": 2136
+      "size": 5330
     },
     {
       "deps": null,
       "hexdigest": "e826536d7fd16d5e5f0de15f5e597d94e9e4559a1e834a8e4d735e492469ce04",
-      "modified": "2025-01-14T16:06:22.171072",
+      "modified": "2025-02-06T01:23:22.632677",
       "path": "episodes/170-gpu-programming.md",
       "size": 4808
     },
     {
       "deps": null,
       "hexdigest": "1c40e1cedb3976000886cfce1144431f9fc4f1ed72c7c0927523c77ed798771b",
-      "modified": "2025-01-30T11:59:29.042472",
+      "modified": "2025-02-09T18:14:43.414460",
       "path": "episodes/180-cool-libraries.md",
       "size": 2621
     },
@@ -118,43 +112,47 @@
       "size": 5047
     },
     {
-      "deps": null,
-      "hexdigest": "8c62affdec490ea3e63911020734067a4af72fc5a09c3bba7608fbfac99d0459",
-      "modified": "2025-01-14T16:06:22.171072",
-      "path": "episodes/a02-julia-fractals.md",
-      "size": 2689
-    },
-    {
-      "deps": null,
-      "hexdigest": "e4c7daeedd55f7efd52dfdf9dc0862baed8e7ca8620f38d056e14c5f3d5cb469",
-      "modified": "2025-01-14T16:06:22.171072",
-      "path": "episodes/a03-lorenz-attractor.md",
-      "size": 740
+      "deps": [
+        "episodes/060-simulating-solar-system.md"
+      ],
+      "hexdigest": "3be798ba09cc57f68dd520ea598a463d550b839ca33f08dd69710c09bbb22517",
+      "modified": "2025-02-25T15:25:56.543263",
+      "path": "scripts/plot-two-body-drift.jl",
+      "size": 618
     },
     {
       "deps": [
         "episodes/060-simulating-solar-system.md"
       ],
-      "hexdigest": "59116ce49979a1680ff91272d68d5511ff1d67eb09c32b79eb9ce162f7f0ac99",
-      "modified": "2025-01-14T16:06:22.178072",
+      "hexdigest": "7554edd79ed63a7e1411f07ec828a97feec5fe85998acbf8d1dca8bd9a5339ee",
+      "modified": "2025-02-25T16:29:01.430404",
+      "path": "scripts/plot-two-body-still.jl",
+      "size": 915
+    },
+    {
+      "deps": [
+        "episodes/060-simulating-solar-system.md"
+      ],
+      "hexdigest": "1f207fe5d471bc24bee79a801c710017048c4b526e2e08d898ea922265379a4f",
+      "modified": "2025-02-25T16:05:55.132099",
       "path": "src/Gravity.jl",
-      "size": 4015
+      "size": 4517
     },
     {
       "deps": [
         "episodes/140-threads-async-and-tasks.md"
       ],
-      "hexdigest": "867682ad7ba02b0a409cd789e9fadf842e39daeee9c62dbc9fff05e6fb438937",
-      "modified": "2025-01-30T14:56:16.649045",
+      "hexdigest": "0aa49899cf4f6f5141c48046acabdbaa793f4ca0d7eddd4a2a9b7e16652b6ae9",
+      "modified": "2025-02-24T15:29:39.763997",
       "path": "src/GrayScott.jl",
-      "size": 135
+      "size": 3326
     },
     {
       "deps": [
         "episodes/130-value-types-and-ca.md"
       ],
       "hexdigest": "5987388d812b4608d9b5cbf4d9d02db9562086519a02fe072ea5e09510d0ba67",
-      "modified": "2025-01-30T14:44:23.597244",
+      "modified": "2025-02-09T18:14:43.453460",
       "path": "src/Stencils.jl",
       "size": 2032
     }
@@ -162,6 +160,8 @@
   "source": [],
   "target": [
     ".entangled/tasks.json",
+    "scripts/plot-two-body-drift.jl",
+    "scripts/plot-two-body-still.jl",
     "src/Gravity.jl",
     "src/GrayScott.jl",
     "src/Stencils.jl"
