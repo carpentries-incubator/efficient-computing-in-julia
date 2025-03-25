@@ -480,12 +480,12 @@ do.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-1" class="tab-content">
-<div id="nav-tabpanel-1-1" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-1-1">
+<div id="nav-tabpanel-1-1" class="tab-pane show active" aria-labelledby="nav-tab-1-1" role="tabpanel">
 <p>Install Julia by following the instruction on <a href="https://julialang.org/downloads/" class="external-link">the Julia webpage, downloads
 section</a>. This will also install <code>juliaup</code> which maintains
 different versions of Julia on your machine.</p>
 </div>
-<div id="nav-tabpanel-1-2" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-2">
+<div id="nav-tabpanel-1-2" class="tab-pane" aria-labelledby="nav-tab-1-2" role="tabpanel">
 <p>If you installed Julia previously and you need to upgrade, run:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -547,7 +547,7 @@ setup session or in a break during the workshop.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-2" class="tab-content">
-<div id="nav-tabpanel-2-1" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-2-1">
+<div id="nav-tabpanel-2-1" class="tab-pane show active" aria-labelledby="nav-tab-2-1" role="tabpanel">
 <p>If you run on an Intel based laptop, chances are that your laptop
 contains an onboard GPU (a tiny one). This GPU is accessible through
 Intel’s oneAPI.</p>
@@ -557,7 +557,7 @@ Intel’s oneAPI.</p>
 <pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>(EfficientJulia) pkg<span class="op">&gt;</span> add oneAPI KernelAbstractions</span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-2-2" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-2">
+<div id="nav-tabpanel-2-2" class="tab-pane" aria-labelledby="nav-tab-2-2" role="tabpanel">
 <p>AMD Graphics cards are programmed using ROCm. As far as we know there
 are no laptops with official ROCm support.</p>
 <div class="codewrapper sourceCode" id="cb5">
@@ -566,7 +566,7 @@ are no laptops with official ROCm support.</p>
 <pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>(EfficientJulia) pkg<span class="op">&gt;</span> add AMDGPU KernelAbstractions</span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-2-3" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-3">
+<div id="nav-tabpanel-2-3" class="tab-pane" aria-labelledby="nav-tab-2-3" role="tabpanel">
 <p>You probably know if you have an NVidia card. In that case CUDA is
 your goto.</p>
 <div class="codewrapper sourceCode" id="cb6">
@@ -575,7 +575,7 @@ your goto.</p>
 <pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>(EfficientJulia) pkg<span class="op">&gt;</span> add CUDA KernelAbstractions</span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-2-4" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-4">
+<div id="nav-tabpanel-2-4" class="tab-pane" aria-labelledby="nav-tab-2-4" role="tabpanel">
 <p>Most current M-series MacBooks run on ARM and have a special
 architecture called Metal for GPU computing. Older MacBooks probably
 need to use Intel <code>oneAPI</code> or you might have a small NVidia
@@ -661,8 +661,8 @@ any links that you are not going to use.
   "url": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/index.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/index.html",
   "dateCreated": "2024-01-01",
-  "dateModified": "2025-03-18",
-  "datePublished": "2025-03-18"
+  "dateModified": "2025-03-25",
+  "datePublished": "2025-03-25"
 }
 
   </script><script>
