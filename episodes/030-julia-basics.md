@@ -160,7 +160,7 @@ The `i == j && continue` is a short-cut notation for
 
 ```julia
 if i == j
-	continue
+  continue
 end
 ```
 
