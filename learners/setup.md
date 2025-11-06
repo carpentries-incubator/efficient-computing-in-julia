@@ -39,11 +39,11 @@ julia
 Press `]` to enter package mode:
 
 ```julia
-(@v1.11) pkg> activate .
+(@v1.12) pkg> activate .
 (EfficientJulia) pkg> add GLMakie DataFrames BenchmarkTools GeometryBasics IterTools Revise Unitful StaticArrays Images FileIO
 ```
 
-This may take a while (which is why you need to do it in advance).
+This may take a while, as Julia will precompile the added packages and their dependencies (which is why you need to do it in advance).
 
 ### GPU Libraries
 
@@ -81,7 +81,7 @@ Most current M-series MacBooks run on ARM and have a special architecture called
 
 ## VS Code
 
-Install [VS Code](https://code.visualstudio.com/). VS Code is the de-facto standard IDE for Julia. Within VS Code, install the Julia language plugin. Press the puzzle-piece icon in the toolbar and search for Julia, the top result should be the official extension.
+Install [VS Code](https://code.visualstudio.com/). VS Code is the de-facto standard IDE for Julia. Within VS Code, install [the Julia language plugin](https://marketplace.visualstudio.com/items?itemName=julialang.language-julia). Press the puzzle-piece icon in the toolbar and search for Julia, the top result should be the official extension.
 
 ## Prepare
 

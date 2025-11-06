@@ -151,25 +151,16 @@ function is_prime(x)
 end
 ```
 
-:::callout
-
-### Ranges
-
 The `for` loop iterates over the range `2:isqrt(x)`. We'll see that Julia indexes sequences starting at integer value `1`. This usually implies that ranges are given inclusive on both ends: for example, `collect(3:6)` evaluates to `[3, 4, 5, 6]`.
-:::
-
-:::callout
-### More on for-loops
 
 Loop iterations can be skipped using `continue`, or broken with `break`, identical to C or Python.
-:::
 
 ::: challenge
 The `i == j && continue` is a short-cut notation for
 
 ```julia
 if i == j
-	continue
+  continue
 end
 ```
 
@@ -201,7 +192,6 @@ is_prime(43)
 ::::
 :::
 
-:::callout
 ### Return statement
 
 In Julia, the `return` statement is not always strictly necessary. Every statement is an expression, meaning that it has a value. The value of a compound block is simply that of its last expression. In the above function however, we have a non-local return: once we find a divider for a number, we know the number is not prime, and we don't need to check any further.
@@ -209,9 +199,7 @@ In Julia, the `return` statement is not always strictly necessary. Every stateme
 Many people find it more readable however, to always have an explicit `return`.
 
 The fact that the `return` statement is optional for normal function exit is part of a larger philosophy: everything is an expression.
-:::
 
-:::callout
 ### Lexical scoping
 
 Julia is **lexically scoped**. This means that variables do not outlive the block that they're defined in. In a nutshell, this means the following:
@@ -239,8 +227,6 @@ Julia is **lexically scoped**. This means that variables do not outlive the bloc
   ```
 
   In effect, the variable `s` inside the for-loop is said to **shadow** the outer definition. Here, we also see a first example of a `let` binding, creating a scope for some temporary variables to live in.
-
-:::
 
 ::: challenge
 
