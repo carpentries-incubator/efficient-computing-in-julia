@@ -35,7 +35,7 @@ end
 ```
 
 ```julia
-@code_warntype safe_inv(-2:2)
+@code_warntype safe_inv(2)
 ```
 
 In this case we may observe that the induced type is `Union{Nothing, T}`. If we run `@code_warntype` we can see the yellow highlighting of the union type. Having union-types can be hint that the compiler is in uncertain territory. However, union types are at the very core of how Julia approaches iteration and therefore for-loops, so usually this will not lead to run-time dispatches being triggered.
