@@ -244,9 +244,12 @@ velocity(p::Particle) = p.momentum / p.mass
 :::challenge
 ### Getters
 
-a, Create $N$ random particles (say $N=3$, but it really doesn't matter), and get their velocity in a one-liner. Don't use for-loops, just broadcasting.
+a. Create $N$ random particles (say $N=3$, but it really doesn't matter), and get their velocity in a one-liner. Don't use for-loops, just broadcasting.
+
 b. Can you do the same for obtaining the position and/or momentum? Implement a getter for those properties.
+
 c. We can also meaningfully extend the getter for `momentum` on collections of particles. The total momentum of a set of particles is the sum of their individual momenta. Read the documention on the `sum` function. Can you find a particularly nice way to implement `momentum(p::AbstractArray{Particle})`?
+
 d. Do the same for the total mass of a set of particles. Can you now generalize the definition for `velocity`, so that the same function works for particles and collections of particles?
 
 ::::solution
