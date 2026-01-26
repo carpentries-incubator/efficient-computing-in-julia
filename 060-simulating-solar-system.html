@@ -403,7 +403,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Simulating the Solar System</h1>
-        <p>Last updated on 2025-02-25 |
+        <p>Last updated on 2026-01-26 |
 
         <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/060-simulating-solar-system.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -706,20 +706,22 @@ particle:</p>
 <div id="getters" class="callout-inner">
 <h3 class="callout-title">Getters</h3>
 <div class="callout-content">
-<p>a, Create <span class="math inline">\(N\)</span> random particles
+<ol style="list-style-type: lower-alpha"><li><p>Create <span class="math inline">\(N\)</span> random particles
 (say <span class="math inline">\(N=3\)</span>, but it really doesn’t
 matter), and get their velocity in a one-liner. Don’t use for-loops,
-just broadcasting. b. Can you do the same for obtaining the position
-and/or momentum? Implement a getter for those properties. c. We can also
-meaningfully extend the getter for <code>momentum</code> on collections
-of particles. The total momentum of a set of particles is the sum of
-their individual momenta. Read the documention on the <code>sum</code>
-function. Can you find a particularly nice way to implement
-<code>momentum(p::AbstractArray{Particle})</code>? d. Do the same for
-the total mass of a set of particles. Can you now generalize the
-definition for <code>velocity</code>, so that the same function works
-for particles and collections of particles?</p>
-</div>
+just broadcasting.</p></li>
+<li><p>Can you do the same for obtaining the position and/or momentum?
+Implement a getter for those properties.</p></li>
+<li><p>We can also meaningfully extend the getter for
+<code>momentum</code> on collections of particles. The total momentum of
+a set of particles is the sum of their individual momenta. Read the
+documention on the <code>sum</code> function. Can you find a
+particularly nice way to implement
+<code>momentum(p::AbstractArray{Particle})</code>?</p></li>
+<li><p>Do the same for the total mass of a set of particles. Can you now
+generalize the definition for <code>velocity</code>, so that the same
+function works for particles and collections of particles?</p></li>
+</ol></div>
 </div>
 </div>
 <div id="accordionSolution2" class="accordion challenge-accordion accordion-flush">
@@ -1229,7 +1231,7 @@ any links that you are not going to use.
   "url": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/060-simulating-solar-system.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/060-simulating-solar-system.html",
   "dateCreated": "2024-01-01",
-  "dateModified": "2025-02-25",
+  "dateModified": "2026-01-26",
   "datePublished": "2026-01-26"
 }
 

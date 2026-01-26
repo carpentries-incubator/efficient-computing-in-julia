@@ -393,12 +393,12 @@ promises the ease of Python or R with a run-time efficiency closer to C
 or Fortran. Julia also is a more modern language with a packaging
 ecosystem that makes packages easier to install and maintain. A
 programmer that is familiar with Python, R or Matlab should have little
-problem getting up to speed with the basics of Julia. However, to really
-obtain the promised near native run-time efficiency is a different skill
-altogether.</p>
-<p>This workshop aims to get research software engineers (experienced in
-another programming language) from their first steps in Julia to become
-aware of all the major techniques and pitfalls when it comes to writing
+problem getting up to speed with the basics of Julia. However, actually
+obtaining the promised near native run-time efficiency is a different
+skill altogether.</p>
+<p>This workshop aims to guide research software engineers (experienced
+in another programming language) from their first steps in Julia to full
+awareness of the major techniques and pitfalls when it comes to writing
 performant Julia.</p>
 <p>We will work hands-on with real-world examples to explore concepts in
 the Julia language, focussing on differences with other languages. After
@@ -481,12 +481,12 @@ do.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-1" class="tab-content">
-<div id="nav-tabpanel-1-1" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-1-1">
+<div id="nav-tabpanel-1-1" class="tab-pane show active" aria-labelledby="nav-tab-1-1" role="tabpanel">
 <p>Install Julia by following the instruction on <a href="https://julialang.org/downloads/" class="external-link">the Julia webpage, downloads
 section</a>. This will also install <code>juliaup</code> which maintains
 different versions of Julia on your machine.</p>
 </div>
-<div id="nav-tabpanel-1-2" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-2">
+<div id="nav-tabpanel-1-2" class="tab-pane" aria-labelledby="nav-tab-1-2" role="tabpanel">
 <p>If you installed Julia previously and you need to upgrade, run:</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -513,11 +513,11 @@ will work in:</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>(<span class="pp">@v1</span><span class="fl">.11</span>) pkg<span class="op">&gt;</span> activate .</span>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>(<span class="pp">@v1</span><span class="fl">.12</span>) pkg<span class="op">&gt;</span> activate .</span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>(EfficientJulia) pkg<span class="op">&gt;</span> add GLMakie DataFrames BenchmarkTools GeometryBasics IterTools Revise Unitful StaticArrays Images FileIO</span></code></pre>
 </div>
-<p>This may take a while (which is why you need to do it in
-advance).</p>
+<p>This may take a while, as Julia will precompile the added packages
+and their dependencies (which is why you need to do it in advance).</p>
 <div class="section level3">
 <h3 id="gpu-libraries">GPU Libraries<a class="anchor" aria-label="anchor" href="#gpu-libraries"></a></h3>
 <p>Install the GPU library for your backend (this is needed for the GPU
@@ -548,7 +548,7 @@ setup session or in a break during the workshop.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-2" class="tab-content">
-<div id="nav-tabpanel-2-1" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-2-1">
+<div id="nav-tabpanel-2-1" class="tab-pane show active" aria-labelledby="nav-tab-2-1" role="tabpanel">
 <p>If you run on an Intel based laptop, chances are that your laptop
 contains an onboard GPU (a tiny one). This GPU is accessible through
 Intel’s oneAPI.</p>
@@ -558,7 +558,7 @@ Intel’s oneAPI.</p>
 <pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>(EfficientJulia) pkg<span class="op">&gt;</span> add oneAPI KernelAbstractions</span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-2-2" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-2">
+<div id="nav-tabpanel-2-2" class="tab-pane" aria-labelledby="nav-tab-2-2" role="tabpanel">
 <p>AMD Graphics cards are programmed using ROCm. As far as we know there
 are no laptops with official ROCm support.</p>
 <div class="codewrapper sourceCode" id="cb5">
@@ -567,7 +567,7 @@ are no laptops with official ROCm support.</p>
 <pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>(EfficientJulia) pkg<span class="op">&gt;</span> add AMDGPU KernelAbstractions</span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-2-3" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-3">
+<div id="nav-tabpanel-2-3" class="tab-pane" aria-labelledby="nav-tab-2-3" role="tabpanel">
 <p>You probably know if you have an NVidia card. In that case CUDA is
 your goto.</p>
 <div class="codewrapper sourceCode" id="cb6">
@@ -576,7 +576,7 @@ your goto.</p>
 <pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>(EfficientJulia) pkg<span class="op">&gt;</span> add CUDA KernelAbstractions</span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-2-4" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-4">
+<div id="nav-tabpanel-2-4" class="tab-pane" aria-labelledby="nav-tab-2-4" role="tabpanel">
 <p>Most current M-series MacBooks run on ARM and have a special
 architecture called Metal for GPU computing. Older MacBooks probably
 need to use Intel <code>oneAPI</code> or you might have a small NVidia
@@ -594,9 +594,10 @@ card.</p>
 <div class="section level2">
 <h2 id="vs-code">VS Code<a class="anchor" aria-label="anchor" href="#vs-code"></a></h2>
 <p>Install <a href="https://code.visualstudio.com/" class="external-link">VS Code</a>. VS Code
-is the de-facto standard IDE for Julia. Within VS Code, install the
-Julia language plugin. Press the puzzle-piece icon in the toolbar and
-search for Julia, the top result should be the official extension.</p>
+is the de-facto standard IDE for Julia. Within VS Code, install <a href="https://marketplace.visualstudio.com/items?itemName=julialang.language-julia" class="external-link">the
+Julia language plugin</a>. Press the puzzle-piece icon in the toolbar
+and search for Julia, the top result should be the official
+extension.</p>
 </div>
 <div class="section level2">
 <h2 id="prepare">Prepare<a class="anchor" aria-label="anchor" href="#prepare"></a></h2>

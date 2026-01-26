@@ -467,7 +467,7 @@
         
 <section id="aio-020-getting-started"><p>Content from <a href="020-getting-started.html">Getting Started</a></p>
 <hr>
-<p>Last updated on 2025-02-10 |
+<p>Last updated on 2026-01-26 |
 
         <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/020-getting-started.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 50 minutes</p>
@@ -541,19 +541,19 @@ with your audience.</p>
 <hr class="half-width">
 <p>It is not feasible to teach all of Julia in just two days. We’ll try
 to get you on your journey with Julia by showing lots of real world
-examples. Meanwhile, you’ll be Roughly:</p>
+examples. During this workshow you will be:</p>
 <ol style="list-style-type: decimal">
-<li>(3h) Get you started with Julia by simulating gravity: the three
+<li>(3h) getting started with Julia by simulating gravity: the three
 body problem. You’ll get familiar with the basic syntax of Julia and the
 little nooks and crannies that set this language appart from Python or
 MATLAB.</li>
-<li>(3h) Learn to work with Julia’s packaging system and best
+<li>(3h) learning to work with Julia’s packaging system and best
 practices.</li>
-<li>(4h) Benchmarking, profiling, type stability and allocations. We
+<li>(4h) benchmarking, profiling, type stability and allocations. We
 will work with many different examples here. You’ll learn the most
 important tools and concepts that matter when you want to write Julia
 code that runs efficiently.</li>
-<li>(2h) Parallel and GPU programming: computing the Julia fractal.</li>
+<li>(2h) parallel and GPU programming: computing the Julia fractal.</li>
 </ol>
 <p>Some of the examples may be a bit hard to grasp. For example, we’ll
 see a very difficult to understand algorithm to compute <span class="math inline">\(\pi\)</span>. In these cases we’ll treat the given
@@ -864,7 +864,7 @@ languages.</li>
 in the REPL to activate <code>Pkg</code> mode. Make sure that you are in
 the path where you prepared your environment (see Setup
 Instructions).</p>
-<pre><code>(v1.11) pkg&gt; activate .
+<pre><code>(v1.12) pkg&gt; activate .
 (EfficientJulia) pkg&gt;</code></pre>
 <p>Alternatively, check the little “Julia env” message at the bottom of
 VS Code, and make sure that the correct environment is there.</p>
@@ -922,7 +922,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-030-julia-basics"><p>Content from <a href="030-julia-basics.html">Introduction to Julia</a></p>
 <hr>
-<p>Last updated on 2025-02-10 |
+<p>Last updated on 2026-01-26 |
 
         <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/030-julia-basics.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -966,7 +966,7 @@ languages.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Much of the content of the lesson relies on “Show, don’t tell”. This
 introduction feels far from complete, but that’s Ok. It is just enough
@@ -1138,7 +1138,7 @@ function to compute the squares of the first ten integers (use
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>Read the documentation of <code>map</code> using the <code>?</code>
 help mode in the REPL.</p>
@@ -1176,35 +1176,13 @@ kind.</p>
 <span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>  <span class="cf">return</span> <span class="cn">true</span></span>
 <span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
 </div>
-<div id="ranges" class="callout">
-<div class="callout-square">
-<i class="callout-icon" data-feather="bell"></i>
-</div>
-<span class="callout-header">Callout</span>
-<div id="ranges" class="callout-inner">
-<h3 class="callout-title">Ranges</h3>
-<div class="callout-content">
 <p>The <code>for</code> loop iterates over the range
 <code>2:isqrt(x)</code>. We’ll see that Julia indexes sequences starting
 at integer value <code>1</code>. This usually implies that ranges are
 given inclusive on both ends: for example, <code>collect(3:6)</code>
 evaluates to <code>[3, 4, 5, 6]</code>.</p>
-</div>
-</div>
-</div>
-<div id="more-on-for-loops" class="callout">
-<div class="callout-square">
-<i class="callout-icon" data-feather="bell"></i>
-</div>
-<span class="callout-header">Callout</span>
-<div id="more-on-for-loops" class="callout-inner">
-<h3 class="callout-title">More on for-loops</h3>
-<div class="callout-content">
 <p>Loop iterations can be skipped using <code>continue</code>, or broken
 with <code>break</code>, identical to C or Python.</p>
-</div>
-</div>
-</div>
 <div id="challenge2" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
@@ -1219,7 +1197,7 @@ for</p>
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="cf">if</span> i <span class="op">==</span> j</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>	<span class="cf">continue</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="cf">continue</span></span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="cf">end</span></span></code></pre>
 </div>
 <p>We could also have written <code>i != j || continue</code>.</p>
@@ -1242,7 +1220,7 @@ notation.</strong></p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1262,14 +1240,9 @@ notation.</strong></p>
 </div>
 </div>
 </div>
-<div id="return-statement" class="callout">
-<div class="callout-square">
-<i class="callout-icon" data-feather="bell"></i>
-</div>
-<span class="callout-header">Callout</span>
-<div id="return-statement" class="callout-inner">
-<h3 class="callout-title">Return statement</h3>
-<div class="callout-content">
+<div class="section level3">
+<h3 id="return-statement">Return statement<a class="anchor" aria-label="anchor" href="#return-statement"></a>
+</h3>
 <p>In Julia, the <code>return</code> statement is not always strictly
 necessary. Every statement is an expression, meaning that it has a
 value. The value of a compound block is simply that of its last
@@ -1282,16 +1255,9 @@ and we don’t need to check any further.</p>
 normal function exit is part of a larger philosophy: everything is an
 expression.</p>
 </div>
-</div>
-</div>
-<div id="lexical-scoping" class="callout">
-<div class="callout-square">
-<i class="callout-icon" data-feather="bell"></i>
-</div>
-<span class="callout-header">Callout</span>
-<div id="lexical-scoping" class="callout-inner">
-<h3 class="callout-title">Lexical scoping</h3>
-<div class="callout-content">
+<div class="section level3">
+<h3 id="lexical-scoping">Lexical scoping<a class="anchor" aria-label="anchor" href="#lexical-scoping"></a>
+</h3>
 <p>Julia is <strong>lexically scoped</strong>. This means that variables
 do not outlive the block that they’re defined in. In a nutshell, this
 means the following:</p>
@@ -1323,9 +1289,6 @@ means the following:</p>
 <strong>shadow</strong> the outer definition. Here, we also see a first
 example of a <code>let</code> binding, creating a scope for some
 temporary variables to live in.</p>
-</div>
-</div>
-</div>
 <div id="loops-and-conditionals" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
@@ -1343,7 +1306,7 @@ temporary variables to live in.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1359,6 +1322,7 @@ temporary variables to live in.</p>
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fl">1</span><span class="op">:</span><span class="fl">100</span> <span class="op">|&gt;</span> <span class="fu">filter</span>(is_prime) <span class="op">|&gt;</span> collect</span></code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -1723,7 +1687,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-060-simulating-solar-system"><p>Content from <a href="060-simulating-solar-system.html">Simulating the Solar System</a></p>
 <hr>
-<p>Last updated on 2025-02-25 |
+<p>Last updated on 2026-01-26 |
 
         <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/060-simulating-solar-system.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -2104,19 +2068,23 @@ particle:</p>
 <div id="getters" class="callout-inner">
 <h3 class="callout-title">Getters</h3>
 <div class="callout-content">
-<p>a, Create <span class="math inline">\(N\)</span> random particles
+<ol style="list-style-type: lower-alpha">
+<li><p>Create <span class="math inline">\(N\)</span> random particles
 (say <span class="math inline">\(N=3\)</span>, but it really doesn’t
 matter), and get their velocity in a one-liner. Don’t use for-loops,
-just broadcasting. b. Can you do the same for obtaining the position
-and/or momentum? Implement a getter for those properties. c. We can also
-meaningfully extend the getter for <code>momentum</code> on collections
-of particles. The total momentum of a set of particles is the sum of
-their individual momenta. Read the documention on the <code>sum</code>
-function. Can you find a particularly nice way to implement
-<code>momentum(p::AbstractArray{Particle})</code>? d. Do the same for
-the total mass of a set of particles. Can you now generalize the
-definition for <code>velocity</code>, so that the same function works
-for particles and collections of particles?</p>
+just broadcasting.</p></li>
+<li><p>Can you do the same for obtaining the position and/or momentum?
+Implement a getter for those properties.</p></li>
+<li><p>We can also meaningfully extend the getter for
+<code>momentum</code> on collections of particles. The total momentum of
+a set of particles is the sum of their individual momenta. Read the
+documention on the <code>sum</code> function. Can you find a
+particularly nice way to implement
+<code>momentum(p::AbstractArray{Particle})</code>?</p></li>
+<li><p>Do the same for the total mass of a set of particles. Can you now
+generalize the definition for <code>velocity</code>, so that the same
+function works for particles and collections of particles?</p></li>
+</ol>
 </div>
 </div>
 </div>
@@ -2640,7 +2608,7 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-070-pkg"><p>Content from <a href="070-pkg.html">Packages and environments</a></p>
 <hr>
-<p>Last updated on 2025-02-09 |
+<p>Last updated on 2026-01-26 |
 
         <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/070-pkg.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -2723,7 +2691,7 @@ one.</p>
 <p>In practice, we generally make specific environments for specific
 projects. This avoids issues of multiple/clashing versions of
 dependencies, removes unused dependencies (keeping the project
-environemtn clean) and allows you to easily publish your project as a
+environment clean) and allows you to easily publish your project as a
 package, if desired.</p>
 <p>Therefore, let us indicate to Julia that we wish to use an
 environment for our <code>Dummy</code> project. We do this using the
@@ -2898,7 +2866,7 @@ project.</p>
 <p>You can do this using <code>pkg&gt; activate --temp</code>:</p>
 <pre class="shell"><code><span><span class="va">pkg</span><span class="op">&gt;</span> <span class="va">activate</span> <span class="op">-</span><span class="op">-</span><span class="va">temp</span></span></code></pre>
 <p>This will output something like
-<code>Activating new project at</code>/tmp/jl_4xvh88`.</p>
+<code>Activating new project at /tmp/jl_4xvh88</code>.</p>
 <p>You can now work with this as with any other environment, but without
 the fear that changes you make are messing up the
 <code>Project.toml</code> of the project you are working on.</p>
@@ -3245,7 +3213,7 @@ Universe!” then call it in the REPL again.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3772,7 +3740,7 @@ any links that you are not going to use.
 </div>
 </section></section><section id="aio-100-introduction-performance"><p>Content from <a href="100-introduction-performance.html">Type Stability</a></p>
 <hr>
-<p>Last updated on 2025-02-09 |
+<p>Last updated on 2026-01-26 |
 
         <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/100-introduction-performance.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -3842,7 +3810,7 @@ return type depends on run-time values:</p>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="pp">@code_warntype</span> <span class="fu">safe_inv</span>(<span class="op">-</span><span class="fl">2</span><span class="op">:</span><span class="fl">2</span>)</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="pp">@code_warntype</span> <span class="fu">safe_inv</span>(<span class="fl">2</span>)</span></code></pre>
 </div>
 <p>In this case we may observe that the induced type is
 <code>Union{Nothing, T}</code>. If we run <code>@code_warntype</code> we
@@ -4744,7 +4712,7 @@ from preset neighbourhoods of the input array.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
   <h3 class="accordion-header" id="headingSpoiler1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Image source </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -4853,7 +4821,7 @@ function is behaving as should.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -4943,7 +4911,7 @@ axis.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>Using iterators:</p>
 <div class="codewrapper sourceCode" id="cb12">
@@ -5047,7 +5015,7 @@ rotated. Did this affect the performance? Why do you think that is?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -5166,7 +5134,7 @@ Makie</a>. Can you make an animation of the Game of Life? Use the
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
 <p>Here’s a cool solution with live animation and lots more, just for
 your enjoyment.</p>
@@ -5259,7 +5227,7 @@ for agent based modelling.</li>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div> Source code </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb21">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -5598,7 +5566,7 @@ using the above packages in conjunction with
 </button>
 </div>
 </nav><div id="nav-tabContent-1" class="tab-content">
-<div id="nav-tabpanel-1-Intel" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-1-Intel">
+<div id="nav-tabpanel-1-Intel" class="tab-pane show active" aria-labelledby="nav-tab-1-Intel" role="tabpanel">
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -5607,7 +5575,7 @@ using the above packages in conjunction with
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="im">using</span> <span class="bu">KernelAbstractions</span></span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-1-Metal" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-Metal">
+<div id="nav-tabpanel-1-Metal" class="tab-pane" aria-labelledby="nav-tab-1-Metal" role="tabpanel">
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -5615,7 +5583,7 @@ using the above packages in conjunction with
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="im">using</span> <span class="bu">KernelAbstractions</span></span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-1-NVidia" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-NVidia">
+<div id="nav-tabpanel-1-NVidia" class="tab-pane" aria-labelledby="nav-tab-1-NVidia" role="tabpanel">
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -5623,7 +5591,7 @@ using the above packages in conjunction with
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="im">using</span> <span class="bu">KernelAbstractions</span></span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-1-AMD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-1-AMD">
+<div id="nav-tabpanel-1-AMD" class="tab-pane" aria-labelledby="nav-tab-1-AMD" role="tabpanel">
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -5679,7 +5647,7 @@ arrays.</p>
 </button>
 </div>
 </nav><div id="nav-tabContent-2" class="tab-content">
-<div id="nav-tabpanel-2-Intel" class="tab-pane show active" role="tabpanel" aria-labelledby="nav-tab-2-Intel">
+<div id="nav-tabpanel-2-Intel" class="tab-pane show active" aria-labelledby="nav-tab-2-Intel" role="tabpanel">
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -5688,7 +5656,7 @@ arrays.</p>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>a_dev <span class="op">.+</span> b_dev</span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-2-Metal" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-Metal">
+<div id="nav-tabpanel-2-Metal" class="tab-pane" aria-labelledby="nav-tab-2-Metal" role="tabpanel">
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -5697,7 +5665,7 @@ arrays.</p>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>a_dev <span class="op">.+</span> b_dev</span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-2-NVidia" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-NVidia">
+<div id="nav-tabpanel-2-NVidia" class="tab-pane" aria-labelledby="nav-tab-2-NVidia" role="tabpanel">
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -5706,7 +5674,7 @@ arrays.</p>
 <span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>a_dev <span class="op">.+</span> b_dev</span></code></pre>
 </div>
 </div>
-<div id="nav-tabpanel-2-AMD" class="tab-pane" role="tabpanel" aria-labelledby="nav-tab-2-AMD">
+<div id="nav-tabpanel-2-AMD" class="tab-pane" aria-labelledby="nav-tab-2-AMD" role="tabpanel">
 <div class="codewrapper sourceCode" id="cb10">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
