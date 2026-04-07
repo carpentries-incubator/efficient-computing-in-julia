@@ -3,16 +3,16 @@ title: Introduction to Julia
 ---
 
 ::: questions
-
 - How do I write elementary programs in Julia?
 - What are the differences with Python/MATLAB/R?
 :::
 
 ::: objectives
-- functions
-- loops
-- conditionals
-- scoping
+- Understand the difference between compiled and interpreted languages.
+- Apply and write functions.
+- Use loops, both numeric and range based.
+- Use conditional statements, `if` and short-circuit expressions.
+- Understand scoping rules in Julia
 :::
 
 Unfortunately, it lies outside the scope of this workshop to give an introduction to the full Julia language. Instead, we'll briefly show the basic syntax, and then focus on some key differences with other popular languages.
@@ -35,6 +35,8 @@ Oddities for Pythonistas:
 
 - 1-based indexing
 - lexical scoping
+
+> TODO: Let's not get too philosophical here: get to the point.
 
 Better well stolen ... Always ask when learning a new language: what are the primitives, the means of combination and the means of abstraction. Many languages are very similar in these regards, so we'll look at things that are different:
 
