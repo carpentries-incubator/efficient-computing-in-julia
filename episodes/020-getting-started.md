@@ -149,8 +149,11 @@ julia> Pluto.run()
 └
 ```
 
+## Editor support
 
-## VS Code
+Julia is supported in many editors through `LanguageServer.jl`. The main focus of development lies in having VS Code as the main IDE. If you're unsure about a choice of editor, VS Code is a good place to start, although for some people it is a little feature rich.
+
+### VS Code
 VS Code is the editor for which Julia has the best support. We'll be needing to run Julia in multiple threads later on, so we'll set some arguments for the REPL in `settings.json` (press `Ctrl+Shift+P` and search for `Open User Settings (JSON)`).
 
 ```json
@@ -168,6 +171,15 @@ Now when you start a new REPL (`Ctrl+Shift+P`, search "Julia REPL"), you can que
 Threads.nthreads()
 ```
 
+### Zed
+A more light-weight alternative to VS Code, but still packing most of the features you'd want to have. Check it out at [zed.dev](https://zed.dev/). This does not provide the same level of integration as VS Code (no Ctrl-Enter to evaluate expressions in the editor, and no IDE integration with the REPL). However, Zed gives a much smoother user experience.
+
+### (Neo)Vim, Emacs and others
+We encourage power users to use their favourite environment, but we can't help out if things like LaTeX/Unicode completion don't quite work out of the box.
+
+:::instructor
+The goal of the following exercise is not only to make people familiar with Julia syntax. It is also to get them find their way in the documentation.
+:::
 
 :::challenge
 ### Julia as a calculator (5min)
@@ -175,15 +187,15 @@ Threads.nthreads()
 Try to play around in the VS Code REPL to use Julia as a calculator.
 
 a. What do you find is the operator for exponentiation?
-b. How do you assign a variable?
+b. How do you assign a variable? Does the assignment take on a value by itself?
 c. What happens when you divide any two integers? Use the `typeof` function to inspect the type of the result. Can you figure out how to integer division (search the documentation!)?
-d. What happens in Pluto when you change a variable that is depended upon?
+d. Try to operate on a range of numbers using dotted operators: `(1:5) .* 3`. Try to square the range `1:5`. What's the difference?
 
 ::::solution
 a. In Julia exponentiation is `^`.
-b. Just like you're used to `x = 3`.
+b. Just like you're used to `x = 3`. The assignment is also an expression for the value being assigned. We might say `(x = 6) * 7`, `x` still becomes `6`, but the expression returns `42`.
 c. The `/` operator always returns a floating point value. To get to integer division, we want the `÷` operator, which can be typed using `\div` and then press TAB. Or you can use the equivalent `div` function.
-d. Pluto updates all dependent computations automatically. This is known as a **reactive notebook**.
+d. Multiplying a range is still expressible as a range, while squaring the numbers forces the range to convert to an array.
 ::::
 :::
 
