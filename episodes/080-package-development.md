@@ -3,23 +3,43 @@ title: Package development
 ---
 
 ::: questions
-- How do I generate a new Julia package that follows best practices?
+- How do I generate a new Julia package?
 - What is the best workflow for developing a Julia package?
 - How can I prevent having to recompile every time I make a change?
 :::
 
 ::: objectives
-- Quick start with using the BestieTemplate to generate a package
+- Quick start with using Pkg.generate or the BestieTemplate to generate a new package
 - Basic structure of a package
 - Revise.jl
 :::
 
 
-We will use a Julia template called `BestieTemplate`. The template code can be found on `GitHub`: <https://github.com/JuliaBesties/BestieTemplate.jl>.
+
+## Generating a fresh new Julia package
+
+::: tab
+
+
+### Pkg.generate
+
+This is the simplest, most minimalist way to generate a new Julia package. It is built in to the standard Julia package `pkg`.
+
+#### Generating the package
+
+```shell
+julia> # press ]
+pkg> generate MyPackage.jl
+```
+
+### BestieTemplate.jl
+
+Here we will use a Julia template called `BestieTemplate`. The template code can be found on `GitHub`: <https://github.com/JuliaBesties/BestieTemplate.jl>.
 
 Using the template automates the process of setting up the Julia package structure and adding all the small files and tools to help with applying best practices.
 
-## Installing `BestieTemplate.jl`
+
+#### Installing `BestieTemplate.jl`
 
 In order to use `BestieTemplate` to create our new package, we first need to install it.
 
@@ -32,7 +52,8 @@ pkg> add BestieTemplate
 
 This might take a couple of minutes to download.
 
-## Generating a fresh new Julia package
+
+#### Generating the package
 
 We then use the `BestieTemplate` package to generate a new (empty) package at the specified path.
 
@@ -42,14 +63,7 @@ julia> using BestieTemplate
 julia> BestieTemplate.generate("MyPackage.jl")
 ```
 
-:::callout
-It is actually posible to apply this template to existing packages too:
-```shell
-BestieTemplate.apply("path/to/YourExistingPackage.jl")
-```
-However, for clarity we generate a completely new package in this lesson.
-:::
-
+#### Configuring the package
 
 You will now be presented with a series of questions, some required and some optional.
 
@@ -65,12 +79,38 @@ You will now be presented with a series of questions, some required and some opt
 
 6. Add the names of the copyright holders - again, this should be pre-filled with the name you typed earlier.
 
-You will then be provided with the option to only answer a small number of 'Recommended' questions (first choice). Select this and choose the default (pre-filled) values for each.
+You will then be provided with the option to only answer a small number of recommended questions (first choice). Select this and choose the default (pre-filled) values for each.
 
 Your new package structure will now be created, with configuration files set up according to the answers provided to the previous questions.
 
 
+
+Note: It is actually posible to apply this template to existing packages too:
+```shell
+BestieTemplate.apply("path/to/YourExistingPackage.jl")
+```
+However, for clarity we generate a completely new package in this lesson.
+
+:::
+
+
+
 ## Structure of your new (empty) package
+
+::: tab
+
+### Pkg.generate
+
+* `Project.toml`
+The `Project.toml` file specifies the name of our package, UUID and authors (as given in our answers when setting up the template). It also specifies the package's current version
+and dependencies.
+
+* `src/`
+The location of source code files.
+
+
+### BestieTemplate.jl
+
 
 * `.copier-answers.yml`
 Here you can see the answers you provided when setting up your package with the `BestieTemplate`.
@@ -106,8 +146,10 @@ The location of scripts for automatically building documentation for the functio
 * `.github/`
 This will only come into use if you push your package to GitHub. This directory contains some automated workflows that do things like run tests, build documentation etc.
 
+:::
 
-### Activating the generated package
+
+## Activating the generated package
 
 Now that we have generated our new package and inspected its contents and structure, we would like to use it.
 
@@ -125,12 +167,12 @@ pkg> status
 
 The output will show something like the following:
 ```output
-Status `~/.julia/environments/v1.11/Project.toml`
+Status `~/.julia/environments/v1.12/Project.toml`
 ```
 
-This tells us that we are currently using the base environment for the currently installed `Julia` version (in the above case, `v1.11`. In a sense, you can think of this as the "default" or "global" environment used by `Julia`, if no other has been specified by the user.
+This tells us that we are currently using the base environment for the currently installed `Julia` version (in the above case, `v1.12`. In a sense, you can think of this as the "default" or "global" environment used by `Julia`, if no other has been specified by the user.
 
-The output of `pkg> status` will also output the dependencies (and precise versions) that are currently installed in that environment. For example, you should see the `BestieTemplate` package that we installed earlier to generate our new package.
+The output of `pkg> status` will also output the dependencies (and precise versions) that are currently installed in that environment. If you used a package template like the `BestieTemplate`, you will see that is already listed here.
 
 But we don't currently want this environment. We would like to use, and work on, our new project. We do this by "activating" it:
 ```shell
@@ -168,9 +210,14 @@ You should now see that a `Manifest.toml` file is also in the package directory.
 ```output
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.11.3"
+julia_version = "1.12.5"
 manifest_format = "2.0"
-project_hash = "edf6df7b02a39be5254eb0c7ce37b253a09a1e4c"
+project_hash = "455df57f797e33b4c447167f16ca7912fdf88c81"
+
+[[deps.MyPackage]]
+path = "."
+uuid = "1005e0b6-1dc9-4f2b-8c05-1b27f43311c6"
+version = "0.1.0"
 
 [[deps.Random]]
 deps = ["SHA"]
@@ -195,6 +242,39 @@ If we check `pkg> status` again, we see that we have returned to the "(empty pro
 
 Now that we have our empty package set up, we would like to develop some code for it!
 
+
+::: tab
+
+### Pkg.generate
+Navigate to `src/MyPackage.jl` to see some dummy code has already been generated for you:
+
+```julia
+module MyPackage
+
+greet() = print("Hello World!")
+
+end # module MyPackage
+
+end
+```
+
+For consistency with, let's edit it so that the function name `greet()` is now `hello_world()`.
+
+```julia
+module MyPackage
+
+hello_world() = print("Hello World!")
+
+end # module MyPackage
+
+end
+```
+
+Remember to save the file after doing this.
+
+
+### BestieTemplate.jl
+
 Navigate to `src/MyPackage.jl` to see some dummy code has already been generated by the template:
 ```julia
 module MyPackage
@@ -209,6 +289,8 @@ end
 
 end
 ```
+
+:::
 
 In the REPL we can try running this:
 ```shell
@@ -314,7 +396,7 @@ While `Revise` does its best to track any changes made, there are some limits to
 
 
 ::: keypoints
-- You can use the `BestieTemplate` to generate a new package structure complete with tooling for best practices in Julia development.
+- You can use either the built-in `Pkg.generate` function or a third party template (such as the `BestieTemplate`) to generate a new package structure.
 - The `Revise.jl` module can automatically reload parts of your code that have changed.
 - Best practice: file names should reflect module names.
 :::
