@@ -6,7 +6,7 @@ title: Best practices
 - How do I setup unit testing?
 - What about documentation?
 - Are there good Github Actions available for CI/CD?
-- I like autoformatters for my code, what is the best one for Julia?
+- I like autoformatters for my code - what is the best one for Julia?
 - How can I make all this a bit easier?
 :::
 
@@ -20,9 +20,10 @@ title: Best practices
 
 In this lesson, we will cover issues of best practices in Julia package development. In particular, this covers testing, documentation and formatting.
 
-If you followed the instructions from the previous lesson (using the `BestieTemplate` to generate a package) then all these topics have already been handled.
+If you followed the instructions from the previous lesson (using the `BestieTemplate` to generate a package) then all these topics may already have been handled. However, this lesson assumes that only a basic `Pkg.generate()` was used, and we will build the additional structure manually. This is to better illustrate how Documentation, testing and other best practices work.
 
-We will start with adding a new function to our `MyPackage.jl` package, and show how to quickly add unit tests and documentation.
+We will show how to take the Newtonian gravity code we developed earlier, and adapt it into the new package (`Newton.jl`) we created in the previous lesson.
+
 
 ## Preparing for developing
 
@@ -34,188 +35,465 @@ julia> using Revise
 ```
 
 
-## The roots of a cubic polynomial
+## Populate the src/ directory
 
-The following is a function for computing the roots of a cubic polynomial
+From an earlier lesson we have the Newtonian gravity code. Let us add that code (you can copy-paste it in) to the `src/` directory of our package and save the file. After doing so, `src/Newton.jl` should look something like the following:
 
-$$ax^3 + bx^2 + cx + d = 0.$$
-
-There is an interesting story about these equations. It was known for a long time how to solve quadratic equations.
-In 1535 the Italian mathematician Tartaglia discovered a way to solve cubic equations, but guarded his secret carefully.
-He was later persuaded by Cardano to reveal his secret on the condition that Cardano wouldn't reveal it further. However, later Cardano found out that an earlier mathematician Scipione del Ferro had also cracked the problem and decided that this anulled his deal with Tartaglia, and published anyway.
-These days, the formula is known as Cardano's formula.
-
-The interesting bit is that this method requires the use of complex numbers.
 
 ```julia
-function cubic_roots(a, b, c, d)
-	cNaN = NaN+NaN*im
-	
-	if (a != 0)
-		delta0 = b^2 - 3*a*c
-		delta1 = 2*b^3 - 9*a*b*c + 27*a^2*d
-		cc = ((delta1 + sqrt(delta1^2 - 4*delta0^3 + 0im)) / 2)^(1/3)
-		zeta = -1/2 + 1im/2 * sqrt(3)
+module Newton
 
-		k = (0, 1, 2)
-		return (-1/(3*a)) .* (b .+ zeta.^k .* cc .+ delta0 ./ (zeta.^k .* cc))
-	end
+using Unitful
+using GeometryBasics
+using LinearAlgebra
+using Random
 
-	if (b != 0)
-		delta = sqrt(c^2 - 4 * b * d + 0im)
-		return ((-c - delta) / (2*b), (-c + delta) / (2*b), cNaN)
-	end
+"""
+Universal Gravitational Constant
+"""
+const G = 6.6743e-11u"m^3*kg^-1*s^-2"
 
-	if (c != 0)
-		return (-d/c + 0.0im, cNaN, cNaN)
-	end
+"""
+    gravitation_force(m1, m2, r)
 
-	if (d != 0)
-		return (cNaN, cNaN, cNaN)
-	end
+Takes `r` to be the scalar distance between two objects of masses `m1` and `m2`.
+Returns the strength of the force of gravitational attraction between the
+two objects.
+"""
+gravitational_force(m1, m2, r) =
+    G * m1 * m2 / r^2
 
-	return (0.0+0.0im, cNaN, cNaN)
+"""
+    gravitational_force(m1, m2, r::AbstractVector)
+
+Takes `r` to be the distance vector between two objects of masses `m1` and `m2`.
+Returns the gravitational force due to Newton's law in of the direction `r`.
+"""
+gravitational_force(m1, m2, r::AbstractVector) =
+	r * (G * m1 * m2 * (r ⋅ r)^(-1.5))
+
+"""
+Type for masses in units of kilograms.
+"""
+const Mass = typeof(1.0u"kg")
+
+"""
+Type for a 3d momentum vector in units of Newton seconds.
+"""
+const MomentumVector = typeof(Vec3d(1)u"kg*m/s")
+
+"""
+Type for a 3d position in vector in units of meters.
+"""
+const PositionVector = typeof(Vec3d(1)u"m")
+
+"""
+Type for a 3d velocity vector in units of meters per second.
+"""
+const VelocityVector = typeof(Vec3d(1)u"m/s")
+
+"""
+    Particle(mass, position, momentum)
+
+Particle structure. The `position` and `momentum` should be 3-vectors with the correct units,
+and `mass` a scalar mass.
+"""
+mutable struct Particle
+    mass::Mass
+    position::PositionVector
+    momentum::MomentumVector
 end
+
+mass(p::Particle) = p.mass
+position(p::Particle) = p.position
+momentum(p::Particle) = p.momentum
+
+mass(p::AbstractArray{Particle}) = sum(mass, p)
+momentum(p::AbstractArray{Particle}) = sum(momentum, p)
+velocity(p) = momentum(p) / mass(p)
+
+"""
+    random_particle(mass=1e6"kg", spread=1.0u"m", dispersion=2.0u"mm/s")
+
+Generate a particle with given `mass`, but random position and velocity.
+The position and velocity are drawn from a normal distribution and scaled
+with given `spread` and `dispersion`.
+
+The default values are chosen to give a high probability for interesting
+behaviour.
+"""
+random_particle(mass=1e6u"kg", spread=1.0u"m", dispersion=2.0u"mm/s") =
+    Particle(mass, randn(Vec3d) * spread, randn(Vec3d) * dispersion * mass)
+
+"""
+    random_particles(n; seed=0, args...)
+
+Generate `n` random particles with a given random seed. Extra keyword
+arguments `args...` are forwarded to the `random_particle` function.
+"""
+function random_particles(n; seed=0, args...)
+    Random.seed!(seed)
+    [random_particle(args...) for _ in 1:n]
+end
+
+"""
+    set_still!(particles)
+
+Computes the net velocity of a set of particles, and changes the momentum
+of each particle to match this frame of reference.
+
+Returns the particle set.
+"""
+function set_still!(particles)
+    v = velocity(particles)
+    for p in particles
+        p.momentum -= v * mass(p)
+    end
+    return particles
+end
+
+"""
+    kick!(particles::AbstractVector{Particle}, dt)
+
+Change the momentum of a each particle in the vector `particles`, following
+direct one-to-one computation of their respective attractive forces.
+"""
+function kick!(particles, dt)
+    for i in eachindex(particles)
+        for j in 1:(i-1)
+            r = particles[j].position - particles[i].position
+            force = gravitational_force(particles[i].mass, particles[j].mass, r)
+            particles[i].momentum += dt * force
+            particles[j].momentum -= dt * force
+        end
+    end
+    return particles
+end
+
+"""
+    potential_energy(particles::AbstractVector{Particle})
+
+Computes the potential energy of the system of particles.
+"""
+function potential_energy(particles)
+    total = 0.0u"J"
+    for i in eachindex(particles)
+        for j in 1:(i-1)
+            r = particles[j].position - particles[i].position
+            m1 = particles[i].mass
+            m2 = particles[j].mass
+            total -= G * m1 * m2 / sqrt(r ⋅ r)
+        end
+    end
+    return total
+end
+
+"""
+    kinetic_energy(p::Particle)
+
+Compute the kinetic energy of a particle.
+"""
+kinetic_energy(s::Particle) = let p = momentum(s)
+    (p ⋅ p) / (2 * mass(s))
+end
+
+kinetic_energy(particles::AbstractVector{Particle}) =
+    sum(kinetic_energy(p) for p in particles)
+
+total_energy(particles::AbstractVector{Particle}) =
+    potential_energy(particles) + kinetic_energy(particles)
+
+"""
+    drift!(p::Particle, dt)
+
+Evolve the position of particle `p` for a time `dt` from its given momentum.
+"""
+function drift!(p::Particle, dt)
+    p.position += dt * p.momentum / p.mass
+end
+
+"""
+    drift!(particles: AbstractVector{Partcile}, dt)
+
+Evolve the position of all particles.
+"""
+function drift!(particles, dt)
+    for p in particles
+        drift!(p, dt)
+    end
+    return particles
+end
+
+"""
+    leap_frog!(particles, dt)
+
+One leap-frog integration time step `dt` for `particles` under
+gravity.
+"""
+function leap_frog!(particles, dt)
+    drift!(particles, dt/2)
+    kick!(particles, dt)
+    drift!(particles, dt/2)
+end
+
+"""
+    run_simulation(particles, dt, n_steps)
+
+Leap-frog a set of particles `n_steps` times for a time step `dt`.
+Copies the particle set after every iteration, returning a
+vector containing the full state for each time step.
+"""
+function run_simulation(particles, dt, n_steps)
+    x = deepcopy(particles)
+    [deepcopy(leap_frog!(x, dt)) for _ in 1:n_steps]
+end
+
+"""
+    random_orbits(n, mass; dt=1.0u"s", steps=5000, args...)
+
+Generate random orbits of `n` particles with given `mass`.
+"""
+function random_orbits(n, mass; dt=1.0u"s", steps=5000, args...)
+    particles = random_particles(n; args...)
+    run_simulation(particles, dt, steps) |> collect
+end
+
+end  # module Newton
 ```
 
-We would like to add the above `cubic_roots()` function to the `MyPackage.jl` package.
+Before using this, we will need to add the dependencies to the project environment:
+```
+pkg> add Unitful GeometryBasics LinearAlgebra Random
+```
 
-Add it to the `src/MyPackage.jl` file and save.
 
-Let us load our package and attempt to use the `cubic_roots()` function:
+Now let us load our package and attempt to use e.g. the `gravitational_force()` function:
 
 ```shell
-julia> using MyPackage
-julia> MyPackage.cubic_roots(1,1,1,1)
+julia> using Newton
+julia> Newton.gravitational_force(1, 1, 1)
 ```
 
 ```output
-(-1.0 - 0.0im, -3.700743415417188e-17 - 1.0im, -9.25185853854297e-17 + 1.0im)
+6.6743e-11 m^3 kg^-1 s^-2
 ```
-
-We see that it is indeed returning some roots to the equation we defined: $$x^3 + x^2 + x + 1 = 0.$$
-
 
 ### Testing
 
-#### Testing `hello_world()`
+#### Testing sanity
 If we are to develop our package further, we may worry that any changes we make might break existing functionality. For this reason, it is important to add automated tests that can tell us immediately if the behaviour of our existing functions has changed.
 
-In the `test/` directory of `MyPackage.jl` you should see that there already exists an example test for the `hello_world()` function, in `test-basic-test.jl`:
+
+First, let's add a new directory: `Newton.jl/test/`. In that directory, we add a new file called `runtests.jl`. 
+
+We can start with an example test to illustrate how it works:
 ```julia
-@testset "MyPackage.jl" begin
-    @test MyPackage.hello_world() == "Hello, World!"
+module Spec
+
+using Test
+
+@testset "Newton.jl" begin
+    @testset "testing sanity" begin
+        @test 1 + 1 == 2
+    end
+end
+
 end
 ```
 
-`@testset` is used to define a suite of many tests, while `@test` defines a single check. In this case, there is one test and it checks that the `hello_world()` function indeed returns "Hello, World!".
+`@testset` is used to define a suite of many tests, while `@test` defines a single check. In this case, there is one test and it checks that 1 + 1 indeed equals 2.
 
-#### Running the tests
 
-We first need to add the standard Julia `Test` package:
+#### Creating a test environment
+
+To run our test, we first need to add the standard Julia `Test` package:
 ```shell
+cd test/
+julia
+pkg> activate .
 pkg> add Test
 ```
 
-Then we can run all tests for our package by simply typing `test`:
+Here we have added the `Test` dependency to a different environment, specifically for testing. This means the `test/` directory now has its own `Project.toml`. This is useful for keeping testing-specific dependencies out of the main project dependencies, as an end user of our package may not care about such development tooling.
+
+
+We will also add the main (`Newton.jl`) package as a dependency of the test environment, as well as the `Unitful` dependency - we will need theses to be able to test our package later.
+
+```shell
+pkg> dev ..
+pkg> add Unitful
+```
+
+Finally, we have to add this test "sub-project" to the main package's Project.toml, by adding the following:
+
+```shell
+[workspace]
+projects = ["test"]
+```
+
+We can now activate the main package environment again, and apply/install the new dependency we added.
+```shell
+cd .. # Return to Newton.jl/ directory
+julia
+pkg> activate .
+pkg> resolve
+pkg> instantiate
+```
+
+The `resolve` and `instantiate` are necessary because we added a new dependency (`Test`) to our sub-project "test", but this has not actually been downloaded and installed yet. After running these commands you will see that it has appeared in the `Manifest.toml` for the main package.
+
+:::callout
+The "workspace" feature is new to Julia 1.12, so will not work with older versions. It is useful because it allows sub-projects to have their own specific dependencies, but only one `Manifest.toml` for the whole project (and thus functioning as a single environment).
+:::
+
+#### Running the test
+
+Having added the necessary dependencies, we can now run all tests for our package by simply typing `test` from the Julia `pkg>` prompt:
 ```shell
 pkg> test
 ```
 
-The outcome of our `hello_world()` test now will depend on what state the `hello_world()` function is currently in. If you modified it in the previous lesson and it no longer returns "Hello, World!", then the test will fail. Try changing the function to make the tests fail and then pass again.
+Hopefully the outcome will show a passing test i.e. proving that 1 + 1 = 2.
 
 :::challenge
-#### Add a test for `cubic_roots`
+#### Massive attraction
 
-Create a new file in the `test/` directory, called `test-cubic.jl`.
 
-Using what you know from the `hello_world()` tests, can you populate this file with a test for the following case:
+Add a test to verify that the `Newton.gravitational_force()` function returns a force greater than zero for two 1 kg masses 1 metre apart.
 
-* For the special case with $$a=0, b=0, c=0, d=0$$ check that the only (non-NaN) solution is 0.
+What about a test for a zero attraction case?
 
-Hint: You only need to check the first element of the returned tuple.
+Hint: If we are using `Unitful` then we must specify the units of any values.
 
 
 ::::solution
 
-The contents of `test-cubic.jl` should be e.g.
+Here is the modified `test/runtests.jl` file with the added gravitational check:
 ```julia
-@testset "MyPackage.jl" begin
-    @test MyPackage.cubic_roots(0,0,0,0)[1] == 0
+module Spec
+
+using Newton, Test, Unitful
+
+@testset "Newton.jl" begin
+    @testset "testing sanity" begin
+        @test 1 + 1 == 2
+        @test Newton.gravitational_force(1u"kg",1u"kg",1u"m") > 0u"N"
+        @test Newton.gravitational_force(0u"kg",0u"kg",1u"m") == 0u"N"
+    end
+
+end
+
 end
 ```
 
-Then, running `pkg> test` will result in a pass.
-
-Note that the equality check would also work with:
-```julia
-    @test MyPackage.cubic_roots(0,0,0,0)[1] == 0.0
-```
-and
-```julia
-    @test MyPackage.cubic_roots(0,0,0,0)[1] == 0.0+0.0im
-```
+Then, running `pkg> test` should result in a pass.
 
 ::::
 :::
 
+#### Testing the functionality of Newton.jl
+We can also add some more comprehensive tests, testing the energy conservation of a group of 3 particles.
+
+
+```julia
+module Spec
+
+using Newton, Test, Unitful
+using Newton: set_still!, random_particles, momentum, MomentumVector, run_simulation,
+    total_energy
+
+@testset "Newton.jl" begin
+    @testset "testing sanity" begin
+        @test 1 + 1 == 2
+        @test Newton.gravitational_force(1u"kg",1u"kg",1u"m") > 0u"N"
+        @test Newton.gravitational_force(0u"kg",0u"kg",1u"m") == 0u"N"
+    end
+
+    @testset "run $i" for i in 1:10
+        p = set_still!(random_particles(3, seed=i))
+        @test momentum(p) ≈ zero(MomentumVector) atol=1e-6u"N*s"
+
+        orbit = run_simulation(p, 0.1u"s", 1000)
+        @test momentum(orbit[end]) ≈ zero(MomentumVector) atol=1e-6u"N*s"
+        @test total_energy(orbit[1]) ≈ total_energy(orbit[end]) rtol=1e-6
+    end
+end
+
+end  # module Spec
+```
+
+
+
 ### Documentation
 
-#### Documenting `hello_world()`
+#### Documenting `gravitational_force()`
 
-The `hello_world()` function has a docstring before it:
+
+Our `kinetic_energy()` function has a docstring before it:
+
 ```julia
 """
-    hi = hello_world()
-A simple function to return "Hello, World!"
+    kinetic_energy(p::Particle)
+
+Compute the kinetic energy of a particle.
 """
 ```
+
 This is low-level technical documentation for this particular function. 
 
 #### Using the REPL help mode
 In the Julia REPL, pressing `?` will enter help mode. You can then type the name of a function you would like documentation about:
 ```shell
 julia> # Press '?'
-help?> MyPackage.hello_world()
+help?> Newton.kinetic_energy()
 ```
 
 ```output
-
   │ Warning
   │
   │  The following bindings may be internal; they may change or be removed in future versions:
   │
-  │    •  MyPackage.hello_world
+  │    •  Newton.kinetic_energy
 
-  hi = hello_world()
+  kinetic_energy(p::Particle)
 
-  A simple function to return "Hello, World!"
+  Compute the kinetic energy of a particle.
 ```
 
 
 #### Building the docs
-The standard package for building beautiful documentation websites for Julia packages is `Documenter.jl`. It can be seen in the `Project.toml` for the `docs/` directory that this is indeed the package that `BestieTemplate.jl` has set up for us.
+The standard package for building beautiful documentation websites for Julia packages is `Documenter.jl`.
 
-In `docs/make.jl` we see `Documenter` being used to build the documentation website, that is then deployed to GitHub Pages where it is served from.
-
-However, presently the code makes a lot of assumptions about being used with git on GitHub. For the purposes of this lesson, we will make a small modification to the `docs/make.jl` file:
-```
-repo = "https://github.com/[...your username and package...]", # REMOVE this line
-remotes = nothing, # ADD this line
-```
-
-This change will make the docs building ignore that we are not currently using `git` or hosting on GitHub.
-
-Now we will add `Documenter.jl` (the package used for building the documentation) and `LiveServer` (a package that lets us serve the pages locally):
+As we did for testing, we will add a directory (`docs/`) and an environment for any docs-specific dependencies.
+We add `Documenter.jl` (the package used for building the documentation) and `LiveServer` (a package that lets us serve the pages locally):
 
 ```shell
+mkdir docs/
+cd docs
+julia
+pkg> activate .
 pkg> add Documenter LiveServer
+pkg> dev .. # Also add the `Newton.jl` package we are developing to the docs environment
+```
+
+Then add two files to the docs structure:
+
+`docs/make.jl`
+```julia
+using Newton, Documenter, LiveServer
+makedocs(remotes=nothing, sitename="Newton.jl")
+```
+
+`docs/src/index.md`:
+```julia
+```@autodocs
+Modules = [Newton]
+```
 ```
 
 Then we can build the documentation and serve it using the following:
 ```shell
-julia> using LiveServer
-julia> servedocs()
+julia --project=docs -e 'using LiveServer; servedocs()'
 ```
 
 There will be a lot of output and some warnings, but hopefully you will eventually see:
@@ -224,44 +502,8 @@ There will be a lot of output and some warnings, but hopefully you will eventual
 ```
 Or something similar. Open this link in your web browser to see the rendered documentation.
 
-:::challenge
-# Documenting `cubic_roots`
-In the "Reference" section of the documentation website we just generated, you will find the `hello_world()` function with its docstring nicely rendered.
+When done, use `Ctrl+C` to stop the running server:
 
-Now try documenting your `cubic_roots()` function similarly, and rebuild the documentation.
-
-::::solution
-
-Let's add a docstring explaining what the function does, as well as an example of using it:
-
-````julia
-"""
-    roots = cubic_roots(a, b, c, d)
-
-    Returns the roots of a cubic polynomial defined by ax^3 + bx^2 + cx + d = 0
-
-```jldoctest
-julia> roots = MyPackage.cubic_roots(0, 0, 0, 0)
-(0.0 + 0.0im, NaN + NaN*im, NaN + NaN*im)
-```
-"""
-function cubic_roots(a, b, c, d)
-````
-
-Now `Ctrl+C` to stop the running server and return to `julia>` prompt. Build the documentation again:
-```shell
-julia> servedocs()
-```
-
-Refreshing the browser on the docs page should now show the new documentation rendered.
-
-As an additional example of a nice feature - the example given in the `jldoctest` is actually run and the output checked during documentation building.
-You can test this yourself by changing the arguments to `cubic_roots()` and running again. The output will no longer match that in the comment and the
-documentation build will fail. This is a nice solution to a common problem in many languages where the documentation examples fall out of sync with the
-package development.
-
-::::
-:::
 
 ### Formatting
 A good automatic formatter for Julia is `JuliaFormatter.jl`
@@ -274,19 +516,16 @@ julia> using JuliaFormatter
 Then you can try it out on our source file:
 
 ```shell
-julia> format("src/MyPackage.jl")
+julia> format("src/Newton.jl")
 ```
 
-Not a huge amount will change, but you may notice that spaces are inserted around arithmetic operators, for example:
-```
-cNaN = NaN+NaN*im
-```
-becomes
-```
-cNaN = NaN + NaN * im
-```
+Try making some changes to the source file (save the file afterwards!) and running this line again. You will see the formatter make modifications to the code.
 
-The configuration for the formatting in our package is set in `.JuliaFormatter.toml`. In practice, you will not run this formatter manually, but it will be automated by workflows created by the `BestieTemplate`. This course does not focus on these (largely they are integrated with `git` and `GitHub`) but they are helpful with ensuring a clean code base with minimal effort.
+In practice, you will not run this formatter manually, but rather automate it with various workflows. This course does not focus on these (largely they are integrated with `git` and e.g. `GitHub`) but they are helpful with ensuring a clean code base with minimal effort.
+
+:::callout
+For educational purposes, this lesson has focussed on manually operating the various tools needed for applying best practices in Julia development. In practice, you should use a template from `PkgTemplates.jl` or 'BestieTemplate.jl' to automate the set up of such a repository and CI workflows integrated with the git forge you wish to use.
+:::
 
 
 ::: keypoints
