@@ -465,15 +465,22 @@ help?> Newton.kinetic_energy()
 The standard package for building beautiful documentation websites for Julia packages is `Documenter.jl`.
 
 As we did for testing, we will add a directory (`docs/`) and an environment for any docs-specific dependencies.
-We add `Documenter.jl` (the package used for building the documentation) and `LiveServer` (a package that lets us serve the pages locally):
 
 ```shell
 mkdir docs/
-cd docs
-julia
-pkg> activate .
-pkg> add Documenter LiveServer
-pkg> dev .. # Also add the `Newton.jl` package we are developing to the docs environment
+```
+
+Modify the `Project.toml` workspace section:
+```shell
+[workspace]
+projects = ["test", "docs"]
+```
+
+Add `Documenter.jl` (the package used for building the documentation) and `LiveServer` (a package that lets us serve the pages locally):
+
+```shell
+julia --project=docs
+pkg> add Documenter LiveServer Newton
 ```
 
 Then add two files to the docs structure:
