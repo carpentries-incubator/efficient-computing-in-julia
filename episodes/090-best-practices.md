@@ -512,6 +512,62 @@ Or something similar. Open this link in your web browser to see the rendered doc
 When done, use `Ctrl+C` to stop the running server:
 
 
+:::challenge
+# Testing the examples in your documentation
+In the 'Reference' section of the documentation website we just generated, you will find the `gravitational_force()` function with its docstring nicely rendered.
+
+But did you know we can add an example of usage to this docstring and have it be tested automatically during the standard docs build?
+
+Consider the following example function's docstring:
+
+````julia
+"""
+    roots = cubic_roots(a, b, c, d)
+
+    Returns the roots of a cubic polynomial defined by ax^3 + bx^2 + cx + d = 0
+
+```jldoctest
+julia> roots = MyPackage.cubic_roots(0, 0, 0, 0)
+(0.0 + 0.0im, NaN + NaN*im, NaN + NaN*im)
+```
+"""
+function cubic_roots(a, b, c, d)
+````
+
+When the documentation is built, the example in the `jldoctest` block will be run and its output verified.
+
+Can you do something similar to add a tested example to our `gravitational_force()` function's docstring?
+
+
+::::solution
+
+We can add the `jldoctest` block as follows:
+
+````julia
+"""
+    gravitation_force(m1, m2, r)
+
+Takes `r` to be the scalar distance between two objects of masses `m1` and `m2`.
+Returns the strength of the force of gravitational attraction between the
+two objects.
+
+```jldoctest
+julia> gravitational_force(1u"kg",1u"kg",1u"m")
+6.6743e-11 kg m s^-2
+```
+"""
+````
+
+The example given in the `jldoctest` block is actually run and the output checked during documentation building.
+You can test this yourself by changing the arguments to `gravitational_force()` and running again. The output will no longer match that in the comment and the
+documentation build will fail. This is a nice solution to a common problem in many languages where the documentation examples fall out of sync with the
+package development.
+
+::::
+:::
+
+
+
 ### Formatting
 A good automatic formatter for Julia is `JuliaFormatter.jl`
 
