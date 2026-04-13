@@ -9,7 +9,7 @@ title: Package development
 :::
 
 ::: objectives
-- Quick start with using Pkg.generate or the BestieTemplate to generate a new package
+- Quick start with using `Pkg.generate` or the BestieTemplate to generate a new package
 - Basic structure of a package
 - Revise.jl
 :::

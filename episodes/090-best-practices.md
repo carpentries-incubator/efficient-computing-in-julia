@@ -40,7 +40,7 @@ julia> using Revise
 From an earlier lesson we have the Newtonian gravity code. Let us add that code (you can copy-paste it in) to the `src/` directory of our package and save the file. After doing so, `src/Newton.jl` should look something like the following:
 
 
-```julia
+````julia
 module Newton
 
 using Unitful
@@ -259,7 +259,7 @@ function random_orbits(n, mass; dt=1.0u"s", steps=5000, args...)
 end
 
 end  # module Newton
-```
+````
 
 Before using this, we will need to add the dependencies to the project environment:
 ```
@@ -304,6 +304,18 @@ end
 `@testset` is used to define a suite of many tests, while `@test` defines a single check. In this case, there is one test and it checks that 1 + 1 indeed equals 2.
 
 
+And we will also register this `test/` "sub-project" to the main package's Project.toml, by adding the following:
+
+```shell
+[workspace]
+projects = ["test"]
+```
+
+:::callout
+The "workspace" feature is new to Julia 1.12, so will not work with older versions. It is useful because it allows sub-projects to have their own specific dependencies, but only one `Manifest.toml` for the whole project (and thus functioning as a single environment).
+:::
+
+
 #### Creating a test environment
 
 To run our test, we first need to add the standard Julia `Test` package:
@@ -320,15 +332,8 @@ Here we have added the `Test` dependency to a different environment, specificall
 We will also add the main (`Newton.jl`) package as a dependency of the test environment, as well as the `Unitful` dependency - we will need theses to be able to test our package later.
 
 ```shell
-pkg> dev ..
+pkg> dev .. # Add the main Newton package we want to test as a development dependency
 pkg> add Unitful
-```
-
-Finally, we have to add this test "sub-project" to the main package's Project.toml, by adding the following:
-
-```shell
-[workspace]
-projects = ["test"]
 ```
 
 We can now activate the main package environment again, and apply/install the new dependency we added.
@@ -336,15 +341,11 @@ We can now activate the main package environment again, and apply/install the ne
 cd .. # Return to Newton.jl/ directory
 julia
 pkg> activate .
-pkg> resolve
-pkg> instantiate
 ```
 
-The `resolve` and `instantiate` are necessary because we added a new dependency (`Test`) to our sub-project "test", but this has not actually been downloaded and installed yet. After running these commands you will see that it has appeared in the `Manifest.toml` for the main package.
+In some cases you may need to run `pkg> resolve` and `pkg> instantiate` because we added a new dependency (`Test`) to our sub-project "test", but this has not actually been downloaded and installed yet. If the workspace was added before creating the test environment (i.e. there is no `Manifest.toml` in `test/`) then this should not be necessary.
 
-:::callout
-The "workspace" feature is new to Julia 1.12, so will not work with older versions. It is useful because it allows sub-projects to have their own specific dependencies, but only one `Manifest.toml` for the whole project (and thus functioning as a single environment).
-:::
+After running these commands you will see that our test dependencies have appeared in the `Manifest.toml` for the main package.
 
 #### Running the test
 
@@ -492,11 +493,11 @@ makedocs(remotes=nothing, sitename="Newton.jl")
 ```
 
 `docs/src/index.md`:
-```julia
+````julia
 ```@autodocs
 Modules = [Newton]
 ```
-```
+````
 
 Then we can build the documentation and serve it using the following:
 ```shell
