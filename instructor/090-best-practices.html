@@ -272,7 +272,7 @@
     <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
       <div class="accordion-body">
         <ul><li><a href="#preparing-for-developing">Preparing for developing</a></li>
-<li><a href="#the-roots-of-a-cubic-polynomial">The roots of a cubic polynomial</a></li>
+<li><a href="#populate-the-src-directory">Populate the src/ directory</a></li>
         </ul></div><!--/div.accordion-body-->
     </div><!--/div.accordion-collapse-->
 
@@ -400,7 +400,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Best practices</h1>
-        <p>Last updated on 2025-02-10 |
+        <p>Last updated on 2026-04-13 |
 
         <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/090-best-practices.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -424,7 +424,7 @@
 <ul><li>How do I setup unit testing?</li>
 <li>What about documentation?</li>
 <li>Are there good Github Actions available for CI/CD?</li>
-<li>I like autoformatters for my code, what is the best one for
+<li>I like autoformatters for my code - what is the best one for
 Julia?</li>
 <li>How can I make all this a bit easier?</li>
 </ul></div>
@@ -448,133 +448,365 @@ package development. In particular, this covers testing, documentation
 and formatting.</p>
 <p>If you followed the instructions from the previous lesson (using the
 <code>BestieTemplate</code> to generate a package) then all these topics
-have already been handled.</p>
-<p>We will start with adding a new function to our
-<code>MyPackage.jl</code> package, and show how to quickly add unit
-tests and documentation.</p>
+may already have been handled. However, this lesson assumes that only a
+basic <code>Pkg.generate()</code> was used, and we will build the
+additional structure manually. This is to better illustrate how
+Documentation, testing and other best practices work.</p>
+<p>We will show how to take the Newtonian gravity code we developed
+earlier, and adapt it into the new package (<code>Newton.jl</code>) we
+created in the previous lesson.</p>
 <section><h2 class="section-heading" id="preparing-for-developing">Preparing for developing<a class="anchor" aria-label="anchor" href="#preparing-for-developing"></a></h2>
 <hr class="half-width"><p>As before, we open the Julia REPL, activate our package and load
 <code>Revise</code>:</p>
 <pre class="shell"><code>julia
 julia&gt; activate .
 julia&gt; using Revise</code></pre>
-</section><section><h2 class="section-heading" id="the-roots-of-a-cubic-polynomial">The roots of a cubic polynomial<a class="anchor" aria-label="anchor" href="#the-roots-of-a-cubic-polynomial"></a></h2>
-<hr class="half-width"><p>The following is a function for computing the roots of a cubic
-polynomial</p>
-<p><span class="math display">\[ax^3 + bx^2 + cx + d = 0.\]</span></p>
-<p>There is an interesting story about these equations. It was known for
-a long time how to solve quadratic equations. In 1535 the Italian
-mathematician Tartaglia discovered a way to solve cubic equations, but
-guarded his secret carefully. He was later persuaded by Cardano to
-reveal his secret on the condition that Cardano wouldn’t reveal it
-further. However, later Cardano found out that an earlier mathematician
-Scipione del Ferro had also cracked the problem and decided that this
-anulled his deal with Tartaglia, and published anyway. These days, the
-formula is known as Cardano’s formula.</p>
-<p>The interesting bit is that this method requires the use of complex
-numbers.</p>
+</section><section><h2 class="section-heading" id="populate-the-src-directory">Populate the src/ directory<a class="anchor" aria-label="anchor" href="#populate-the-src-directory"></a></h2>
+<hr class="half-width"><p>From an earlier lesson we have the Newtonian gravity code. Let us add
+that code (you can copy-paste it in) to the <code>src/</code> directory
+of our package and save the file. After doing so,
+<code>src/Newton.jl</code> should look something like the following:</p>
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">cubic_roots</span>(a, b, c, d)</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>	cNaN <span class="op">=</span> <span class="cn">NaN</span><span class="op">+</span><span class="cn">NaN</span><span class="op">*</span><span class="cn">im</span></span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>	</span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>	<span class="cf">if</span> (a <span class="op">!=</span> <span class="fl">0</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>		delta0 <span class="op">=</span> b<span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="fl">3</span><span class="op">*</span>a<span class="op">*</span>c</span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>		delta1 <span class="op">=</span> <span class="fl">2</span><span class="op">*</span>b<span class="op">^</span><span class="fl">3</span> <span class="op">-</span> <span class="fl">9</span><span class="op">*</span>a<span class="op">*</span>b<span class="op">*</span>c <span class="op">+</span> <span class="fl">27</span><span class="op">*</span>a<span class="op">^</span><span class="fl">2</span><span class="op">*</span>d</span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>		cc <span class="op">=</span> ((delta1 <span class="op">+</span> <span class="fu">sqrt</span>(delta1<span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="fl">4</span><span class="op">*</span>delta0<span class="op">^</span><span class="fl">3</span> <span class="op">+</span> <span class="fl">0im</span>)) <span class="op">/</span> <span class="fl">2</span>)<span class="op">^</span>(<span class="fl">1</span><span class="op">/</span><span class="fl">3</span>)</span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>		zeta <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">+</span> <span class="fl">1im</span><span class="op">/</span><span class="fl">2</span> <span class="op">*</span> <span class="fu">sqrt</span>(<span class="fl">3</span>)</span>
-<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>		k <span class="op">=</span> (<span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span>)</span>
-<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>		<span class="cf">return</span> (<span class="op">-</span><span class="fl">1</span><span class="op">/</span>(<span class="fl">3</span><span class="op">*</span>a)) <span class="op">.*</span> (b <span class="op">.+</span> zeta<span class="op">.^</span>k <span class="op">.*</span> cc <span class="op">.+</span> delta0 <span class="op">./</span> (zeta<span class="op">.^</span>k <span class="op">.*</span> cc))</span>
-<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>	<span class="cf">end</span></span>
-<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a></span>
-<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>	<span class="cf">if</span> (b <span class="op">!=</span> <span class="fl">0</span>)</span>
-<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>		delta <span class="op">=</span> <span class="fu">sqrt</span>(c<span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="fl">4</span> <span class="op">*</span> b <span class="op">*</span> d <span class="op">+</span> <span class="fl">0im</span>)</span>
-<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>		<span class="cf">return</span> ((<span class="op">-</span>c <span class="op">-</span> delta) <span class="op">/</span> (<span class="fl">2</span><span class="op">*</span>b), (<span class="op">-</span>c <span class="op">+</span> delta) <span class="op">/</span> (<span class="fl">2</span><span class="op">*</span>b), cNaN)</span>
-<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>	<span class="cf">end</span></span>
-<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a></span>
-<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>	<span class="cf">if</span> (c <span class="op">!=</span> <span class="fl">0</span>)</span>
-<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>		<span class="cf">return</span> (<span class="op">-</span>d<span class="op">/</span>c <span class="op">+</span> <span class="fl">0.0im</span>, cNaN, cNaN)</span>
-<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>	<span class="cf">end</span></span>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="kw">module</span> Newton</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="im">using</span> <span class="bu">Unitful</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="im">using</span> <span class="bu">GeometryBasics</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="im">using</span> <span class="bu">Random</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="st">Universal Gravitational Constant</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="kw">const</span> G <span class="op">=</span> <span class="fl">6.6743e-11</span>u<span class="st">"m^3*kg^-1*s^-2"</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="st">    gravitation_force(m1, m2, r)</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="st">Takes `r` to be the scalar distance between two objects of masses `m1` and `m2`.</span></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="st">Returns the strength of the force of gravitational attraction between the</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="st">two objects.</span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="fu">gravitational_force</span>(m1, m2, r) <span class="op">=</span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>    G <span class="op">*</span> m1 <span class="op">*</span> m2 <span class="op">/</span> r<span class="op">^</span><span class="fl">2</span></span>
 <span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a></span>
-<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a>	<span class="cf">if</span> (d <span class="op">!=</span> <span class="fl">0</span>)</span>
-<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a>		<span class="cf">return</span> (cNaN, cNaN, cNaN)</span>
-<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a>	<span class="cf">end</span></span>
-<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a></span>
-<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a>	<span class="cf">return</span> (<span class="fl">0.0</span><span class="op">+</span><span class="fl">0.0im</span>, cNaN, cNaN)</span>
-<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="st">    gravitational_force(m1, m2, r::AbstractVector)</span></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="st">Takes `r` to be the distance vector between two objects of masses `m1` and `m2`.</span></span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="st">Returns the gravitational force due to Newton's law in of the direction `r`.</span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="fu">gravitational_force</span>(m1, m2, r<span class="op">::</span><span class="dt">AbstractVector</span>) <span class="op">=</span></span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a>	r <span class="op">*</span> (G <span class="op">*</span> m1 <span class="op">*</span> m2 <span class="op">*</span> (r <span class="op">⋅</span> r)<span class="op">^</span>(<span class="op">-</span><span class="fl">1.5</span>))</span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a><span class="st">Type for masses in units of kilograms.</span></span>
+<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a><span class="kw">const</span> Mass <span class="op">=</span> <span class="fu">typeof</span>(<span class="fl">1.0</span>u<span class="st">"kg"</span>)</span>
+<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a><span class="st">Type for a 3d momentum vector in units of Newton seconds.</span></span>
+<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a><span class="kw">const</span> MomentumVector <span class="op">=</span> <span class="fu">typeof</span>(<span class="fu">Vec3d</span>(<span class="fl">1</span>)u<span class="st">"kg*m/s"</span>)</span>
+<span id="cb2-41"><a href="#cb2-41" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-43"><a href="#cb2-43" tabindex="-1"></a><span class="st">Type for a 3d position in vector in units of meters.</span></span>
+<span id="cb2-44"><a href="#cb2-44" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-45"><a href="#cb2-45" tabindex="-1"></a><span class="kw">const</span> PositionVector <span class="op">=</span> <span class="fu">typeof</span>(<span class="fu">Vec3d</span>(<span class="fl">1</span>)u<span class="st">"m"</span>)</span>
+<span id="cb2-46"><a href="#cb2-46" tabindex="-1"></a></span>
+<span id="cb2-47"><a href="#cb2-47" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-48"><a href="#cb2-48" tabindex="-1"></a><span class="st">Type for a 3d velocity vector in units of meters per second.</span></span>
+<span id="cb2-49"><a href="#cb2-49" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-50"><a href="#cb2-50" tabindex="-1"></a><span class="kw">const</span> VelocityVector <span class="op">=</span> <span class="fu">typeof</span>(<span class="fu">Vec3d</span>(<span class="fl">1</span>)u<span class="st">"m/s"</span>)</span>
+<span id="cb2-51"><a href="#cb2-51" tabindex="-1"></a></span>
+<span id="cb2-52"><a href="#cb2-52" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-53"><a href="#cb2-53" tabindex="-1"></a><span class="st">    Particle(mass, position, momentum)</span></span>
+<span id="cb2-54"><a href="#cb2-54" tabindex="-1"></a></span>
+<span id="cb2-55"><a href="#cb2-55" tabindex="-1"></a><span class="st">Particle structure. The `position` and `momentum` should be 3-vectors with the correct units,</span></span>
+<span id="cb2-56"><a href="#cb2-56" tabindex="-1"></a><span class="st">and `mass` a scalar mass.</span></span>
+<span id="cb2-57"><a href="#cb2-57" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-58"><a href="#cb2-58" tabindex="-1"></a><span class="kw">mutable struct</span> Particle</span>
+<span id="cb2-59"><a href="#cb2-59" tabindex="-1"></a>    mass<span class="op">::</span><span class="dt">Mass</span></span>
+<span id="cb2-60"><a href="#cb2-60" tabindex="-1"></a>    position<span class="op">::</span><span class="dt">PositionVector</span></span>
+<span id="cb2-61"><a href="#cb2-61" tabindex="-1"></a>    momentum<span class="op">::</span><span class="dt">MomentumVector</span></span>
+<span id="cb2-62"><a href="#cb2-62" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb2-63"><a href="#cb2-63" tabindex="-1"></a></span>
+<span id="cb2-64"><a href="#cb2-64" tabindex="-1"></a><span class="fu">mass</span>(p<span class="op">::</span><span class="dt">Particle</span>) <span class="op">=</span> p.mass</span>
+<span id="cb2-65"><a href="#cb2-65" tabindex="-1"></a><span class="fu">position</span>(p<span class="op">::</span><span class="dt">Particle</span>) <span class="op">=</span> p.position</span>
+<span id="cb2-66"><a href="#cb2-66" tabindex="-1"></a><span class="fu">momentum</span>(p<span class="op">::</span><span class="dt">Particle</span>) <span class="op">=</span> p.momentum</span>
+<span id="cb2-67"><a href="#cb2-67" tabindex="-1"></a></span>
+<span id="cb2-68"><a href="#cb2-68" tabindex="-1"></a><span class="fu">mass</span>(p<span class="op">::</span><span class="dt">AbstractArray{Particle}</span>) <span class="op">=</span> <span class="fu">sum</span>(mass, p)</span>
+<span id="cb2-69"><a href="#cb2-69" tabindex="-1"></a><span class="fu">momentum</span>(p<span class="op">::</span><span class="dt">AbstractArray{Particle}</span>) <span class="op">=</span> <span class="fu">sum</span>(momentum, p)</span>
+<span id="cb2-70"><a href="#cb2-70" tabindex="-1"></a><span class="fu">velocity</span>(p) <span class="op">=</span> <span class="fu">momentum</span>(p) <span class="op">/</span> <span class="fu">mass</span>(p)</span>
+<span id="cb2-71"><a href="#cb2-71" tabindex="-1"></a></span>
+<span id="cb2-72"><a href="#cb2-72" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-73"><a href="#cb2-73" tabindex="-1"></a><span class="st">    random_particle(mass=1e6"kg", spread=1.0u"m", dispersion=2.0u"mm/s")</span></span>
+<span id="cb2-74"><a href="#cb2-74" tabindex="-1"></a></span>
+<span id="cb2-75"><a href="#cb2-75" tabindex="-1"></a><span class="st">Generate a particle with given `mass`, but random position and velocity.</span></span>
+<span id="cb2-76"><a href="#cb2-76" tabindex="-1"></a><span class="st">The position and velocity are drawn from a normal distribution and scaled</span></span>
+<span id="cb2-77"><a href="#cb2-77" tabindex="-1"></a><span class="st">with given `spread` and `dispersion`.</span></span>
+<span id="cb2-78"><a href="#cb2-78" tabindex="-1"></a></span>
+<span id="cb2-79"><a href="#cb2-79" tabindex="-1"></a><span class="st">The default values are chosen to give a high probability for interesting</span></span>
+<span id="cb2-80"><a href="#cb2-80" tabindex="-1"></a><span class="st">behaviour.</span></span>
+<span id="cb2-81"><a href="#cb2-81" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-82"><a href="#cb2-82" tabindex="-1"></a><span class="fu">random_particle</span>(mass<span class="op">=</span><span class="fl">1e6</span>u<span class="st">"kg"</span>, spread<span class="op">=</span><span class="fl">1.0</span>u<span class="st">"m"</span>, dispersion<span class="op">=</span><span class="fl">2.0</span>u<span class="st">"mm/s"</span>) <span class="op">=</span></span>
+<span id="cb2-83"><a href="#cb2-83" tabindex="-1"></a>    <span class="fu">Particle</span>(mass, <span class="fu">randn</span>(Vec3d) <span class="op">*</span> spread, <span class="fu">randn</span>(Vec3d) <span class="op">*</span> dispersion <span class="op">*</span> mass)</span>
+<span id="cb2-84"><a href="#cb2-84" tabindex="-1"></a></span>
+<span id="cb2-85"><a href="#cb2-85" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-86"><a href="#cb2-86" tabindex="-1"></a><span class="st">    random_particles(n; seed=0, args...)</span></span>
+<span id="cb2-87"><a href="#cb2-87" tabindex="-1"></a></span>
+<span id="cb2-88"><a href="#cb2-88" tabindex="-1"></a><span class="st">Generate `n` random particles with a given random seed. Extra keyword</span></span>
+<span id="cb2-89"><a href="#cb2-89" tabindex="-1"></a><span class="st">arguments `args...` are forwarded to the `random_particle` function.</span></span>
+<span id="cb2-90"><a href="#cb2-90" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-91"><a href="#cb2-91" tabindex="-1"></a><span class="kw">function</span> <span class="fu">random_particles</span>(n; seed<span class="op">=</span><span class="fl">0</span>, args<span class="op">...</span>)</span>
+<span id="cb2-92"><a href="#cb2-92" tabindex="-1"></a>    <span class="bu">Random</span>.<span class="fu">seed!</span>(seed)</span>
+<span id="cb2-93"><a href="#cb2-93" tabindex="-1"></a>    [<span class="fu">random_particle</span>(args<span class="op">...</span>) for _ <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n]</span>
+<span id="cb2-94"><a href="#cb2-94" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb2-95"><a href="#cb2-95" tabindex="-1"></a></span>
+<span id="cb2-96"><a href="#cb2-96" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-97"><a href="#cb2-97" tabindex="-1"></a><span class="st">    set_still!(particles)</span></span>
+<span id="cb2-98"><a href="#cb2-98" tabindex="-1"></a></span>
+<span id="cb2-99"><a href="#cb2-99" tabindex="-1"></a><span class="st">Computes the net velocity of a set of particles, and changes the momentum</span></span>
+<span id="cb2-100"><a href="#cb2-100" tabindex="-1"></a><span class="st">of each particle to match this frame of reference.</span></span>
+<span id="cb2-101"><a href="#cb2-101" tabindex="-1"></a></span>
+<span id="cb2-102"><a href="#cb2-102" tabindex="-1"></a><span class="st">Returns the particle set.</span></span>
+<span id="cb2-103"><a href="#cb2-103" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-104"><a href="#cb2-104" tabindex="-1"></a><span class="kw">function</span> <span class="fu">set_still!</span>(particles)</span>
+<span id="cb2-105"><a href="#cb2-105" tabindex="-1"></a>    v <span class="op">=</span> <span class="fu">velocity</span>(particles)</span>
+<span id="cb2-106"><a href="#cb2-106" tabindex="-1"></a>    <span class="cf">for</span> p <span class="kw">in</span> particles</span>
+<span id="cb2-107"><a href="#cb2-107" tabindex="-1"></a>        p.momentum <span class="op">-=</span> v <span class="op">*</span> <span class="fu">mass</span>(p)</span>
+<span id="cb2-108"><a href="#cb2-108" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb2-109"><a href="#cb2-109" tabindex="-1"></a>    <span class="cf">return</span> particles</span>
+<span id="cb2-110"><a href="#cb2-110" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb2-111"><a href="#cb2-111" tabindex="-1"></a></span>
+<span id="cb2-112"><a href="#cb2-112" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-113"><a href="#cb2-113" tabindex="-1"></a><span class="st">    kick!(particles::AbstractVector{Particle}, dt)</span></span>
+<span id="cb2-114"><a href="#cb2-114" tabindex="-1"></a></span>
+<span id="cb2-115"><a href="#cb2-115" tabindex="-1"></a><span class="st">Change the momentum of a each particle in the vector `particles`, following</span></span>
+<span id="cb2-116"><a href="#cb2-116" tabindex="-1"></a><span class="st">direct one-to-one computation of their respective attractive forces.</span></span>
+<span id="cb2-117"><a href="#cb2-117" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-118"><a href="#cb2-118" tabindex="-1"></a><span class="kw">function</span> <span class="fu">kick!</span>(particles, dt)</span>
+<span id="cb2-119"><a href="#cb2-119" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fu">eachindex</span>(particles)</span>
+<span id="cb2-120"><a href="#cb2-120" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>(i<span class="op">-</span><span class="fl">1</span>)</span>
+<span id="cb2-121"><a href="#cb2-121" tabindex="-1"></a>            r <span class="op">=</span> particles[j].position <span class="op">-</span> particles[i].position</span>
+<span id="cb2-122"><a href="#cb2-122" tabindex="-1"></a>            force <span class="op">=</span> <span class="fu">gravitational_force</span>(particles[i].mass, particles[j].mass, r)</span>
+<span id="cb2-123"><a href="#cb2-123" tabindex="-1"></a>            particles[i].momentum <span class="op">+=</span> dt <span class="op">*</span> force</span>
+<span id="cb2-124"><a href="#cb2-124" tabindex="-1"></a>            particles[j].momentum <span class="op">-=</span> dt <span class="op">*</span> force</span>
+<span id="cb2-125"><a href="#cb2-125" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb2-126"><a href="#cb2-126" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb2-127"><a href="#cb2-127" tabindex="-1"></a>    <span class="cf">return</span> particles</span>
+<span id="cb2-128"><a href="#cb2-128" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb2-129"><a href="#cb2-129" tabindex="-1"></a></span>
+<span id="cb2-130"><a href="#cb2-130" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-131"><a href="#cb2-131" tabindex="-1"></a><span class="st">    potential_energy(particles::AbstractVector{Particle})</span></span>
+<span id="cb2-132"><a href="#cb2-132" tabindex="-1"></a></span>
+<span id="cb2-133"><a href="#cb2-133" tabindex="-1"></a><span class="st">Computes the potential energy of the system of particles.</span></span>
+<span id="cb2-134"><a href="#cb2-134" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-135"><a href="#cb2-135" tabindex="-1"></a><span class="kw">function</span> <span class="fu">potential_energy</span>(particles)</span>
+<span id="cb2-136"><a href="#cb2-136" tabindex="-1"></a>    total <span class="op">=</span> <span class="fl">0.0</span>u<span class="st">"J"</span></span>
+<span id="cb2-137"><a href="#cb2-137" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fu">eachindex</span>(particles)</span>
+<span id="cb2-138"><a href="#cb2-138" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>(i<span class="op">-</span><span class="fl">1</span>)</span>
+<span id="cb2-139"><a href="#cb2-139" tabindex="-1"></a>            r <span class="op">=</span> particles[j].position <span class="op">-</span> particles[i].position</span>
+<span id="cb2-140"><a href="#cb2-140" tabindex="-1"></a>            m1 <span class="op">=</span> particles[i].mass</span>
+<span id="cb2-141"><a href="#cb2-141" tabindex="-1"></a>            m2 <span class="op">=</span> particles[j].mass</span>
+<span id="cb2-142"><a href="#cb2-142" tabindex="-1"></a>            total <span class="op">-=</span> G <span class="op">*</span> m1 <span class="op">*</span> m2 <span class="op">/</span> <span class="fu">sqrt</span>(r <span class="op">⋅</span> r)</span>
+<span id="cb2-143"><a href="#cb2-143" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb2-144"><a href="#cb2-144" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb2-145"><a href="#cb2-145" tabindex="-1"></a>    <span class="cf">return</span> total</span>
+<span id="cb2-146"><a href="#cb2-146" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb2-147"><a href="#cb2-147" tabindex="-1"></a></span>
+<span id="cb2-148"><a href="#cb2-148" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-149"><a href="#cb2-149" tabindex="-1"></a><span class="st">    kinetic_energy(p::Particle)</span></span>
+<span id="cb2-150"><a href="#cb2-150" tabindex="-1"></a></span>
+<span id="cb2-151"><a href="#cb2-151" tabindex="-1"></a><span class="st">Compute the kinetic energy of a particle.</span></span>
+<span id="cb2-152"><a href="#cb2-152" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-153"><a href="#cb2-153" tabindex="-1"></a><span class="fu">kinetic_energy</span>(s<span class="op">::</span><span class="dt">Particle</span>) <span class="op">=</span> <span class="kw">let</span> p <span class="op">=</span> <span class="fu">momentum</span>(s)</span>
+<span id="cb2-154"><a href="#cb2-154" tabindex="-1"></a>    (p <span class="op">⋅</span> p) <span class="op">/</span> (<span class="fl">2</span> <span class="op">*</span> <span class="fu">mass</span>(s))</span>
+<span id="cb2-155"><a href="#cb2-155" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb2-156"><a href="#cb2-156" tabindex="-1"></a></span>
+<span id="cb2-157"><a href="#cb2-157" tabindex="-1"></a><span class="fu">kinetic_energy</span>(particles<span class="op">::</span><span class="dt">AbstractVector{Particle}</span>) <span class="op">=</span></span>
+<span id="cb2-158"><a href="#cb2-158" tabindex="-1"></a>    <span class="fu">sum</span>(<span class="fu">kinetic_energy</span>(p) <span class="cf">for</span> p <span class="kw">in</span> particles)</span>
+<span id="cb2-159"><a href="#cb2-159" tabindex="-1"></a></span>
+<span id="cb2-160"><a href="#cb2-160" tabindex="-1"></a><span class="fu">total_energy</span>(particles<span class="op">::</span><span class="dt">AbstractVector{Particle}</span>) <span class="op">=</span></span>
+<span id="cb2-161"><a href="#cb2-161" tabindex="-1"></a>    <span class="fu">potential_energy</span>(particles) <span class="op">+</span> <span class="fu">kinetic_energy</span>(particles)</span>
+<span id="cb2-162"><a href="#cb2-162" tabindex="-1"></a></span>
+<span id="cb2-163"><a href="#cb2-163" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-164"><a href="#cb2-164" tabindex="-1"></a><span class="st">    drift!(p::Particle, dt)</span></span>
+<span id="cb2-165"><a href="#cb2-165" tabindex="-1"></a></span>
+<span id="cb2-166"><a href="#cb2-166" tabindex="-1"></a><span class="st">Evolve the position of particle `p` for a time `dt` from its given momentum.</span></span>
+<span id="cb2-167"><a href="#cb2-167" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-168"><a href="#cb2-168" tabindex="-1"></a><span class="kw">function</span> <span class="fu">drift!</span>(p<span class="op">::</span><span class="dt">Particle</span>, dt)</span>
+<span id="cb2-169"><a href="#cb2-169" tabindex="-1"></a>    p.position <span class="op">+=</span> dt <span class="op">*</span> p.momentum <span class="op">/</span> p.mass</span>
+<span id="cb2-170"><a href="#cb2-170" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb2-171"><a href="#cb2-171" tabindex="-1"></a></span>
+<span id="cb2-172"><a href="#cb2-172" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-173"><a href="#cb2-173" tabindex="-1"></a><span class="st">    drift!(particles: AbstractVector{Partcile}, dt)</span></span>
+<span id="cb2-174"><a href="#cb2-174" tabindex="-1"></a></span>
+<span id="cb2-175"><a href="#cb2-175" tabindex="-1"></a><span class="st">Evolve the position of all particles.</span></span>
+<span id="cb2-176"><a href="#cb2-176" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-177"><a href="#cb2-177" tabindex="-1"></a><span class="kw">function</span> <span class="fu">drift!</span>(particles, dt)</span>
+<span id="cb2-178"><a href="#cb2-178" tabindex="-1"></a>    <span class="cf">for</span> p <span class="kw">in</span> particles</span>
+<span id="cb2-179"><a href="#cb2-179" tabindex="-1"></a>        <span class="fu">drift!</span>(p, dt)</span>
+<span id="cb2-180"><a href="#cb2-180" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb2-181"><a href="#cb2-181" tabindex="-1"></a>    <span class="cf">return</span> particles</span>
+<span id="cb2-182"><a href="#cb2-182" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb2-183"><a href="#cb2-183" tabindex="-1"></a></span>
+<span id="cb2-184"><a href="#cb2-184" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-185"><a href="#cb2-185" tabindex="-1"></a><span class="st">    leap_frog!(particles, dt)</span></span>
+<span id="cb2-186"><a href="#cb2-186" tabindex="-1"></a></span>
+<span id="cb2-187"><a href="#cb2-187" tabindex="-1"></a><span class="st">One leap-frog integration time step `dt` for `particles` under</span></span>
+<span id="cb2-188"><a href="#cb2-188" tabindex="-1"></a><span class="st">gravity.</span></span>
+<span id="cb2-189"><a href="#cb2-189" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-190"><a href="#cb2-190" tabindex="-1"></a><span class="kw">function</span> <span class="fu">leap_frog!</span>(particles, dt)</span>
+<span id="cb2-191"><a href="#cb2-191" tabindex="-1"></a>    <span class="fu">drift!</span>(particles, dt<span class="op">/</span><span class="fl">2</span>)</span>
+<span id="cb2-192"><a href="#cb2-192" tabindex="-1"></a>    <span class="fu">kick!</span>(particles, dt)</span>
+<span id="cb2-193"><a href="#cb2-193" tabindex="-1"></a>    <span class="fu">drift!</span>(particles, dt<span class="op">/</span><span class="fl">2</span>)</span>
+<span id="cb2-194"><a href="#cb2-194" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb2-195"><a href="#cb2-195" tabindex="-1"></a></span>
+<span id="cb2-196"><a href="#cb2-196" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-197"><a href="#cb2-197" tabindex="-1"></a><span class="st">    run_simulation(particles, dt, n_steps)</span></span>
+<span id="cb2-198"><a href="#cb2-198" tabindex="-1"></a></span>
+<span id="cb2-199"><a href="#cb2-199" tabindex="-1"></a><span class="st">Leap-frog a set of particles `n_steps` times for a time step `dt`.</span></span>
+<span id="cb2-200"><a href="#cb2-200" tabindex="-1"></a><span class="st">Copies the particle set after every iteration, returning a</span></span>
+<span id="cb2-201"><a href="#cb2-201" tabindex="-1"></a><span class="st">vector containing the full state for each time step.</span></span>
+<span id="cb2-202"><a href="#cb2-202" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-203"><a href="#cb2-203" tabindex="-1"></a><span class="kw">function</span> <span class="fu">run_simulation</span>(particles, dt, n_steps)</span>
+<span id="cb2-204"><a href="#cb2-204" tabindex="-1"></a>    x <span class="op">=</span> <span class="fu">deepcopy</span>(particles)</span>
+<span id="cb2-205"><a href="#cb2-205" tabindex="-1"></a>    [<span class="fu">deepcopy</span>(<span class="fu">leap_frog!</span>(x, dt)) for _ <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n_steps]</span>
+<span id="cb2-206"><a href="#cb2-206" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb2-207"><a href="#cb2-207" tabindex="-1"></a></span>
+<span id="cb2-208"><a href="#cb2-208" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-209"><a href="#cb2-209" tabindex="-1"></a><span class="st">    random_orbits(n, mass; dt=1.0u"s", steps=5000, args...)</span></span>
+<span id="cb2-210"><a href="#cb2-210" tabindex="-1"></a></span>
+<span id="cb2-211"><a href="#cb2-211" tabindex="-1"></a><span class="st">Generate random orbits of `n` particles with given `mass`.</span></span>
+<span id="cb2-212"><a href="#cb2-212" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-213"><a href="#cb2-213" tabindex="-1"></a><span class="kw">function</span> <span class="fu">random_orbits</span>(n, mass; dt<span class="op">=</span><span class="fl">1.0</span>u<span class="st">"s"</span>, steps<span class="op">=</span><span class="fl">5000</span>, args<span class="op">...</span>)</span>
+<span id="cb2-214"><a href="#cb2-214" tabindex="-1"></a>    particles <span class="op">=</span> <span class="fu">random_particles</span>(n; args<span class="op">...</span>)</span>
+<span id="cb2-215"><a href="#cb2-215" tabindex="-1"></a>    <span class="fu">run_simulation</span>(particles, dt, steps) <span class="op">|&gt;</span> collect</span>
+<span id="cb2-216"><a href="#cb2-216" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb2-217"><a href="#cb2-217" tabindex="-1"></a></span>
+<span id="cb2-218"><a href="#cb2-218" tabindex="-1"></a><span class="kw">end</span>  <span class="co"># module Newton</span></span></code></pre>
 </div>
-<p>We would like to add the above <code>cubic_roots()</code> function to
-the <code>MyPackage.jl</code> package.</p>
-<p>Add it to the <code>src/MyPackage.jl</code> file and save.</p>
-<p>Let us load our package and attempt to use the
-<code>cubic_roots()</code> function:</p>
-<pre class="shell"><code>julia&gt; using MyPackage
-julia&gt; MyPackage.cubic_roots(1,1,1,1)</code></pre>
+<p>Before using this, we will need to add the dependencies to the
+project environment:</p>
+<pre><code>pkg&gt; add Unitful GeometryBasics LinearAlgebra Random</code></pre>
+<p>Now let us load our package and attempt to use e.g. the
+<code>gravitational_force()</code> function:</p>
+<pre class="shell"><code>julia&gt; using Newton
+julia&gt; Newton.gravitational_force(1, 1, 1)</code></pre>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>(-1.0 - 0.0im, -3.700743415417188e-17 - 1.0im, -9.25185853854297e-17 + 1.0im)</code></pre>
+<pre class="output" tabindex="0"><code>6.6743e-11 m^3 kg^-1 s^-2</code></pre>
 </div>
-<p>We see that it is indeed returning some roots to the equation we
-defined: <span class="math display">\[x^3 + x^2 + x + 1 =
-0.\]</span></p>
 <div class="section level3">
 <h3 id="testing">Testing<a class="anchor" aria-label="anchor" href="#testing"></a></h3>
 <div class="section level4">
-<h4 id="testing-hello_world">Testing <code>hello_world()</code>
-<a class="anchor" aria-label="anchor" href="#testing-hello_world"></a></h4>
+<h4 id="testing-sanity">Testing sanity<a class="anchor" aria-label="anchor" href="#testing-sanity"></a></h4>
 <p>If we are to develop our package further, we may worry that any
 changes we make might break existing functionality. For this reason, it
 is important to add automated tests that can tell us immediately if the
 behaviour of our existing functions has changed.</p>
-<p>In the <code>test/</code> directory of <code>MyPackage.jl</code> you
-should see that there already exists an example test for the
-<code>hello_world()</code> function, in
-<code>test-basic-test.jl</code>:</p>
-<div class="codewrapper sourceCode" id="cb5">
+<p>First, let’s add a new directory: <code>Newton.jl/test/</code>. In
+that directory, we add a new file called <code>runtests.jl</code>.</p>
+<p>We can start with an example test to illustrate how it works:</p>
+<div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="pp">@testset</span> <span class="st">"MyPackage.jl"</span> <span class="cf">begin</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>    <span class="pp">@test</span> MyPackage.<span class="fu">hello_world</span>() <span class="op">==</span> <span class="st">"Hello, World!"</span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="cf">end</span></span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="kw">module</span> Spec</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="im">using</span> <span class="bu">Test</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="pp">@testset</span> <span class="st">"Newton.jl"</span> <span class="cf">begin</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>    <span class="pp">@testset</span> <span class="st">"testing sanity"</span> <span class="cf">begin</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>        <span class="pp">@test</span> <span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">==</span> <span class="fl">2</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
 </div>
 <p><code>@testset</code> is used to define a suite of many tests, while
 <code>@test</code> defines a single check. In this case, there is one
-test and it checks that the <code>hello_world()</code> function indeed
-returns “Hello, World!”.</p>
+test and it checks that 1 + 1 indeed equals 2.</p>
+<p>And we will also register this <code>test/</code> “sub-project” to
+the main package’s Project.toml, by adding the following:</p>
+<pre class="shell"><code>[workspace]
+projects = ["test"]</code></pre>
+<div id="callout1" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div class="callout-inner">
+<div class="callout-content">
+<p>The “workspace” feature is new to Julia 1.12, so will not work with
+older versions. It is useful because it allows sub-projects to have
+their own specific dependencies, but only one <code>Manifest.toml</code>
+for the whole project (and thus functioning as a single
+environment).</p>
+</div>
+</div>
+</div>
 </div>
 <div class="section level4">
-<h4 id="running-the-tests">Running the tests<a class="anchor" aria-label="anchor" href="#running-the-tests"></a></h4>
-<p>We first need to add the standard Julia <code>Test</code>
-package:</p>
-<pre class="shell"><code>pkg&gt; add Test</code></pre>
-<p>Then we can run all tests for our package by simply typing
-<code>test</code>:</p>
+<h4 id="creating-a-test-environment">Creating a test environment<a class="anchor" aria-label="anchor" href="#creating-a-test-environment"></a></h4>
+<p>To run our test, we first need to add the standard Julia
+<code>Test</code> package:</p>
+<pre class="shell"><code>cd test/
+julia
+pkg&gt; activate .
+pkg&gt; add Test</code></pre>
+<p>Here we have added the <code>Test</code> dependency to a different
+environment, specifically for testing. This means the <code>test/</code>
+directory now has its own <code>Project.toml</code>. This is useful for
+keeping testing-specific dependencies out of the main project
+dependencies, as an end user of our package may not care about such
+development tooling.</p>
+<p>We will also add the main (<code>Newton.jl</code>) package as a
+dependency of the test environment, as well as the <code>Unitful</code>
+dependency - we will need theses to be able to test our package
+later.</p>
+<pre class="shell"><code>pkg&gt; dev .. # Add the main Newton package we want to test as a development dependency
+pkg&gt; add Unitful</code></pre>
+<p>We can now activate the main package environment again, and
+apply/install the new dependency we added.</p>
+<pre class="shell"><code>cd .. # Return to Newton.jl/ directory
+julia
+pkg&gt; activate .</code></pre>
+<p>In some cases you may need to run <code>pkg&gt; resolve</code> and
+<code>pkg&gt; instantiate</code> because we added a new dependency
+(<code>Test</code>) to our sub-project “test”, but this has not actually
+been downloaded and installed yet. If the workspace was added before
+creating the test environment (i.e. there is no
+<code>Manifest.toml</code> in <code>test/</code>) then this should not
+be necessary.</p>
+<p>After running these commands you will see that our test dependencies
+have appeared in the <code>Manifest.toml</code> for the main
+package.</p>
+</div>
+<div class="section level4">
+<h4 id="running-the-test">Running the test<a class="anchor" aria-label="anchor" href="#running-the-test"></a></h4>
+<p>Having added the necessary dependencies, we can now run all tests for
+our package by simply typing <code>test</code> from the Julia
+<code>pkg&gt;</code> prompt:</p>
 <pre class="shell"><code><span><span class="va">pkg</span><span class="op">&gt;</span> <span class="va">test</span></span></code></pre>
-<p>The outcome of our <code>hello_world()</code> test now will depend on
-what state the <code>hello_world()</code> function is currently in. If
-you modified it in the previous lesson and it no longer returns “Hello,
-World!”, then the test will fail. Try changing the function to make the
-tests fail and then pass again.</p>
-<div id="add-a-test-for-cubic_roots" class="callout challenge">
+<p>Hopefully the outcome will show a passing test i.e. proving that 1 +
+1 = 2.</p>
+<div id="massive-attraction" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <span class="callout-header">Challenge</span>
-<div id="add-a-test-for-cubic_roots" class="callout-inner">
-<h3 class="callout-title">Add a test for <code>cubic_roots</code>
-</h3>
+<div id="massive-attraction" class="callout-inner">
+<h3 class="callout-title">Massive attraction</h3>
 <div class="callout-content">
-<p>Create a new file in the <code>test/</code> directory, called
-<code>test-cubic.jl</code>.</p>
-<p>Using what you know from the <code>hello_world()</code> tests, can
-you populate this file with a test for the following case:</p>
-<ul><li>For the special case with <span class="math display">\[a=0, b=0,
-c=0, d=0\]</span> check that the only (non-NaN) solution is 0.</li>
-</ul><p>Hint: You only need to check the first element of the returned
-tuple.</p>
+<p>Add a test to verify that the
+<code>Newton.gravitational_force()</code> function returns a force
+greater than zero for two 1 kg masses 1 metre apart.</p>
+<p>What about a test for a zero attraction case?</p>
+<p>Hint: If we are using <code>Unitful</code> then we must specify the
+units of any values.</p>
 </div>
 </div>
 </div>
@@ -583,49 +815,83 @@ tuple.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
-<p>The contents of <code>test-cubic.jl</code> should be e.g.</p>
-<div class="codewrapper sourceCode" id="cb8">
+<p>Here is the modified <code>test/runtests.jl</code> file with the
+added gravitational check:</p>
+<div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="pp">@testset</span> <span class="st">"MyPackage.jl"</span> <span class="cf">begin</span></span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>    <span class="pp">@test</span> MyPackage.<span class="fu">cubic_roots</span>(<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>)[<span class="fl">1</span>] <span class="op">==</span> <span class="fl">0</span></span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="cf">end</span></span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="kw">module</span> Spec</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="im">using</span> <span class="bu">Newton</span>, <span class="bu">Test</span>, <span class="bu">Unitful</span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="pp">@testset</span> <span class="st">"Newton.jl"</span> <span class="cf">begin</span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a>    <span class="pp">@testset</span> <span class="st">"testing sanity"</span> <span class="cf">begin</span></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>        <span class="pp">@test</span> <span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">==</span> <span class="fl">2</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>        <span class="pp">@test</span> Newton.<span class="fu">gravitational_force</span>(<span class="fl">1</span>u<span class="st">"kg"</span>,<span class="fl">1</span>u<span class="st">"kg"</span>,<span class="fl">1</span>u<span class="st">"m"</span>) <span class="op">&gt;</span> <span class="fl">0</span>u<span class="st">"N"</span></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>        <span class="pp">@test</span> Newton.<span class="fu">gravitational_force</span>(<span class="fl">0</span>u<span class="st">"kg"</span>,<span class="fl">0</span>u<span class="st">"kg"</span>,<span class="fl">1</span>u<span class="st">"m"</span>) <span class="op">==</span> <span class="fl">0</span>u<span class="st">"N"</span></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
 </div>
-<p>Then, running <code>pkg&gt; test</code> will result in a pass.</p>
-<p>Note that the equality check would also work with:</p>
-<div class="codewrapper sourceCode" id="cb9">
+<p>Then, running <code>pkg&gt; test</code> should result in a pass.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section level4">
+<h4 id="testing-the-functionality-of-newton-jl">Testing the functionality of Newton.jl<a class="anchor" aria-label="anchor" href="#testing-the-functionality-of-newton-jl"></a></h4>
+<p>We can also add some more comprehensive tests, testing the energy
+conservation of a group of 3 particles.</p>
+<div class="codewrapper sourceCode" id="cb13">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>    <span class="pp">@test</span> MyPackage.<span class="fu">cubic_roots</span>(<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>)[<span class="fl">1</span>] <span class="op">==</span> <span class="fl">0.0</span></span></code></pre>
-</div>
-<p>and</p>
-<div class="codewrapper sourceCode" id="cb10">
-<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>    <span class="pp">@test</span> MyPackage.<span class="fu">cubic_roots</span>(<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0</span>)[<span class="fl">1</span>] <span class="op">==</span> <span class="fl">0.0</span><span class="op">+</span><span class="fl">0.0im</span></span></code></pre>
-</div>
-</div>
-</div>
-</div>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="kw">module</span> Spec</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="im">using</span> <span class="bu">Newton</span>, <span class="bu">Test</span>, <span class="bu">Unitful</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="im">using</span> <span class="bu">Newton</span>: set_still!, random_particles, momentum, MomentumVector, run_simulation,</span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>    total_energy</span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a><span class="pp">@testset</span> <span class="st">"Newton.jl"</span> <span class="cf">begin</span></span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>    <span class="pp">@testset</span> <span class="st">"testing sanity"</span> <span class="cf">begin</span></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a>        <span class="pp">@test</span> <span class="fl">1</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">==</span> <span class="fl">2</span></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>        <span class="pp">@test</span> Newton.<span class="fu">gravitational_force</span>(<span class="fl">1</span>u<span class="st">"kg"</span>,<span class="fl">1</span>u<span class="st">"kg"</span>,<span class="fl">1</span>u<span class="st">"m"</span>) <span class="op">&gt;</span> <span class="fl">0</span>u<span class="st">"N"</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>        <span class="pp">@test</span> Newton.<span class="fu">gravitational_force</span>(<span class="fl">0</span>u<span class="st">"kg"</span>,<span class="fl">0</span>u<span class="st">"kg"</span>,<span class="fl">1</span>u<span class="st">"m"</span>) <span class="op">==</span> <span class="fl">0</span>u<span class="st">"N"</span></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a>    <span class="pp">@testset</span> <span class="st">"run </span><span class="sc">$</span>i<span class="st">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span>
+<span id="cb13-15"><a href="#cb13-15" tabindex="-1"></a>        p <span class="op">=</span> <span class="fu">set_still!</span>(<span class="fu">random_particles</span>(<span class="fl">3</span>, seed<span class="op">=</span>i))</span>
+<span id="cb13-16"><a href="#cb13-16" tabindex="-1"></a>        <span class="pp">@test</span> <span class="fu">momentum</span>(p) <span class="op">≈</span> <span class="fu">zero</span>(MomentumVector) atol<span class="op">=</span><span class="fl">1e-6</span>u<span class="st">"N*s"</span></span>
+<span id="cb13-17"><a href="#cb13-17" tabindex="-1"></a></span>
+<span id="cb13-18"><a href="#cb13-18" tabindex="-1"></a>        orbit <span class="op">=</span> <span class="fu">run_simulation</span>(p, <span class="fl">0.1</span>u<span class="st">"s"</span>, <span class="fl">1000</span>)</span>
+<span id="cb13-19"><a href="#cb13-19" tabindex="-1"></a>        <span class="pp">@test</span> <span class="fu">momentum</span>(orbit[<span class="kw">end</span>]) <span class="op">≈</span> <span class="fu">zero</span>(MomentumVector) atol<span class="op">=</span><span class="fl">1e-6</span>u<span class="st">"N*s"</span></span>
+<span id="cb13-20"><a href="#cb13-20" tabindex="-1"></a>        <span class="pp">@test</span> <span class="fu">total_energy</span>(orbit[<span class="fl">1</span>]) <span class="op">≈</span> <span class="fu">total_energy</span>(orbit[<span class="kw">end</span>]) rtol<span class="op">=</span><span class="fl">1e-6</span></span>
+<span id="cb13-21"><a href="#cb13-21" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb13-22"><a href="#cb13-22" tabindex="-1"></a><span class="cf">end</span></span>
+<span id="cb13-23"><a href="#cb13-23" tabindex="-1"></a></span>
+<span id="cb13-24"><a href="#cb13-24" tabindex="-1"></a><span class="kw">end</span>  <span class="co"># module Spec</span></span></code></pre>
 </div>
 </div>
 </div>
 <div class="section level3">
 <h3 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a></h3>
 <div class="section level4">
-<h4 id="documenting-hello_world">Documenting <code>hello_world()</code>
-<a class="anchor" aria-label="anchor" href="#documenting-hello_world"></a></h4>
-<p>The <code>hello_world()</code> function has a docstring before
+<h4 id="documenting-gravitational_force">Documenting <code>gravitational_force()</code>
+<a class="anchor" aria-label="anchor" href="#documenting-gravitational_force"></a></h4>
+<p>Our <code>kinetic_energy()</code> function has a docstring before
 it:</p>
-<div class="codewrapper sourceCode" id="cb11">
+<div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="st">"""</span></span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="st">    hi = hello_world()</span></span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="st">A simple function to return "Hello, World!"</span></span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="st">"""</span></span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="st">    kinetic_energy(p::Particle)</span></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="st">Compute the kinetic energy of a particle.</span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a><span class="st">"""</span></span></code></pre>
 </div>
 <p>This is low-level technical documentation for this particular
 function.</p>
@@ -636,47 +902,55 @@ function.</p>
 can then type the name of a function you would like documentation
 about:</p>
 <pre class="shell"><code>julia&gt; # Press '?'
-help?&gt; MyPackage.hello_world()</code></pre>
+help?&gt; Newton.kinetic_energy()</code></pre>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="output" tabindex="0"><code>
-  │ Warning
+<pre class="output" tabindex="0"><code>  │ Warning
   │
   │  The following bindings may be internal; they may change or be removed in future versions:
   │
-  │    •  MyPackage.hello_world
+  │    •  Newton.kinetic_energy
 
-  hi = hello_world()
+  kinetic_energy(p::Particle)
 
-  A simple function to return "Hello, World!"</code></pre>
+  Compute the kinetic energy of a particle.</code></pre>
 </div>
 </div>
 <div class="section level4">
 <h4 id="building-the-docs">Building the docs<a class="anchor" aria-label="anchor" href="#building-the-docs"></a></h4>
 <p>The standard package for building beautiful documentation websites
-for Julia packages is <code>Documenter.jl</code>. It can be seen in the
-<code>Project.toml</code> for the <code>docs/</code> directory that this
-is indeed the package that <code>BestieTemplate.jl</code> has set up for
-us.</p>
-<p>In <code>docs/make.jl</code> we see <code>Documenter</code> being
-used to build the documentation website, that is then deployed to GitHub
-Pages where it is served from.</p>
-<p>However, presently the code makes a lot of assumptions about being
-used with git on GitHub. For the purposes of this lesson, we will make a
-small modification to the <code>docs/make.jl</code> file:</p>
-<pre><code>repo = "https://github.com/[...your username and package...]", # REMOVE this line
-remotes = nothing, # ADD this line</code></pre>
-<p>This change will make the docs building ignore that we are not
-currently using <code>git</code> or hosting on GitHub.</p>
-<p>Now we will add <code>Documenter.jl</code> (the package used for
-building the documentation) and <code>LiveServer</code> (a package that
-lets us serve the pages locally):</p>
-<pre class="shell"><code>pkg&gt; add Documenter LiveServer</code></pre>
+for Julia packages is <code>Documenter.jl</code>.</p>
+<p>As we did for testing, we will add a directory (<code>docs/</code>)
+and an environment for any docs-specific dependencies.</p>
+<pre class="shell"><code>mkdir docs/</code></pre>
+<p>Modify the <code>Project.toml</code> workspace section:</p>
+<pre class="shell"><code>[workspace]
+projects = ["test", "docs"]</code></pre>
+<p>Add <code>Documenter.jl</code> (the package used for building the
+documentation) and <code>LiveServer</code> (a package that lets us serve
+the pages locally):</p>
+<pre class="shell"><code>julia --project=docs
+pkg&gt; add Documenter LiveServer Newton</code></pre>
+<p>Then add two files to the docs structure:</p>
+<p><code>docs/make.jl</code></p>
+<div class="codewrapper sourceCode" id="cb20">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">Newton</span>, <span class="bu">Documenter</span>, <span class="bu">LiveServer</span></span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a><span class="fu">makedocs</span>(remotes<span class="op">=</span><span class="cn">nothing</span>, sitename<span class="op">=</span><span class="st">"Newton.jl"</span>)</span></code></pre>
+</div>
+<p><code>docs/src/index.md</code>:</p>
+<div class="codewrapper sourceCode" id="cb21">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="ss">```@autodocs</span></span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="ss">Modules = [Newton]</span></span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a><span class="ss">```</span></span></code></pre>
+</div>
 <p>Then we can build the documentation and serve it using the
 following:</p>
-<pre class="shell"><code>julia&gt; using LiveServer
-julia&gt; servedocs()</code></pre>
+<pre class="shell"><code>julia --project=docs -e 'using LiveServer; servedocs()'</code></pre>
 <p>There will be a lot of output and some warnings, but hopefully you
 will eventually see:</p>
 <div class="codewrapper">
@@ -686,20 +960,41 @@ will eventually see:</p>
 </div>
 <p>Or something similar. Open this link in your web browser to see the
 rendered documentation.</p>
-<div id="documenting-cubic_roots" class="callout challenge">
+<p>When done, use <code>Ctrl+C</code> to stop the running server:</p>
+<div id="testing-the-examples-in-your-documentation" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <span class="callout-header">Challenge</span>
-<div id="documenting-cubic_roots" class="callout-inner">
-<h3 class="callout-title">Documenting <code>cubic_roots</code>
-</h3>
+<div id="testing-the-examples-in-your-documentation" class="callout-inner">
+<h3 class="callout-title">Testing the examples in your
+documentation</h3>
 <div class="callout-content">
-<p>In the “Reference” section of the documentation website we just
-generated, you will find the <code>hello_world()</code> function with
-its docstring nicely rendered.</p>
-<p>Now try documenting your <code>cubic_roots()</code> function
-similarly, and rebuild the documentation.</p>
+<p>In the ‘Reference’ section of the documentation website we just
+generated, you will find the <code>gravitational_force()</code> function
+with its docstring nicely rendered.</p>
+<p>But did you know we can add an example of usage to this docstring and
+have it be tested automatically during the standard docs build?</p>
+<p>Consider the following example function’s docstring:</p>
+<div class="codewrapper sourceCode" id="cb24">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a><span class="st">    roots = cubic_roots(a, b, c, d)</span></span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a><span class="st">    Returns the roots of a cubic polynomial defined by ax^3 + bx^2 + cx + d = 0</span></span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a><span class="st">```jldoctest</span></span>
+<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a><span class="st">julia&gt; roots = MyPackage.cubic_roots(0, 0, 0, 0)</span></span>
+<span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a><span class="st">(0.0 + 0.0im, NaN + NaN*im, NaN + NaN*im)</span></span>
+<span id="cb24-9"><a href="#cb24-9" tabindex="-1"></a><span class="st">```</span></span>
+<span id="cb24-10"><a href="#cb24-10" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb24-11"><a href="#cb24-11" tabindex="-1"></a><span class="kw">function</span> <span class="fu">cubic_roots</span>(a, b, c, d)</span></code></pre>
+</div>
+<p>When the documentation is built, the example in the
+<code>jldoctest</code> block will be run and its output verified.</p>
+<p>Can you do something similar to add a tested example to our
+<code>gravitational_force()</code> function’s docstring?</p>
 </div>
 </div>
 </div>
@@ -708,38 +1003,32 @@ similarly, and rebuild the documentation.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
-<p>Let’s add a docstring explaining what the function does, as well as
-an example of using it:</p>
-<div class="codewrapper sourceCode" id="cb18">
+<p>We can add the <code>jldoctest</code> block as follows:</p>
+<div class="codewrapper sourceCode" id="cb25">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="st">"""</span></span>
-<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="st">    roots = cubic_roots(a, b, c, d)</span></span>
-<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a></span>
-<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="st">    Returns the roots of a cubic polynomial defined by ax^3 + bx^2 + cx + d = 0</span></span>
-<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a></span>
-<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a><span class="st">```jldoctest</span></span>
-<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a><span class="st">julia&gt; roots = MyPackage.cubic_roots(0, 0, 0, 0)</span></span>
-<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a><span class="st">(0.0 + 0.0im, NaN + NaN*im, NaN + NaN*im)</span></span>
-<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a><span class="st">```</span></span>
-<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a><span class="st">"""</span></span>
-<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a><span class="kw">function</span> <span class="fu">cubic_roots</span>(a, b, c, d)</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a><span class="st">    gravitation_force(m1, m2, r)</span></span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a><span class="st">Takes `r` to be the scalar distance between two objects of masses `m1` and `m2`.</span></span>
+<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a><span class="st">Returns the strength of the force of gravitational attraction between the</span></span>
+<span id="cb25-6"><a href="#cb25-6" tabindex="-1"></a><span class="st">two objects.</span></span>
+<span id="cb25-7"><a href="#cb25-7" tabindex="-1"></a></span>
+<span id="cb25-8"><a href="#cb25-8" tabindex="-1"></a><span class="st">```jldoctest</span></span>
+<span id="cb25-9"><a href="#cb25-9" tabindex="-1"></a><span class="st">julia&gt; gravitational_force(1u"kg",1u"kg",1u"m")</span></span>
+<span id="cb25-10"><a href="#cb25-10" tabindex="-1"></a><span class="st">6.6743e-11 kg m s^-2</span></span>
+<span id="cb25-11"><a href="#cb25-11" tabindex="-1"></a><span class="st">```</span></span>
+<span id="cb25-12"><a href="#cb25-12" tabindex="-1"></a><span class="st">"""</span></span></code></pre>
 </div>
-<p>Now <code>Ctrl+C</code> to stop the running server and return to
-<code>julia&gt;</code> prompt. Build the documentation again:</p>
-<pre class="shell"><code><span><span class="va">julia</span><span class="op">&gt;</span> <span class="fu">servedocs</span><span class="op">(</span><span class="op">)</span></span></code></pre>
-<p>Refreshing the browser on the docs page should now show the new
-documentation rendered.</p>
-<p>As an additional example of a nice feature - the example given in the
-<code>jldoctest</code> is actually run and the output checked during
-documentation building. You can test this yourself by changing the
-arguments to <code>cubic_roots()</code> and running again. The output
-will no longer match that in the comment and the documentation build
-will fail. This is a nice solution to a common problem in many languages
-where the documentation examples fall out of sync with the package
-development.</p>
+<p>The example given in the <code>jldoctest</code> block is actually run
+and the output checked during documentation building. You can test this
+yourself by changing the arguments to <code>gravitational_force()</code>
+and running again. The output will no longer match that in the comment
+and the documentation build will fail. This is a nice solution to a
+common problem in many languages where the documentation examples fall
+out of sync with the package development.</p>
 </div>
 </div>
 </div>
@@ -753,19 +1042,31 @@ development.</p>
 <pre class="shell"><code>pkg&gt; add JuliaFormatter
 julia&gt; using JuliaFormatter</code></pre>
 <p>Then you can try it out on our source file:</p>
-<pre class="shell"><code><span><span class="va">julia</span><span class="op">&gt;</span> <span class="fu">format</span><span class="op">(</span><span class="st">"src/MyPackage.jl"</span><span class="op">)</span></span></code></pre>
-<p>Not a huge amount will change, but you may notice that spaces are
-inserted around arithmetic operators, for example:</p>
-<pre><code><span><span class="va">cNaN</span> <span class="op">=</span> <span class="cn">NaN</span><span class="op">+</span><span class="cn">NaN</span><span class="op">*</span><span class="va">im</span></span></code></pre>
-<p>becomes</p>
-<pre><code><span><span class="va">cNaN</span> <span class="op">=</span> <span class="cn">NaN</span> <span class="op">+</span> <span class="cn">NaN</span> <span class="op">*</span> <span class="va">im</span></span></code></pre>
-<p>The configuration for the formatting in our package is set in
-<code>.JuliaFormatter.toml</code>. In practice, you will not run this
-formatter manually, but it will be automated by workflows created by the
-<code>BestieTemplate</code>. This course does not focus on these
+<pre class="shell"><code><span><span class="va">julia</span><span class="op">&gt;</span> <span class="fu">format</span><span class="op">(</span><span class="st">"src/Newton.jl"</span><span class="op">)</span></span></code></pre>
+<p>Try making some changes to the source file (save the file
+afterwards!) and running this line again. You will see the formatter
+make modifications to the code.</p>
+<p>In practice, you will not run this formatter manually, but rather
+automate it with various workflows. This course does not focus on these
 (largely they are integrated with <code>git</code> and
-<code>GitHub</code>) but they are helpful with ensuring a clean code
-base with minimal effort.</p>
+e.g. <code>GitHub</code>) but they are helpful with ensuring a clean
+code base with minimal effort.</p>
+<div id="callout2" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div class="callout-inner">
+<div class="callout-content">
+<p>For educational purposes, this lesson has focussed on manually
+operating the various tools needed for applying best practices in Julia
+development. In practice, you should use a template from
+<code>PkgTemplates.jl</code> or ‘BestieTemplate.jl’ to automate the set
+up of such a repository and CI workflows integrated with the git forge
+you wish to use.</p>
+</div>
+</div>
+</div>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
@@ -825,7 +1126,7 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
 
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/" class="external-link">sandpaper (0.20.0)</a>, <a href="https://github.com/carpentries/pegboard/tree/" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/" class="external-link">varnish (1.0.9)</a></p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.20.0" class="external-link">sandpaper (0.20.0)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.9" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.9" class="external-link">varnish (1.0.9)</a></p>
 		</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -847,8 +1148,8 @@ any links that you are not going to use.
   "url": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/090-best-practices.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/090-best-practices.html",
   "dateCreated": "2024-01-01",
-  "dateModified": "2025-02-10",
-  "datePublished": "2026-04-07"
+  "dateModified": "2026-04-13",
+  "datePublished": "2026-04-13"
 }
 
   </script><script>
