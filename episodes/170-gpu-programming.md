@@ -241,7 +241,7 @@ Hint 2: on Intel we needed a gang size that divides the width of the image, in t
 	w, h = size(out)
 	idx = @index(Global, Cartesian)
 	
-    x = (idx[1] - w ÷ 2) * s
+	x = (idx[1] - w ÷ 2) * s
 	y = (idx[2] - h ÷ 2) * s
 	z = x + 1f0im * y
 
