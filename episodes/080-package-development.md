@@ -102,11 +102,11 @@ However, for clarity we generate a completely new package in this lesson.
 ### Pkg.generate
 
 * `Project.toml`
-The `Project.toml` file specifies the name of our package, UUID and authors (as given in our answers when setting up the template). It also specifies the package's current version
+The `Project.toml` file specifies the name of our package and its UUID. It also specifies the package's current version
 and dependencies.
 
 * `src/`
-The location of source code files.
+The location of source code files. This has already been populated with a simple example function.
 
 
 ### BestieTemplate.jl
