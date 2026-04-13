@@ -1,5 +1,4 @@
 # ~/~ begin <<episodes/060-simulating-solar-system.md#src/Gravity.jl>>[init]
-#| file: src/Gravity.jl
 module Gravity
 
 using Unitful
@@ -14,12 +13,10 @@ export random_partcle, random_particles, velocity, mass, momentum, position
 export run_simulation, set_still!
 
 # ~/~ begin <<episodes/060-simulating-solar-system.md#gravity>>[init]
-#| id: gravity
 const G = 6.6743e-11u"m^3*kg^-1*s^-2"
 gravitational_force(m1, m2, r) = G * m1 * m2 / r^2
 # ~/~ end
 # ~/~ begin <<episodes/060-simulating-solar-system.md#gravity>>[1]
-#| id: gravity
 """
     gravitational_force(m1, m2, r)
 
@@ -29,15 +26,12 @@ gravitational_force(m1, m2, r::AbstractVector) =
     r * (G * m1 * m2 * (r ⋅ r)^(-1.5))
 # ~/~ end
 # ~/~ begin <<episodes/060-simulating-solar-system.md#gravity>>[2]
-#| id: gravity
-
 const Mass = typeof(1.0u"kg")
 const MomentumVector = typeof(Vec3d(1)u"kg*m/s")
 const PositionVector = typeof(Vec3d(1)u"m")
 const VelocityVector = typeof(Vec3d(1)u"m/s")
 # ~/~ end
 # ~/~ begin <<episodes/060-simulating-solar-system.md#gravity>>[3]
-#| id: gravity
 mutable struct Particle
     mass::Mass
     position::PositionVector
@@ -45,7 +39,6 @@ mutable struct Particle
 end
 # ~/~ end
 # ~/~ begin <<episodes/060-simulating-solar-system.md#gravity>>[4]
-#| id: gravity
 random_particle(mass=1e6u"kg", spread=1.0u"m", dispersion=2.0u"mm/s") =
     Particle(mass, randn(Vec3d) * spread, randn(Vec3d) * dispersion * mass)
 
@@ -55,7 +48,6 @@ function random_particles(n; seed=0, args...)
 end
 # ~/~ end
 # ~/~ begin <<episodes/060-simulating-solar-system.md#gravity>>[5]
-#| id: gravity
 mass(p::Particle) = p.mass
 position(p::Particle) = p.position
 momentum(p::Particle) = p.momentum
@@ -68,7 +60,6 @@ momentum(p::AbstractArray{Particle}) = sum(momentum, p)
 velocity(p) = momentum(p) / mass(p)
 # ~/~ end
 # ~/~ begin <<episodes/060-simulating-solar-system.md#gravity>>[6]
-#| id: gravity
 function kick!(particles, dt)
     for i in eachindex(particles)
         for j in 1:(i-1)
@@ -82,7 +73,6 @@ function kick!(particles, dt)
 end
 # ~/~ end
 # ~/~ begin <<episodes/060-simulating-solar-system.md#gravity>>[7]
-#| id: gravity
 function drift!(p::Particle, dt)
     p.position += dt * p.momentum / p.mass
 end
@@ -95,16 +85,13 @@ function drift!(particles, dt)
 end
 # ~/~ end
 # ~/~ begin <<episodes/060-simulating-solar-system.md#gravity>>[8]
-#| id: gravity
 kick!(dt) = Base.Fix2(kick!, dt)
 drift!(dt) = Base.Fix2(drift!, dt)
 # ~/~ end
 # ~/~ begin <<episodes/060-simulating-solar-system.md#gravity>>[9]
-#| id: gravity
 leap_frog!(dt) = drift!(dt) ∘ kick!(dt)
 # ~/~ end
 # ~/~ begin <<episodes/060-simulating-solar-system.md#gravity>>[10]
-#| id: gravity
 
 """
     leap_frog!(particles, dt)
@@ -119,7 +106,6 @@ function leap_frog!(particles, dt)
 end
 # ~/~ end
 # ~/~ begin <<episodes/060-simulating-solar-system.md#gravity>>[11]
-#| id: gravity
 function run_simulation(particles, dt, n_steps)
     x = deepcopy(particles)
     [deepcopy(leap_frog!(x, dt)) for _ in 1:n_steps]
@@ -131,7 +117,6 @@ function random_orbits(n, mass; dt=1.0u"s", steps=5000, args...)
 end
 # ~/~ end
 # ~/~ begin <<episodes/060-simulating-solar-system.md#gravity>>[12]
-#| id: gravity
 function set_still!(particles)
     v = velocity(particles)
     for p in particles
@@ -141,7 +126,6 @@ function set_still!(particles)
 end
 # ~/~ end
 # ~/~ begin <<episodes/060-simulating-solar-system.md#gravity>>[13]
-#| id: gravity
 # const SUN = Particle(2e30u"kg",
 #     Vec3d(0.0)u"m",
 #     Vec3d(0.0)u"m/s")

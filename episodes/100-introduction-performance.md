@@ -14,22 +14,37 @@ title: Type Stability
 - Analyze the problem when passing functions as members of a struct.
 :::
 
-In this episode we will look into **type stability**, a very important topic when it comes to writing efficient Julia. We will first show some small examples, trying to explain what type stability means and how you can create code that is not type stable. Then we will have two examples: one computing the growth of a coral reef under varying sea level, the other computing the value of $\pi$ using the Chudnovsky algorithm.
+In this episode we will look into **type stability**, a very important topic when it comes to writing efficient Julia. We will first show some small examples, trying to explain what type stability means and how you can create code that is not type stable. 
 
 ```julia
 using BenchmarkTools
 ```
+
+## Compiler stack
+
+We take a small tidbit of code to see what the Julia compiler is doing. Today we will be looking at logistic functions and logistic maps.
+
+```julia
+logistic_map(r, x) = r * x * (1 - x)
+```
+
+We'll run the following macros on this code to see what the compiler is doing:
+
+- `@code_lower`
+- `@code_typed`
+- `@code_llvm`
+- `@code_native`
 
 ## Type stability
 If types cannot be inferred at compile time, a function cannot be entirely compiled to machine code. This means that evaluation will be slow as molasses.
 One example of a type instability is when a function's return type depends on run-time values:
 
 ```julia
-function safe_inv(x::T) where {T}
-    if x == zero(T)
+function safe_inv(x)
+    if x == zero(typeof(x))
         nothing
     else
-        one(T) / x
+        one(typeof(x)) / x
     end
 end
 ```
@@ -62,263 +77,169 @@ replace_x((<)(0), -2:2)
 
 :::challenge
 ### Use parameters or `const`
-Change the definition of `replace_x` by passing `x` as a parameter.
-Change the definition of `x` to a constant using `const`.
-Time the result against the type unstable version.
-:::
-
-## Functions in structs
-Every function has its own unique type. This can be a problem when we want to get some functional user input. The following computes the sedimentation history of a coral reef, following a paper by Bosscher & Schlager 1992:
-
-$$\frac{\partial y}{\partial t} = g_m \tanh \left(\frac{I_0 \exp(-kw)}{I_k}\right),$$
-
-where $g_m$ is the maximum growth rate, $I_0$ is the insolation (light intensity at sea-level), $I_k$ the saturation intensity, $k$ the extinction coefficient and $w$ the waterdepth, being $sl(t) - y + \sigma*t$, where $sl(t)$ is the sea level and $\sigma$ is the subsidence rate. The model uses the $\tanh$ function to interpolate between maximum growth and zero growth, modified by the exponential extinction of sun light as we go deeper into the water. Details don't matter much, the point being that we'd like to be able to specify the sea level as an input parameter in functional form.
+Put the following code in a file and use `include` to load.
 
 ```julia
-using Unitful
-using GLMakie
+module TypeUnstable
+    x = 5
 
-@kwdef struct Input
-    "The sea level as a function of time"
-    sea_level = _ -> 0.0u"m"
-
-    "Maximum growth rate of the coral, in m/Myr"
-    maximum_growth_rate::typeof(1.0u"m/Myr") = 0.2u"mm/yr"
-
-    "The light intensity at which maximum growth is attained, in W/m^2"
-    saturation_intensity::typeof(1.0u"W/m^2") = 50.0u"W/m^2"
-
-    "The rate at which growth rate drops every meter of water depth, in 1/m"
-    extinction_coefficient::typeof(1.0u"m^-1") = 0.05u"m^-1"
-
-    "The light intensity of the Sun, in W/m^2"
-    insolation::typeof(1.0u"W/m^2") = 400.0u"W/m^2"
-
-    "Subsidence rate is the rate at which the plateau drops, in m/Myr"
-    subsidence_rate::typeof(1.0u"m/Myr") = 50.0u"m/Myr"
+    replace_x(f, vs) = [(f(v) ? x : v) for v in vs]
 end
 
-function growth_rate(input)
-    sea_level = input.sea_level
-    function df(y, t)
-        # w = input.sea_level(t) - y + input.subsidence_rate * t
-        w = sea_level(t) - y + input.subsidence_rate * t
-        g_m = input.maximum_growth_rate
-        I_0 = input.insolation
-        I_k = input.saturation_intensity
-        k = input.extinction_coefficient
+@code_warntype TypeUnstable.replace_x((<)(0), -2:2)
+```
 
-        w > 0u"m" ? g_m * tanh(I_0 * exp(-k * w) / I_k) : 0.0u"m/Myr"
-    end
+- Change the definition of `x` to a constant using `const`.
+- Change the definition of `replace_x` by passing `x` as a parameter.
+- Time the result against the type unstable version.
+:::
+
+## Logistic model
+
+We'll now introduce a new application: logistic growth. Suppose we model a population $P$ of bacteria in a petri dish. In time we expect the population to grow by some reproduction factor $r$, so
+
+$$\frac{dP}{dt} = rP.$$
+
+However, the total capacity is limited, so this exponential growth needs to plateau at some point. We introduce the **carrying capacity** K.
+
+$$\frac{dP}{dt} = rP \left(1 - \frac{P}{K}\right).$$
+
+This is the logistic model. We may collect these two parameters in a struct. For the moment, we leave out types so that we can choose precision or the use of Unitful quantities later on.
+
+```julia
+#| file: src/PopulationModel.jl
+module PopulationModel
+    <<population-model>>
+    <<population-model-main>>
 end
 ```
 
 ```julia
+#| id: population-model
+abstract type LogisticModel end
+
+struct LogisticModelUntyped <: LogisticModel
+    reproduction_factor
+    carrying_capacity
+end
+```
+
+A typical ODE solver takes in a function $y' = f(x, t)$.
+
+```julia
+ode(model::LogisticModel) = function (x, _)
+    x * model.reproduction_factor * (1 - x / model.carrying_capacity)
+end
+```
+
+We can rewrite this to be a bit nicer.
+
+```julia
+#| id: population-model
+ode(model::LogisticModel) = function (x, t)
+    let r = model.reproduction_factor,
+        k = model.carrying_capacity
+
+        x * r * (1 - x / k)
+    end
+end
+```
+
+We can solve an ODE with a simple forward method
+
+```julia
+#| id: population-model
 function forward_euler(df, y0::T, t) where {T}
-    result = Vector{T}(undef, length(t) + 1)
+    result = Vector{T}(undef, length(t))
     result[1] = y = y0
     dt = step(t)
 
-    for i in eachindex(t)
-        y = y + df(y, t[i]) * dt
-        result[i+1] = y
+    for i in 2:length(t)
+        y = y + df(y, t[i-1]) * dt
+        result[i] = y
     end
-    
+
     return result
 end
 ```
 
+:::callout
+This is our first time encountering a generic function. The `where` clause introduces a type variable that we can use inside the function to create a typed vector. In this case we could still have used `typeof(y0)` to deduce `T`, but the type variable notation is cleaner.
+:::
+
+We may write the following `main` function which we can improve on
+
 ```julia
-let input = Input(sea_level=t->20.0u"m" * sin(2π*t/200u"kyr"))
-    initial_topography = (0.0:-1.0:-100.0)u"m"
-    result = stack(forward_euler(growth_rate(input), y0, (0.0:0.001:1.0)u"Myr")
-        for y0 in initial_topography) .- 1.0u"Myr" * input.subsidence_rate
-    fig = Figure()
-    ax = Axis(fig[1, 1], xlabel="y0", ylabel="y", xreversed=true)
-    for r in eachrow(result[1:20:end,:])
-        lines!(ax, initial_topography/u"m", r/u"m", color=:black)
-    end
-    fig
+#| id: population-model-main
+function main(r)
+    t = 0.0:0.01:1.0
+    y0 = 0.01
+    y = forward_euler(ode(LogisticModelUntyped(r, 1.0)), y0, t)
+    return t, y
 end
 ```
 
-What is wrong with this code?
-
-```julia
-let input = Input(sea_level=t->20.0u"m" * sin(2π*t/200u"kyr")),
-    y0 = -50.0u"m"
-    @code_warntype forward_euler(growth_rate(input), y0, (0.0:0.001:1.0)u"Myr")
-end
-```
-
-The function in `Input` is untyped. We could try to type the argument with a type parameter, but that doesn't work so well with `@kwdef` (we'd have to redefine the constructor). The problem is also fixed if we recapture the `sea_level` parameter in the local scope of the `growth_rate` function, see [Performance Tips](https://docs.julialang.org/en/v1/manual/performance-tips/#man-performance-captured).
+:::callout
+There is a package for solving ODE using better solvers called `DifferentialEquations.jl`. Be warned however, that this package is part of the larger SciML ecosystem. While SciML provides a highly advanced toolkit to do many very complicated things, it has a tendency to pull in a lot of unneeded (transitive) dependencies. In general we recommend caution before using SciML based packages.
+:::
 
 :::challenge
-### Fix the code
-Modify the `growth_rate` function such that the `sea_level` look-up becomes type stable. Assign the parameter to a value with local scope.
+### Find the type-instability
+
+a. Run `@code_warntype PopulationModel.ode(PopulationModel.LogisticModelUntyped(10.0, 1.0))(0.01, 0.0)`. Why is there a type instability here?
+b. Run `@code_warntype PopulationModel.main(10.0)`. Do you notice anything odd?
 
 ::::solution
+a. There is no way from just the type information that the compiler can infer the types of the parameters. Dispatch happens on the `LogisticModelUntyped` type, and that's as good as the compiler knows.
+b. The `@code_warntype` macro only checks one level deep: the `main` function seems fine on the surface.
 
-```julia
-function growth_rate(input)
-    sea_level = input.sea_level
-    function df(y, t)
-        w = sea_level(t) - y + input.subsidence_rate * t
-        g_m = input.maximum_growth_rate
-        I_0 = input.insolation
-        I_k = input.saturation_intensity
-        k = input.extinction_coefficient
-
-        w > 0u"m" ? g_m * tanh(I_0 * exp(-k * w) / I_k) : 0.0u"m/Myr"
-    end
-end
-```
-
-```julia
-let input = Input(sea_level=t->20.0u"m" * sin(2π*t/200u"kyr")),
-    y0 = -50.0u"m"
-    @code_warntype forward_euler(growth_rate(input), y0, (0.0:0.001:1.0)u"Myr")
-end
-```
+We can check type-information deeper in the call tree by using the `@descend` macro from `Cthulhu.jl`.
 ::::
 :::
 
-## Multi-threading and type stability
-Here we have an algorithm that computes the value of π to high precision. We can make this algorithm parallel by recursively calling `Threads.@spawn`, and then `fetch` on each task. Unfortunately the return type of `fetch` is never known at compile time. We can keep the type instability localized by declaring the return types.
+There are two techniques to fix this problem in this particular case.
 
-The following algorithm is [copy-pasted from Wikipedia](https://en.wikipedia.org/wiki/Chudnovsky_algorithm).
+## Closures
+
+Upto now we haven't really made a distinction between plain functions and **closures**. A closure is a function that carries a reference to the scope it was defined in. Where we may think of a function as a black box machine, a closure is a box with some memory. This memory can be both mutable or immutable, but what we should make certain about is that the captured variables are type stable!
+
+In our example the closure stores a reference to the `LogisticModelUntyped` structure. The compiler has no way to infer the types of the `reproduction_rate` and `carrying_capacity` members. We can solve this one way by generating a closure that stores these individual numbers directly instead of looking them up in the `LogisticModelUntyped` struct. All we need to do is reverse the `let` binding and inner function definition in the implementation of ode:
 
 ```julia
-function binary_split_1(a, b)
-    Pab = -(6*a - 5)*(2*a - 1)*(6*a - 1)
-    Qab = 10939058860032000 * a^3
-    Rab = Pab * (545140134*a + 13591409)
-    return Pab, Qab, Rab
-end
+ode(model::LogisticModel) =
+    let r = model.reproduction_factor,
+        k = model.carrying_capacity
 
-setprecision(20, base=30) do
-    _, q, r = binary_split_1(big(1), big(2))
-    (426880 * sqrt(big(10005.0)) * q) / (13591409*q + r)
-end
-
-# The last few digits are wrong... check
-setprecision(20, base=30) do
-    π |> BigFloat
-end
-
-# The algorithm refines by recursive binary splitting
-# Recursion is fine here: we go 2logN deep.
-
-function binary_split(a, b)
-    if b == a + 1
-        binary_split_1(a, b)
-    else
-        m = div(a + b, 2)
-        Pam, Qam, Ram = binary_split(a, m)
-        Pmb, Qmb, Rmb = binary_split(m, b)
-        
-        Pab = Pam * Pmb
-        Qab = Qam * Qmb
-        Rab = Qmb * Ram + Pam * Rmb
-        return Pab, Qab, Rab
+        (x, _) -> x * r * (1 - x / k)
     end
-end
+```
 
-function chudnovsky(n)
-    P1n, Q1n, R1n = binary_split(big(1), n)
-    return (426880 * sqrt(big(10005.0)) * Q1n) / (13591409*Q1n + R1n)
-end
+:::discussion
+Which variables are in the closure of the anonymous function that's being returned here? We have `x` as a parameter, and `r` and `k` are in the lexical scope of the closure. At the time when the function is created, the types of `k` and `r` are completely known.
+:::
 
-setprecision(10000)
-@btime chudnovsky(big(20000))
+:::challenge
+### Time the new implementation
+Rerun `@code_warntype PopulationModel.ode(PopulationModel.LogisticModelUntyped(10.0, 1.0))(0.01, 0.0)` and benchmark the main function with the two versions.
+:::
 
-# We can create a parallel version by spawning jobs. These are green threads.
+## Generic types
+The second and more generic method of solving the issue, is by using generic types.
 
-function binary_split_td(a::T, b::T) where {T}
-    if b == a + 1
-        binary_split_1(a, b)
-    else
-        m = div(a + b, 2)
-        t1 = @Threads.spawn binary_split_td(a, m)
-        t2 = @Threads.spawn binary_split_td(m, b)
-
-        Pam, Qam, Ram = fetch(t1)
-        Pmb, Qmb, Rmb = fetch(t2)
-        
-        Pab = Pam * Pmb
-        Qab = Qam * Qmb
-        Rab = Qmb * Ram + Pam * Rmb
-        return Pab, Qab, Rab
-    end
-end
-
-function chudnovsky_td(n)
-    P1n, Q1n, R1n = binary_split_td(big(1), n)
-    return (426880 * sqrt(big(10005.0)) * Q1n) / (13591409*Q1n + R1n)
+```julia
+struct LogisticModelGeneric{R, K} <: LogisticModel
+    reproduction_factor::R
+    carrying_capacity::K
 end
 ```
 
-The following may show why the parallel code isn't faster yet.
+:::challenge
+### Generic Types
 
-```julia
-setprecision(10000)
-@btime chudnovsky_td(big(20000))
-@profview chudnovsky_td(big(200000))
-```
-
-```julia
-@code_warntype chudnovsky_td(big(6))
-```
-
-- The red areas in the flame graph show type unstable code (marked with **run-time dispatch**)
-- Yellow regions are allocations.
-- The same can be seen in the code, as a kind of histogram back drop.
-
-The code is also inefficient because `poptask` is very prominent. We can make sure that each task is a bit beefier by reverting to the serial code at some point. Insert the following in `binary_split_td`:
-
-```julia
-elseif b - a <= 1024
-    binary_split(a, b)
-```
-
-We can limit the type instability by changing the `fetch` lines:
-
-```julia
-Pam::T, Qam::T, Ram::T = fetch(t1)
-Pmb::T, Qmb::T, Rmb::T = fetch(t2)
-```
-
-::: challenge
-### Rerun the profiler
-Rerun the profiler and `@code_warntype`. Is the type instability gone?
-
-:::: solution
-
-```julia
-function binary_split_td(a::T, b::T) where {T}
-    if b == a + 1
-        binary_split_1(a, b)
-    elseif b - a <= 1024
-        binary_split(a, b)
-    else
-        m = div(a + b, 2)
-        t1 = @Threads.spawn binary_split_td(a, m)
-        t2 = @Threads.spawn binary_split_td(m, b)
-
-        Pam::T, Qam::T, Ram::T = fetch(t1)
-        Pmb::T, Qmb::T, Rmb::T = fetch(t2)
-        
-        Pab = Pam * Pmb
-        Qab = Qam * Qmb
-        Rab = Qmb * Ram + Pam * Rmb
-        return Pab, Qab, Rab
-    end
-end
-```
-
-Yes!
-::::
-
+a. Create an instance of the `LogisticModelGeneric`. You can use the constructor without explicit type arguments as types are deduced from the constructor call.
+b. Check the types of the returned instance.
+c. Run the `forward_euler` method on `LogisticModelGeneric`; how does this perform?
+d. (optional) Try to use some units, say `LogisticModelGeneric(1.5u"1/d", 1.0u"dm^2")` to model the growth of mold on a piece of bread. Do the units affect performance?
 :::
 
 :::callout
@@ -335,5 +256,3 @@ A good summary on type stability can be found in the following blog post:
 - Write your code inside functions.
 - Specify element types for containers and structs.
 :::
-
-

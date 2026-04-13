@@ -181,10 +181,8 @@ The type `Vehicle` exists, but no method is defined for this combination of argu
 :::
 
 ::: keypoints
-
 - Julia is fundamentally a dynamically typed language.
 - Static types are only ever used for dispatch.
 - Multiple dispatch is the most important means of abstraction in Julia.
 - Parametric types are important to achieve type stability.
 :::
-

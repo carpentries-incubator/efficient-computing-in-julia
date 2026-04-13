@@ -50,7 +50,7 @@ The interesting bit is that this method requires the use of complex numbers.
 ```julia
 function cubic_roots(a, b, c, d)
 	cNaN = NaN+NaN*im
-	
+
 	if (a != 0)
 		delta0 = b^2 - 3*a*c
 		delta1 = 2*b^3 - 9*a*b*c + 27*a^2*d
