@@ -155,6 +155,22 @@ gravitational_force(m1, m2, r::AbstractVector) =
 gravitational_force(1e3u"kg", 1e3u"kg", Vec3d(2.5, 0, 0)u"mm") .|> u"N"
 ```
 
+Compare that with a mass of one kilogram on the Earth surface!
+
+```julia
+let earth_radius = 6.4e3u"km",
+    earth_mass = 6.e24u"kg"
+
+    gravitational_force(earth_mass, 1.0u"kg", earth_radius) |> u"N"
+end
+```
+
+:::callout
+The pipe operator (you may be familiar with `|` in shell scripting languages), `|>` in Julia, passes a value through a function. The use of this operator may improve readability in certain cases.
+
+In this case we force the units of our quantity to Newton, being the SI unit for force.
+:::
+
 :::callout
 Not all of you will be jumping up and down for doing high-school physics.
 We will get to other sciences than physics later in this workshop, I promise!
@@ -205,7 +221,6 @@ We are now ready to define the `Particle` type. First we define some constants s
 
 ```julia
 #| id: gravity
-
 const Mass = typeof(1.0u"kg")
 const MomentumVector = typeof(Vec3d(1)u"kg*m/s")
 const PositionVector = typeof(Vec3d(1)u"m")
@@ -220,6 +235,11 @@ mutable struct Particle
     momentum::MomentumVector
 end
 ```
+
+:::callout
+### Mtability
+By default a `struct` in Julia is immutable. To make a struct mutable we need to use the `mutable struct` syntax.
+:::
 
 We can write a function to generate random particles with some spread and (velocity) dispersion:
 
@@ -402,7 +422,6 @@ In contrast to the `∘` operator, `|>` is very popular and seen everywhere in J
 leap_frog!(particles, dt) = particles |> kick!(dt) |> drift!(dt)
 leap_frog!(dt) = Base.Fix2(leap_frog!, dt)
 ```
-
 :::
 
 ```julia

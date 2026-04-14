@@ -13,7 +13,7 @@ function forward_euler(df, y0, t)
         y = y + df(y, t) * dt
         result[i+1] = y
     end
-    
+
     return result
 end
 
@@ -77,7 +77,7 @@ end
 
 function luminosity_area_fraction()
     Ls = 0.6:0.01:1.4
-    
+
     function asymptotic_value(L)
         q = 0.2 * 917 * L / 5.67e-8
         p = DaisyWorld.Parameters(luminosity=L, death_rate=0.5, heat_transfer_coeff=q)
@@ -104,5 +104,3 @@ end
 end
 
 end
-
-

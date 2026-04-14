@@ -7,6 +7,7 @@ title: Reducing allocations on the Logistic Map
 :::
 
 ::: objectives
+- Understand the job of the garbage collector
 - Apply a code transformation to write to pre-allocated memory.
 :::
 
@@ -16,6 +17,8 @@ There are roughly two types of memory in a computer program:
 
 - stack: memory that lives statically inside a function. This memory is very fast, but the size is limited and has to be known at **compile time**. Examples: variables of known size created in a block scope, and released after.
 - heap: memory that is associated with the entire process. Needs to be allocated. Examples: arrays, strings. In general heap allocation (and freeing) is slow: the process has to ask the OS for memory.
+ 
+The freeing of heap memory is further complicated by the garbage collector. Its job is to trace references to objects to see which pieces of memory are reachable from the current program state. If there is no path from known variables to a piece of previously allocated heap memory, that memory can be freed. A loop can become particularly slow if it has a lot of small allocations.
 
 Later on we will talk some more about memory. In the current episode we'll see how we can reduce allocations.
 
@@ -301,5 +304,3 @@ datashader(out)
 - Allocations are slow.
 - Growing arrays dynamically induces allocations.
 :::
-
-

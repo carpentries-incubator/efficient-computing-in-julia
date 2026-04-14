@@ -1,8 +1,4 @@
 # ~/~ begin <<episodes/060-simulating-solar-system.md#scripts/plot-two-body-still.jl>>[init]
-#| classes: ["task"]
-#| file: scripts/plot-two-body-still.jl
-#| creates: episodes/fig/random-orbits.svg
-#| collect: figures
 module Script
 
 using Unitful
