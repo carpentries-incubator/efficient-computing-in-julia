@@ -1,8 +1,4 @@
 # ~/~ begin <<episodes/060-simulating-solar-system.md#scripts/plot-two-body-drift.jl>>[init]
-#| classes: ["task"]
-#| file: scripts/plot-two-body-drift.jl
-#| creates: episodes/fig/two-body-drift.svg
-#| collect: figures
 module Script
 
 using Unitful

@@ -1,5 +1,4 @@
 # ~/~ begin <<episodes/140-threads-async-and-tasks.md#src/GrayScott.jl>>[init]
-#| file: src/GrayScott.jl
 module GrayScott
 
 using MacroTools

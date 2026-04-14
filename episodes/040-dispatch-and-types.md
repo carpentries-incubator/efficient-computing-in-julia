@@ -123,8 +123,6 @@ Point2(1, 2) + Point2(-1, -1)
 Point2(0, 1)
 ```
 
-:::callout
-
 ## OOP (Sort of)
 
 Julia is not an Object Oriented language. If you feel the unstoppable urge to implement a class-like abstraction, this can be done through abstract types.
@@ -178,13 +176,14 @@ ERROR: MethodError: no constructors have been defined for Vehicle
 The type `Vehicle` exists, but no method is defined for this combination of argument types when trying to construct it.
 ```
 
+:::challenge
+### Create a new subtype and extend the functionality
+a. Create a new `Vehicle` subtype. Pick your favourite method of transport.
+b. Most vehicles also come with a fixed maintenance cost. Implement a new method.
 :::
 
 ::: keypoints
-
 - Julia is fundamentally a dynamically typed language.
 - Static types are only ever used for dispatch.
 - Multiple dispatch is the most important means of abstraction in Julia.
-- Parametric types are important to achieve type stability.
 :::
-
