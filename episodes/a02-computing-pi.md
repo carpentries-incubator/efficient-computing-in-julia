@@ -1,4 +1,7 @@
-# Multi-threading and type stability
+---
+title: Appendix, Multi-threading and type stability
+---
+
 Here we have an algorithm that computes the value of π to high precision. We can make this algorithm parallel by recursively calling `Threads.@spawn`, and then `fetch` on each task. Unfortunately the return type of `fetch` is never known at compile time. We can keep the type instability localized by declaring the return types.
 
 The following algorithm is [copy-pasted from Wikipedia](https://en.wikipedia.org/wiki/Chudnovsky_algorithm).
