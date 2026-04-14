@@ -186,5 +186,4 @@ b. Most vehicles also come with a fixed maintenance cost. Implement a new method
 - Julia is fundamentally a dynamically typed language.
 - Static types are only ever used for dispatch.
 - Multiple dispatch is the most important means of abstraction in Julia.
-- Parametric types are important to achieve type stability.
 :::
