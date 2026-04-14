@@ -24,7 +24,8 @@ There are separate packages for GPU computing, depending on the hardware you hav
 Each of these offer similar abstractions for dealing with array based computations, though each with slightly different names.
 CUDA by far has the best and most mature support. We can get reasonably portable code by using the above packages in conjunction with `KernelAbstractions`.
 
-## `KernelAbstractions`
+
+Load the correct packages for your GPU as follows:
 
 ::: group-tab
 ### Intel
@@ -38,6 +39,7 @@ using KernelAbstractions
 ### Metal
 
 ```julia
+using BenchmarkTools
 using Metal
 using KernelAbstractions
 ```
@@ -45,6 +47,7 @@ using KernelAbstractions
 ### NVidia
 
 ```julia
+using BenchmarkTools
 using CUDA
 using KernelAbstractions
 ```
@@ -52,11 +55,44 @@ using KernelAbstractions
 ### AMD
 
 ```julia
+using BenchmarkTools
 using AMDGPU
 using KernelAbstractions
 ```
 :::
 
+
+## Simple vector addition
+
+Let us first consider some simple code to add two vectors (of length 1024) together:
+
+```julia
+function simple_vector_add(a, b, c)
+    for I = 1:1024
+        c[I] = a[I] + b[I]
+    end
+end
+```
+
+And you can run this with some randomly initialised vectors:
+```julia
+a = randn(Float32, 1024)
+b = randn(Float32, 1024)
+c = Vector{Float32}(undef, 1024)
+
+simple_vector_add(a, b, c)
+
+c # Print out c in the console
+```
+
+:::discussion
+What part of the above `simple_vector_add()` function do you think is the "kernel"? Do you already have some idea how we might modify that for use on a GPU?
+:::
+
+
+## A kernel for vector addition
+
+We can adapt `simple_vector_add()` to make a new function where we have removed the for-loop and kept only the core operation:
 
 ```julia
 @kernel function vector_add(a, b, c)
@@ -65,17 +101,25 @@ using KernelAbstractions
 end
 ```
 
-### Run on host
+We make use of `KernelAbstractions` macros to define this as a kernel (more on this later) and to allow the function to ask what `I` it should act on. We no longer determine how or in what order this kernel will be applied - that will be determined by the relevant backend for your device.
+
+
+### Running on the host (CPU)
+
+Before trying it on GPU, we can first test out our new kernel function on the normal, plain CPU. We do this by choosing the `CPU()` device:
 
 ```julia
 dev = CPU()
-a = randn(Float32, 1024)
-b = randn(Float32, 1024)
-c = Vector{Float32}(undef, 1024)
-vector_add(dev, 512)(a, b, c, ndrange=size(a))
+vector_add_kernel(dev, 512)(a, b, c, ndrange=size(a))
+
+c # Print out c in the console
 ```
 
-We can perform operations on the GPU simply by operating on device arrays.
+### Moving our local arrays onto the device (GPU)
+
+We would like to try running our vector addition kernel on the GPU. However, we run into a problem - the GPU has its own memory, separate from the RAM on the host. Our vectors, `a`, `b` and `c`, currently reside in the host's memory, so the GPU has no access to them and cannot perform any computations. 
+
+Therefore, we must first create (on-GPU) device arrays. As before, this depends on the GPU you have:
 
 ::: group-tab
 ### Intel
@@ -111,11 +155,18 @@ a_dev .+ b_dev
 ```
 :::
 
+
+Note that `a_dev` and `b_dev` refer to arrays on the GPU device itself. This means that the addition (`a_dev .+ b_dev`) was actually performed on the GPU, and the result copied back to host for us to see.
+
+
 ## Computations on the device
 
+Earlier we used `dev = CPU()` to set the location on which to run our kernel. We may now do the following to set that to be the GPU:
 ```julia
 dev = get_backend(a_dev)
 ```
+
+Now we should be able to run `vector_add()` on the GPU.
 
 ::: challenge
 ### Run the vector-add on the device
@@ -189,8 +240,8 @@ Hint 2: on Intel we needed a gang size that divides the width of the image, in t
 @kernel function julia_dev(c::ComplexF32, s::Float32, maxit::Int, out)
 	w, h = size(out)
 	idx = @index(Global, Cartesian)
-
-    x = (idx[1] - w ÷ 2) * s
+	
+	x = (idx[1] - w ÷ 2) * s
 	y = (idx[2] - h ÷ 2) * s
 	z = x + 1f0im * y
 
