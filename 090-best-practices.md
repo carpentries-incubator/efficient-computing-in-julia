@@ -597,4 +597,3 @@ For educational purposes, this lesson has focussed on manually operating the var
 - `Documenter.jl` is the standard package for generating documentation.
 - The Julia ecosystem is well equiped to help you keep your code in fit shape.
 :::
-
