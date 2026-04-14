@@ -222,7 +222,7 @@
 <li><a href="#recommended-materials">Recommended materials</a></li>
 <li><a href="#running-julia">Running Julia</a></li>
 <li><a href="#pluto">Pluto</a></li>
-<li><a href="#vs-code">VS Code</a></li>
+<li><a href="#editor-support">Editor support</a></li>
 <li><a href="#activate-the-workshop-environment">Activate the Workshop Environment</a></li>
         </ul></div><!--/div.accordion-body-->
     </div><!--/div.accordion-collapse-->
@@ -347,6 +347,15 @@
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
+<div class="accordion accordion-flush" id="accordionFlush16">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading16">
+        <a href="a02-computing-pi.html">15. Appendix, Multi-threading and type stability</a>
+    </div><!--/div.accordion-header-->
+
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
                 </div>
               </div>
             </div>
@@ -405,7 +414,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Getting Started</h1>
-        <p>Last updated on 2026-01-26 |
+        <p>Last updated on 2026-04-14 |
 
         <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/020-getting-started.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -586,22 +595,22 @@ julia&gt;</code></pre>
 </div>
 <p>The REPL needs a small introduction since it has several
 <strong>modes</strong>.</p>
-<table style="width:100%;" class="table"><colgroup><col width="26%"><col width="42%"><col width="31%"></colgroup><thead><tr><th>Key</th>
+<table style="width:100%;" class="table"><colgroup><col width="26%"><col width="42%"><col width="31%"></colgroup><thead><tr class="header"><th>Key</th>
 <th>Prompt</th>
 <th>Mode</th>
-</tr></thead><tbody><tr><td>None</td>
+</tr></thead><tbody><tr class="odd"><td>None</td>
 <td><code>julia&gt;</code></td>
 <td>Standard <strong>Julia</strong> input.</td>
-</tr><tr><td><code>]</code></td>
+</tr><tr class="even"><td><code>]</code></td>
 <td><code>pkg&gt;</code></td>
 <td>
 <strong>Pkg</strong> mode. Commands entered here are functions in
 the <code>Pkg</code> module.</td>
-</tr><tr><td><code>;</code></td>
+</tr><tr class="odd"><td><code>;</code></td>
 <td><code>shell&gt;</code></td>
 <td>
 <strong>Shell</strong> mode.</td>
-</tr><tr><td><code>?</code></td>
+</tr><tr class="even"><td><code>?</code></td>
 <td><code>help?&gt;</code></td>
 <td>
 <strong>Help</strong> mode. Type the name of any entity to look up
@@ -671,8 +680,15 @@ julia&gt; Pluto.run()
 │ Press Ctrl+C in this terminal to stop Pluto
 └</code></pre>
 </div>
-</section><section><h2 class="section-heading" id="vs-code">VS Code<a class="anchor" aria-label="anchor" href="#vs-code"></a></h2>
-<hr class="half-width"><p>VS Code is the editor for which Julia has the best support. We’ll be
+</section><section><h2 class="section-heading" id="editor-support">Editor support<a class="anchor" aria-label="anchor" href="#editor-support"></a></h2>
+<hr class="half-width"><p>Julia is supported in many editors through
+<code>LanguageServer.jl</code>. The main focus of development lies in
+having VS Code as the main IDE. If you’re unsure about a choice of
+editor, VS Code is a good place to start, although for some people it is
+a little feature rich.</p>
+<div class="section level3">
+<h3 id="vs-code">VS Code<a class="anchor" aria-label="anchor" href="#vs-code"></a></h3>
+<p>VS Code is the editor for which Julia has the best support. We’ll be
 needing to run Julia in multiple threads later on, so we’ll set some
 arguments for the REPL in <code>settings.json</code> (press
 <code>Ctrl+Shift+P</code> and search for
@@ -694,6 +710,34 @@ arguments for the REPL in <code>settings.json</code> (press
 </h3>
 <pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="bu">Threads</span>.<span class="fu">nthreads</span>()</span></code></pre>
 </div>
+</div>
+<div class="section level3">
+<h3 id="zed">Zed<a class="anchor" aria-label="anchor" href="#zed"></a></h3>
+<p>A more light-weight alternative to VS Code, but still packing most of
+the features you’d want to have. Check it out at <a href="https://zed.dev/" class="external-link">zed.dev</a>. This does not provide the same
+level of integration as VS Code (no Ctrl-Enter to evaluate expressions
+in the editor, and no IDE integration with the REPL). However, Zed gives
+a much smoother user experience.</p>
+</div>
+<div class="section level3">
+<h3 id="neovim-emacs-and-others">(Neo)Vim, Emacs and others<a class="anchor" aria-label="anchor" href="#neovim-emacs-and-others"></a></h3>
+<p>We encourage power users to use their favourite environment, but we
+can’t help out if things like LaTeX/Unicode completion don’t quite work
+out of the box.</p>
+<div id="accordionInstructor2" class="accordion instructor-note accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor2" aria-expanded="false" aria-controls="collapseInstructor2">
+  <h3 class="accordion-header" id="headingInstructor2">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
+</button>
+<div id="collapseInstructor2" class="accordion-collapse collapse" aria-labelledby="headingInstructor2" data-bs-parent="#accordionInstructor2">
+<div class="accordion-body">
+<p>The goal of the following exercise is not only to make people
+familiar with Julia syntax. It is also to get them find their way in the
+documentation.</p>
+</div>
+</div>
+</div>
+</div>
 <div id="julia-as-a-calculator-5min" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
@@ -705,12 +749,14 @@ arguments for the REPL in <code>settings.json</code> (press
 <p>Try to play around in the VS Code REPL to use Julia as a
 calculator.</p>
 <ol style="list-style-type: lower-alpha"><li>What do you find is the operator for exponentiation?</li>
-<li>How do you assign a variable?</li>
+<li>How do you assign a variable? Does the assignment take on a value by
+itself?</li>
 <li>What happens when you divide any two integers? Use the
 <code>typeof</code> function to inspect the type of the result. Can you
 figure out how to integer division (search the documentation!)?</li>
-<li>What happens in Pluto when you change a variable that is depended
-upon?</li>
+<li>Try to operate on a range of numbers using dotted operators:
+<code>(1:5) .* 3</code>. Try to square the range <code>1:5</code>.
+What’s the difference?</li>
 </ol></div>
 </div>
 </div>
@@ -722,13 +768,16 @@ upon?</li>
 <div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <ol style="list-style-type: lower-alpha"><li>In Julia exponentiation is <code>^</code>.</li>
-<li>Just like you’re used to <code>x = 3</code>.</li>
+<li>Just like you’re used to <code>x = 3</code>. The assignment is also
+an expression for the value being assigned. We might say
+<code>(x = 6) * 7</code>, <code>x</code> still becomes <code>6</code>,
+but the expression returns <code>42</code>.</li>
 <li>The <code>/</code> operator always returns a floating point value.
 To get to integer division, we want the <code>÷</code> operator, which
 can be typed using <code>\div</code> and then press TAB. Or you can use
 the equivalent <code>div</code> function.</li>
-<li>Pluto updates all dependent computations automatically. This is
-known as a <strong>reactive notebook</strong>.</li>
+<li>Multiplying a range is still expressible as a range, while squaring
+the numbers forces the range to convert to an array.</li>
 </ol></div>
 </div>
 </div>
@@ -745,6 +794,7 @@ languages.</li>
 <li>Pluto is a reactive environment</li>
 <li>VS Code has the best editor integration for Julia</li>
 </ul></div>
+</div>
 </div>
 </div>
 </section><section><h2 class="section-heading" id="activate-the-workshop-environment">Activate the Workshop Environment<a class="anchor" aria-label="anchor" href="#activate-the-workshop-environment"></a></h2>
@@ -846,7 +896,7 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
 
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/" class="external-link">sandpaper (0.20.0)</a>, <a href="https://github.com/carpentries/pegboard/tree/" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/" class="external-link">varnish (1.0.9)</a></p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.20.0" class="external-link">sandpaper (0.20.0)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.9" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.9" class="external-link">varnish (1.0.9)</a></p>
 		</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -868,7 +918,7 @@ any links that you are not going to use.
   "url": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/020-getting-started.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/instructor/020-getting-started.html",
   "dateCreated": "2024-01-01",
-  "dateModified": "2026-01-26",
+  "dateModified": "2026-04-14",
   "datePublished": "2026-04-14"
 }
 

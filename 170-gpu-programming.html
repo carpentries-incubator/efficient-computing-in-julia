@@ -119,11 +119,11 @@
   Efficient Computing in Julia
 </div>
 
-<aside class="col-md-12 lesson-progress"><div style="width: 83%" class="percentage">
-    83%
+<aside class="col-md-12 lesson-progress"><div style="width: 79%" class="percentage">
+    79%
   </div>
   <div class="progress incubator">
-    <div class="progress-bar incubator" role="progressbar" style="width: 83%" aria-valuenow="83" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar incubator" role="progressbar" style="width: 79%" aria-valuenow="79" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
     </div>
   </div>
 </aside><div class="container">
@@ -343,6 +343,15 @@
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
+<div class="accordion accordion-flush" id="accordionFlush16">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading16">
+        <a href="a02-computing-pi.html">15. Appendix, Multi-threading and type stability</a>
+    </div><!--/div.accordion-header-->
+
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
                 </div>
               </div>
             </div>
@@ -401,7 +410,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>GPU Programming</h1>
-        <p>Last updated on 2025-02-12 |
+        <p>Last updated on 2026-04-14 |
 
         <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/170-gpu-programming.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -437,15 +446,15 @@
 <section><h2 class="section-heading" id="state-of-things">State of things<a class="anchor" aria-label="anchor" href="#state-of-things"></a></h2>
 <hr class="half-width"><p>There are separate packages for GPU computing, depending on the
 hardware you have.</p>
-<table class="table"><thead><tr><th>Brand</th>
+<table class="table"><thead><tr class="header"><th>Brand</th>
 <th>Lib</th>
-</tr></thead><tbody><tr><td>NVidia</td>
+</tr></thead><tbody><tr class="odd"><td>NVidia</td>
 <td><a href="https://github.com/JuliaGPU/CUDA.jl" class="external-link"><code>CUDA.jl</code></a></td>
-</tr><tr><td>AMD</td>
+</tr><tr class="even"><td>AMD</td>
 <td><a href="https://github.com/JuliaGPU/AMDGPU.jl" class="external-link"><code>AMDGPU.jl</code></a></td>
-</tr><tr><td>Intel</td>
+</tr><tr class="odd"><td>Intel</td>
 <td><a href="https://github.com/JuliaGPU/oneAPI.jl" class="external-link"><code>oneAPI.jl</code></a></td>
-</tr><tr><td>Apple</td>
+</tr><tr class="even"><td>Apple</td>
 <td><a href="https://github.com/JuliaGPU/Metal.jl" class="external-link"><code>Metal.jl</code></a></td>
 </tr></tbody></table><p>Each of these offer similar abstractions for dealing with array based
 computations, though each with slightly different names. CUDA by far has
@@ -628,7 +637,7 @@ results.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -708,7 +717,7 @@ image, in this case <code>480</code> seemed to work.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb16">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -716,7 +725,7 @@ image, in this case <code>480</code> seemed to work.</p>
 <pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="pp">@kernel</span> <span class="kw">function</span> <span class="fu">julia_dev</span>(c<span class="op">::</span><span class="dt">ComplexF32</span>, s<span class="op">::</span><span class="dt">Float32</span>, maxit<span class="op">::</span><span class="dt">Int</span>, out)</span>
 <span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>	w, h <span class="op">=</span> <span class="fu">size</span>(out)</span>
 <span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>	idx <span class="op">=</span> <span class="pp">@index</span>(Global, Cartesian)</span>
-<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>	</span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a></span>
 <span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>    x <span class="op">=</span> (idx[<span class="fl">1</span>] <span class="op">-</span> w <span class="op">÷</span> <span class="fl">2</span>) <span class="op">*</span> s</span>
 <span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a>	y <span class="op">=</span> (idx[<span class="fl">2</span>] <span class="op">-</span> h <span class="op">÷</span> <span class="fl">2</span>) <span class="op">*</span> s</span>
 <span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a>	z <span class="op">=</span> x <span class="op">+</span> <span class="fl">1f0im</span> <span class="op">*</span> y</span>
@@ -804,7 +813,7 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
 
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/" class="external-link">sandpaper (0.20.0)</a>, <a href="https://github.com/carpentries/pegboard/tree/" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/" class="external-link">varnish (1.0.9)</a></p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.20.0" class="external-link">sandpaper (0.20.0)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.9" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.9" class="external-link">varnish (1.0.9)</a></p>
 		</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -826,7 +835,7 @@ any links that you are not going to use.
   "url": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/170-gpu-programming.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/170-gpu-programming.html",
   "dateCreated": "2024-01-01",
-  "dateModified": "2025-02-12",
+  "dateModified": "2026-04-14",
   "datePublished": "2026-04-14"
 }
 

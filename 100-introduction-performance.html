@@ -119,11 +119,11 @@
   Efficient Computing in Julia
 </div>
 
-<aside class="col-md-12 lesson-progress"><div style="width: 61%" class="percentage">
-    61%
+<aside class="col-md-12 lesson-progress"><div style="width: 58%" class="percentage">
+    58%
   </div>
   <div class="progress incubator">
-    <div class="progress-bar incubator" role="progressbar" style="width: 61%" aria-valuenow="61" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar incubator" role="progressbar" style="width: 58%" aria-valuenow="58" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
     </div>
   </div>
 </aside><div class="container">
@@ -280,9 +280,11 @@
 
     <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
       <div class="accordion-body">
-        <ul><li><a href="#type-stability">Type stability</a></li>
-<li><a href="#functions-in-structs">Functions in structs</a></li>
-<li><a href="#multi-threading-and-type-stability">Multi-threading and type stability</a></li>
+        <ul><li><a href="#compiler-stack">Compiler stack</a></li>
+<li><a href="#type-stability">Type stability</a></li>
+<li><a href="#logistic-model">Logistic model</a></li>
+<li><a href="#closures">Closures</a></li>
+<li><a href="#generic-types">Generic types</a></li>
         </ul></div><!--/div.accordion-body-->
     </div><!--/div.accordion-collapse-->
 
@@ -338,6 +340,15 @@
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading15">
         <a href="a01-collatz.html">14. Appendix: Iterators and type stability</a>
+    </div><!--/div.accordion-header-->
+
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush16">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading16">
+        <a href="a02-computing-pi.html">15. Appendix, Multi-threading and type stability</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -401,7 +412,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Type Stability</h1>
-        <p>Last updated on 2026-01-26 |
+        <p>Last updated on 2026-04-14 |
 
         <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/100-introduction-performance.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -444,34 +455,47 @@ struct.</li>
 <p>In this episode we will look into <strong>type stability</strong>, a
 very important topic when it comes to writing efficient Julia. We will
 first show some small examples, trying to explain what type stability
-means and how you can create code that is not type stable. Then we will
-have two examples: one computing the growth of a coral reef under
-varying sea level, the other computing the value of <span class="math inline">\(\pi\)</span> using the Chudnovsky algorithm.</p>
+means and how you can create code that is not type stable.</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">BenchmarkTools</span></span></code></pre>
 </div>
-<section><h2 class="section-heading" id="type-stability">Type stability<a class="anchor" aria-label="anchor" href="#type-stability"></a></h2>
+<section><h2 class="section-heading" id="compiler-stack">Compiler stack<a class="anchor" aria-label="anchor" href="#compiler-stack"></a></h2>
+<hr class="half-width"><p>We take a small tidbit of code to see what the Julia compiler is
+doing. Today we will be looking at logistic functions and logistic
+maps.</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">logistic_map</span>(r, x) <span class="op">=</span> r <span class="op">*</span> x <span class="op">*</span> (<span class="fl">1</span> <span class="op">-</span> x)</span></code></pre>
+</div>
+<p>We’ll run the following macros on this code to see what the compiler
+is doing:</p>
+<ul><li><code>@code_lower</code></li>
+<li><code>@code_typed</code></li>
+<li><code>@code_llvm</code></li>
+<li><code>@code_native</code></li>
+</ul></section><section><h2 class="section-heading" id="type-stability">Type stability<a class="anchor" aria-label="anchor" href="#type-stability"></a></h2>
 <hr class="half-width"><p>If types cannot be inferred at compile time, a function cannot be
 entirely compiled to machine code. This means that evaluation will be
 slow as molasses. One example of a type instability is when a function’s
 return type depends on run-time values:</p>
-<div class="codewrapper sourceCode" id="cb2">
-<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">safe_inv</span>(x<span class="op">::</span><span class="dt">T</span>) <span class="kw">where</span> {T}</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>    <span class="cf">if</span> x <span class="op">==</span> <span class="fu">zero</span>(T)</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>        <span class="cn">nothing</span></span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>    <span class="cf">else</span></span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>        <span class="fu">one</span>(T) <span class="op">/</span> x</span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
-</div>
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="pp">@code_warntype</span> <span class="fu">safe_inv</span>(<span class="fl">2</span>)</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">safe_inv</span>(x)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>    <span class="cf">if</span> x <span class="op">==</span> <span class="fu">zero</span>(<span class="fu">typeof</span>(x))</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>        <span class="cn">nothing</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>        <span class="fu">one</span>(<span class="fu">typeof</span>(x)) <span class="op">/</span> x</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="pp">@code_warntype</span> <span class="fu">safe_inv</span>(<span class="fl">2</span>)</span></code></pre>
 </div>
 <p>In this case we may observe that the induced type is
 <code>Union{Nothing, T}</code>. If we run <code>@code_warntype</code> we
@@ -481,24 +505,24 @@ types are at the very core of how Julia approaches iteration and
 therefore for-loops, so usually this will not lead to run-time
 dispatches being triggered.</p>
 <p>The situation is much worse when mutable globals are in place.</p>
-<div class="codewrapper sourceCode" id="cb4">
-<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>x <span class="op">=</span> <span class="fl">5</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="fu">replace_x</span>(f, vs) <span class="op">=</span> [(<span class="fu">f</span>(v) ? x <span class="op">:</span> v) for v <span class="kw">in</span> vs]</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="fu">replace_x</span>((<span class="op">&lt;</span>)(<span class="fl">0</span>), <span class="op">-</span><span class="fl">2</span><span class="op">:</span><span class="fl">2</span>)</span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="pp">@code_warntype</span> <span class="fu">replace_x</span>((<span class="op">&lt;</span>)(<span class="fl">0</span>), <span class="op">-</span><span class="fl">2</span><span class="op">:</span><span class="fl">2</span>)</span></code></pre>
-</div>
-<p>We can follow this up with:</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>x <span class="op">=</span> <span class="st">"sloppy code!"</span></span>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>x <span class="op">=</span> <span class="fl">5</span></span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="fu">replace_x</span>((<span class="op">&lt;</span>)(<span class="fl">0</span>), <span class="op">-</span><span class="fl">2</span><span class="op">:</span><span class="fl">2</span>)</span></code></pre>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="fu">replace_x</span>(f, vs) <span class="op">=</span> [(<span class="fu">f</span>(v) ? x <span class="op">:</span> v) for v <span class="kw">in</span> vs]</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="fu">replace_x</span>((<span class="op">&lt;</span>)(<span class="fl">0</span>), <span class="op">-</span><span class="fl">2</span><span class="op">:</span><span class="fl">2</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="pp">@code_warntype</span> <span class="fu">replace_x</span>((<span class="op">&lt;</span>)(<span class="fl">0</span>), <span class="op">-</span><span class="fl">2</span><span class="op">:</span><span class="fl">2</span>)</span></code></pre>
+</div>
+<p>We can follow this up with:</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>x <span class="op">=</span> <span class="st">"sloppy code!"</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="fu">replace_x</span>((<span class="op">&lt;</span>)(<span class="fl">0</span>), <span class="op">-</span><span class="fl">2</span><span class="op">:</span><span class="fl">2</span>)</span></code></pre>
 </div>
 <div id="use-parameters-or-const" class="callout discussion">
 <div class="callout-square">
@@ -509,131 +533,158 @@ dispatches being triggered.</p>
 <h3 class="callout-title">Use parameters or <code>const</code>
 </h3>
 <div class="callout-content">
-<p>Change the definition of <code>replace_x</code> by passing
-<code>x</code> as a parameter. Change the definition of <code>x</code>
-to a constant using <code>const</code>. Time the result against the type
-unstable version.</p>
-</div>
-</div>
-</div>
-</section><section><h2 class="section-heading" id="functions-in-structs">Functions in structs<a class="anchor" aria-label="anchor" href="#functions-in-structs"></a></h2>
-<hr class="half-width"><p>Every function has its own unique type. This can be a problem when we
-want to get some functional user input. The following computes the
-sedimentation history of a coral reef, following a paper by Bosscher
-&amp; Schlager 1992:</p>
-<p><span class="math display">\[\frac{\partial y}{\partial t} = g_m
-\tanh \left(\frac{I_0 \exp(-kw)}{I_k}\right),\]</span></p>
-<p>where <span class="math inline">\(g_m\)</span> is the maximum growth
-rate, <span class="math inline">\(I_0\)</span> is the insolation (light
-intensity at sea-level), <span class="math inline">\(I_k\)</span> the
-saturation intensity, <span class="math inline">\(k\)</span> the
-extinction coefficient and <span class="math inline">\(w\)</span> the
-waterdepth, being <span class="math inline">\(sl(t) - y +
-\sigma*t\)</span>, where <span class="math inline">\(sl(t)\)</span> is
-the sea level and <span class="math inline">\(\sigma\)</span> is the
-subsidence rate. The model uses the <span class="math inline">\(\tanh\)</span> function to interpolate between
-maximum growth and zero growth, modified by the exponential extinction
-of sun light as we go deeper into the water. Details don’t matter much,
-the point being that we’d like to be able to specify the sea level as an
-input parameter in functional form.</p>
-<div class="codewrapper sourceCode" id="cb6">
-<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">Unitful</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="im">using</span> <span class="bu">GLMakie</span></span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="pp">@kwdef</span> <span class="kw">struct</span> Input</span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>    <span class="st">"The sea level as a function of time"</span></span>
-<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>    sea_level <span class="op">=</span> _ <span class="op">-&gt;</span> <span class="fl">0.0</span>u<span class="st">"m"</span></span>
-<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>    <span class="st">"Maximum growth rate of the coral, in m/Myr"</span></span>
-<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>    maximum_growth_rate<span class="op">::</span><span class="dt">typeof</span>(<span class="fl">1.0</span>u<span class="st">"m/Myr"</span>) <span class="op">=</span> <span class="fl">0.2</span>u<span class="st">"mm/yr"</span></span>
-<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a></span>
-<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>    <span class="st">"The light intensity at which maximum growth is attained, in W/m^2"</span></span>
-<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>    saturation_intensity<span class="op">::</span><span class="dt">typeof</span>(<span class="fl">1.0</span>u<span class="st">"W/m^2"</span>) <span class="op">=</span> <span class="fl">50.0</span>u<span class="st">"W/m^2"</span></span>
-<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a></span>
-<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>    <span class="st">"The rate at which growth rate drops every meter of water depth, in 1/m"</span></span>
-<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>    extinction_coefficient<span class="op">::</span><span class="dt">typeof</span>(<span class="fl">1.0</span>u<span class="st">"m^-1"</span>) <span class="op">=</span> <span class="fl">0.05</span>u<span class="st">"m^-1"</span></span>
-<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a></span>
-<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a>    <span class="st">"The light intensity of the Sun, in W/m^2"</span></span>
-<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>    insolation<span class="op">::</span><span class="dt">typeof</span>(<span class="fl">1.0</span>u<span class="st">"W/m^2"</span>) <span class="op">=</span> <span class="fl">400.0</span>u<span class="st">"W/m^2"</span></span>
-<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a></span>
-<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a>    <span class="st">"Subsidence rate is the rate at which the plateau drops, in m/Myr"</span></span>
-<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a>    subsidence_rate<span class="op">::</span><span class="dt">typeof</span>(<span class="fl">1.0</span>u<span class="st">"m/Myr"</span>) <span class="op">=</span> <span class="fl">50.0</span>u<span class="st">"m/Myr"</span></span>
-<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a></span>
-<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a><span class="kw">function</span> <span class="fu">growth_rate</span>(input)</span>
-<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a>    sea_level <span class="op">=</span> input.sea_level</span>
-<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a>    <span class="kw">function</span> <span class="fu">df</span>(y, t)</span>
-<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a>        <span class="co"># w = input.sea_level(t) - y + input.subsidence_rate * t</span></span>
-<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a>        w <span class="op">=</span> <span class="fu">sea_level</span>(t) <span class="op">-</span> y <span class="op">+</span> input.subsidence_rate <span class="op">*</span> t</span>
-<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a>        g_m <span class="op">=</span> input.maximum_growth_rate</span>
-<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a>        I_0 <span class="op">=</span> input.insolation</span>
-<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a>        I_k <span class="op">=</span> input.saturation_intensity</span>
-<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a>        k <span class="op">=</span> input.extinction_coefficient</span>
-<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a></span>
-<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a>        w <span class="op">&gt;</span> <span class="fl">0</span>u<span class="st">"m"</span> ? g_m <span class="op">*</span> <span class="fu">tanh</span>(I_0 <span class="op">*</span> <span class="fu">exp</span>(<span class="op">-</span>k <span class="op">*</span> w) <span class="op">/</span> I_k) <span class="op">:</span> <span class="fl">0.0</span>u<span class="st">"m/Myr"</span></span>
-<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a>    <span class="kw">end</span></span>
-<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
-</div>
+<p>Put the following code in a file and use <code>include</code> to
+load.</p>
 <div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">forward_euler</span>(df, y0<span class="op">::</span><span class="dt">T</span>, t) <span class="kw">where</span> {T}</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>    result <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{T}</span>(<span class="cn">undef</span>, <span class="fu">length</span>(t) <span class="op">+</span> <span class="fl">1</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>    result[<span class="fl">1</span>] <span class="op">=</span> y <span class="op">=</span> y0</span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>    dt <span class="op">=</span> <span class="fu">step</span>(t)</span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fu">eachindex</span>(t)</span>
-<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>        y <span class="op">=</span> y <span class="op">+</span> <span class="fu">df</span>(y, t[i]) <span class="op">*</span> dt</span>
-<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>        result[i<span class="op">+</span><span class="fl">1</span>] <span class="op">=</span> y</span>
-<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>    </span>
-<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>    <span class="cf">return</span> result</span>
-<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="kw">module</span> TypeUnstable</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>    x <span class="op">=</span> <span class="fl">5</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>    <span class="fu">replace_x</span>(f, vs) <span class="op">=</span> [(<span class="fu">f</span>(v) ? x <span class="op">:</span> v) for v <span class="kw">in</span> vs]</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="pp">@code_warntype</span> TypeUnstable.<span class="fu">replace_x</span>((<span class="op">&lt;</span>)(<span class="fl">0</span>), <span class="op">-</span><span class="fl">2</span><span class="op">:</span><span class="fl">2</span>)</span></code></pre>
 </div>
+<ul><li>Change the definition of <code>x</code> to a constant using
+<code>const</code>.</li>
+<li>Change the definition of <code>replace_x</code> by passing
+<code>x</code> as a parameter.</li>
+<li>Time the result against the type unstable version.</li>
+</ul></div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="logistic-model">Logistic model<a class="anchor" aria-label="anchor" href="#logistic-model"></a></h2>
+<hr class="half-width"><p>We’ll now introduce a new application: logistic growth. Suppose we
+model a population <span class="math inline">\(P\)</span> of bacteria in
+a petri dish. In time we expect the population to grow by some
+reproduction factor <span class="math inline">\(r\)</span>, so</p>
+<p><span class="math display">\[\frac{dP}{dt} = rP.\]</span></p>
+<p>However, the total capacity is limited, so this exponential growth
+needs to plateau at some point. We introduce the <strong>carrying
+capacity</strong> K.</p>
+<p><span class="math display">\[\frac{dP}{dt} = rP \left(1 -
+\frac{P}{K}\right).\]</span></p>
+<p>This is the logistic model. We may collect these two parameters in a
+struct. For the moment, we leave out types so that we can choose
+precision or the use of Unitful quantities later on.</p>
 <div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="kw">let</span> input <span class="op">=</span> <span class="fu">Input</span>(sea_level<span class="op">=</span>t<span class="op">-&gt;</span><span class="fl">20.0</span>u<span class="st">"m"</span> <span class="op">*</span> <span class="fu">sin</span>(<span class="fl">2</span>π<span class="op">*</span>t<span class="op">/</span><span class="fl">200</span>u<span class="st">"kyr"</span>))</span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>    initial_topography <span class="op">=</span> (<span class="fl">0.0</span><span class="op">:-</span><span class="fl">1.0</span><span class="op">:-</span><span class="fl">100.0</span>)u<span class="st">"m"</span></span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>    result <span class="op">=</span> <span class="fu">stack</span>(<span class="fu">forward_euler</span>(<span class="fu">growth_rate</span>(input), y0, (<span class="fl">0.0</span><span class="op">:</span><span class="fl">0.001</span><span class="op">:</span><span class="fl">1.0</span>)u<span class="st">"Myr"</span>)</span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>        <span class="cf">for</span> y0 <span class="kw">in</span> initial_topography) <span class="op">.-</span> <span class="fl">1.0</span>u<span class="st">"Myr"</span> <span class="op">*</span> input.subsidence_rate</span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>    fig <span class="op">=</span> <span class="fu">Figure</span>()</span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>    ax <span class="op">=</span> <span class="fu">Axis</span>(fig[<span class="fl">1</span>, <span class="fl">1</span>], xlabel<span class="op">=</span><span class="st">"y0"</span>, ylabel<span class="op">=</span><span class="st">"y"</span>, xreversed<span class="op">=</span><span class="cn">true</span>)</span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>    <span class="cf">for</span> r <span class="kw">in</span> <span class="fu">eachrow</span>(result[<span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">:</span><span class="kw">end</span>,<span class="op">:</span>])</span>
-<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>        <span class="fu">lines!</span>(ax, initial_topography<span class="op">/</span>u<span class="st">"m"</span>, r<span class="op">/</span>u<span class="st">"m"</span>, color<span class="op">=:</span>black)</span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>    fig</span>
-<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="cf">end</span></span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co">#| file: src/PopulationModel.jl</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="kw">module</span> PopulationModel</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>    <span class="op">&lt;&lt;</span>population<span class="op">-</span>model<span class="op">&gt;&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>    <span class="op">&lt;&lt;</span>population<span class="op">-</span>model<span class="op">-</span>main<span class="op">&gt;&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
 </div>
-<p>What is wrong with this code?</p>
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="kw">let</span> input <span class="op">=</span> <span class="fu">Input</span>(sea_level<span class="op">=</span>t<span class="op">-&gt;</span><span class="fl">20.0</span>u<span class="st">"m"</span> <span class="op">*</span> <span class="fu">sin</span>(<span class="fl">2</span>π<span class="op">*</span>t<span class="op">/</span><span class="fl">200</span>u<span class="st">"kyr"</span>)),</span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>    y0 <span class="op">=</span> <span class="op">-</span><span class="fl">50.0</span>u<span class="st">"m"</span></span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>    <span class="pp">@code_warntype</span> <span class="fu">forward_euler</span>(<span class="fu">growth_rate</span>(input), y0, (<span class="fl">0.0</span><span class="op">:</span><span class="fl">0.001</span><span class="op">:</span><span class="fl">1.0</span>)u<span class="st">"Myr"</span>)</span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co">#| id: population-model</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="kw">abstract type</span> LogisticModel <span class="kw">end</span></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="kw">struct</span> LogisticModelUntyped <span class="op">&lt;:</span><span class="dt"> LogisticModel</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>    reproduction_factor</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>    carrying_capacity</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
 </div>
-<p>The function in <code>Input</code> is untyped. We could try to type
-the argument with a type parameter, but that doesn’t work so well with
-<code>@kwdef</code> (we’d have to redefine the constructor). The problem
-is also fixed if we recapture the <code>sea_level</code> parameter in
-the local scope of the <code>growth_rate</code> function, see <a href="https://docs.julialang.org/en/v1/manual/performance-tips/#man-performance-captured" class="external-link">Performance
-Tips</a>.</p>
-<div id="fix-the-code" class="callout challenge">
+<p>A typical ODE solver takes in a function <span class="math inline">\(y' = f(x, t)\)</span>.</p>
+<div class="codewrapper sourceCode" id="cb10">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">ode</span>(model<span class="op">::</span><span class="dt">LogisticModel</span>) <span class="op">=</span> <span class="kw">function</span> (x, _)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>    x <span class="op">*</span> model.reproduction_factor <span class="op">*</span> (<span class="fl">1</span> <span class="op">-</span> x <span class="op">/</span> model.carrying_capacity)</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+</div>
+<p>We can rewrite this to be a bit nicer.</p>
+<div class="codewrapper sourceCode" id="cb11">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co">#| id: population-model</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">ode</span>(model<span class="op">::</span><span class="dt">LogisticModel</span>) <span class="op">=</span> <span class="kw">function</span> (x, t)</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>    <span class="kw">let</span> r <span class="op">=</span> model.reproduction_factor,</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>        k <span class="op">=</span> model.carrying_capacity</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>        x <span class="op">*</span> r <span class="op">*</span> (<span class="fl">1</span> <span class="op">-</span> x <span class="op">/</span> k)</span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>    <span class="kw">end</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+</div>
+<p>We can solve an ODE with a simple forward method</p>
+<div class="codewrapper sourceCode" id="cb12">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="co">#| id: population-model</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="kw">function</span> <span class="fu">forward_euler</span>(df, y0<span class="op">::</span><span class="dt">T</span>, t) <span class="kw">where</span> {T}</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>    result <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{T}</span>(<span class="cn">undef</span>, <span class="fu">length</span>(t))</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>    result[<span class="fl">1</span>] <span class="op">=</span> y <span class="op">=</span> y0</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>    dt <span class="op">=</span> <span class="fu">step</span>(t)</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">2</span><span class="op">:</span><span class="fu">length</span>(t)</span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>        y <span class="op">=</span> y <span class="op">+</span> <span class="fu">df</span>(y, t[i<span class="op">-</span><span class="fl">1</span>]) <span class="op">*</span> dt</span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>        result[i] <span class="op">=</span> y</span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a>    <span class="cf">return</span> result</span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+</div>
+<div id="callout1" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div class="callout-inner">
+<div class="callout-content">
+<p>This is our first time encountering a generic function. The
+<code>where</code> clause introduces a type variable that we can use
+inside the function to create a typed vector. In this case we could
+still have used <code>typeof(y0)</code> to deduce <code>T</code>, but
+the type variable notation is cleaner.</p>
+</div>
+</div>
+</div>
+<p>We may write the following <code>main</code> function which we can
+improve on</p>
+<div class="codewrapper sourceCode" id="cb13">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co">#| id: population-model-main</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="kw">function</span> <span class="fu">main</span>(r)</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>    t <span class="op">=</span> <span class="fl">0.0</span><span class="op">:</span><span class="fl">0.01</span><span class="op">:</span><span class="fl">1.0</span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>    y0 <span class="op">=</span> <span class="fl">0.01</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>    y <span class="op">=</span> <span class="fu">forward_euler</span>(<span class="fu">ode</span>(<span class="fu">LogisticModelUntyped</span>(r, <span class="fl">1.0</span>)), y0, t)</span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>    <span class="cf">return</span> t, y</span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+</div>
+<div id="callout2" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<span class="callout-header">Callout</span>
+<div class="callout-inner">
+<div class="callout-content">
+<p>There is a package for solving ODE using better solvers called
+<code>DifferentialEquations.jl</code>. Be warned however, that this
+package is part of the larger SciML ecosystem. While SciML provides a
+highly advanced toolkit to do many very complicated things, it has a
+tendency to pull in a lot of unneeded (transitive) dependencies. In
+general we recommend caution before using SciML based packages.</p>
+</div>
+</div>
+</div>
+<div id="find-the-type-instability" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
 <span class="callout-header">Challenge</span>
-<div id="fix-the-code" class="callout-inner">
-<h3 class="callout-title">Fix the code</h3>
+<div id="find-the-type-instability" class="callout-inner">
+<h3 class="callout-title">Find the type-instability</h3>
 <div class="callout-content">
-<p>Modify the <code>growth_rate</code> function such that the
-<code>sea_level</code> look-up becomes type stable. Assign the parameter
-to a value with local scope.</p>
-</div>
+<ol style="list-style-type: lower-alpha"><li>Run
+<code>@code_warntype PopulationModel.ode(PopulationModel.LogisticModelUntyped(10.0, 1.0))(0.01, 0.0)</code>.
+Why is there a type instability here?</li>
+<li>Run <code>@code_warntype PopulationModel.main(10.0)</code>. Do you
+notice anything odd?</li>
+</ol></div>
 </div>
 </div>
 <div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
@@ -643,199 +694,107 @@ to a value with local scope.</p>
 </button>
 <div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb10">
-<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">growth_rate</span>(input)</span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>    sea_level <span class="op">=</span> input.sea_level</span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>    <span class="kw">function</span> <span class="fu">df</span>(y, t)</span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>        w <span class="op">=</span> <span class="fu">sea_level</span>(t) <span class="op">-</span> y <span class="op">+</span> input.subsidence_rate <span class="op">*</span> t</span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>        g_m <span class="op">=</span> input.maximum_growth_rate</span>
-<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>        I_0 <span class="op">=</span> input.insolation</span>
-<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>        I_k <span class="op">=</span> input.saturation_intensity</span>
-<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>        k <span class="op">=</span> input.extinction_coefficient</span>
-<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>        w <span class="op">&gt;</span> <span class="fl">0</span>u<span class="st">"m"</span> ? g_m <span class="op">*</span> <span class="fu">tanh</span>(I_0 <span class="op">*</span> <span class="fu">exp</span>(<span class="op">-</span>k <span class="op">*</span> w) <span class="op">/</span> I_k) <span class="op">:</span> <span class="fl">0.0</span>u<span class="st">"m/Myr"</span></span>
-<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a>    <span class="kw">end</span></span>
-<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
-</div>
-<div class="codewrapper sourceCode" id="cb11">
-<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="kw">let</span> input <span class="op">=</span> <span class="fu">Input</span>(sea_level<span class="op">=</span>t<span class="op">-&gt;</span><span class="fl">20.0</span>u<span class="st">"m"</span> <span class="op">*</span> <span class="fu">sin</span>(<span class="fl">2</span>π<span class="op">*</span>t<span class="op">/</span><span class="fl">200</span>u<span class="st">"kyr"</span>)),</span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>    y0 <span class="op">=</span> <span class="op">-</span><span class="fl">50.0</span>u<span class="st">"m"</span></span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>    <span class="pp">@code_warntype</span> <span class="fu">forward_euler</span>(<span class="fu">growth_rate</span>(input), y0, (<span class="fl">0.0</span><span class="op">:</span><span class="fl">0.001</span><span class="op">:</span><span class="fl">1.0</span>)u<span class="st">"Myr"</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+<ol style="list-style-type: lower-alpha"><li>There is no way from just the type information that the compiler can
+infer the types of the parameters. Dispatch happens on the
+<code>LogisticModelUntyped</code> type, and that’s as good as the
+compiler knows.</li>
+<li>The <code>@code_warntype</code> macro only checks one level deep:
+the <code>main</code> function seems fine on the surface.</li>
+</ol><p>We can check type-information deeper in the call tree by using the
+<code>@descend</code> macro from <code>Cthulhu.jl</code>.</p>
 </div>
 </div>
 </div>
 </div>
-</div>
-</section><section><h2 class="section-heading" id="multi-threading-and-type-stability">Multi-threading and type stability<a class="anchor" aria-label="anchor" href="#multi-threading-and-type-stability"></a></h2>
-<hr class="half-width"><p>Here we have an algorithm that computes the value of π to high
-precision. We can make this algorithm parallel by recursively calling
-<code>Threads.@spawn</code>, and then <code>fetch</code> on each task.
-Unfortunately the return type of <code>fetch</code> is never known at
-compile time. We can keep the type instability localized by declaring
-the return types.</p>
-<p>The following algorithm is <a href="https://en.wikipedia.org/wiki/Chudnovsky_algorithm" class="external-link">copy-pasted
-from Wikipedia</a>.</p>
-<div class="codewrapper sourceCode" id="cb12">
-<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">binary_split_1</span>(a, b)</span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>    Pab <span class="op">=</span> <span class="fu">-</span>(<span class="fl">6</span><span class="op">*</span>a <span class="op">-</span> <span class="fl">5</span>)<span class="fu">*</span>(<span class="fl">2</span><span class="op">*</span>a <span class="op">-</span> <span class="fl">1</span>)<span class="fu">*</span>(<span class="fl">6</span><span class="op">*</span>a <span class="op">-</span> <span class="fl">1</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>    Qab <span class="op">=</span> <span class="fl">10939058860032000</span> <span class="op">*</span> a<span class="op">^</span><span class="fl">3</span></span>
-<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>    Rab <span class="op">=</span> Pab <span class="op">*</span> (<span class="fl">545140134</span><span class="op">*</span>a <span class="op">+</span> <span class="fl">13591409</span>)</span>
-<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>    <span class="cf">return</span> Pab, Qab, Rab</span>
-<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a></span>
-<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="fu">setprecision</span>(<span class="fl">20</span>, base<span class="op">=</span><span class="fl">30</span>) <span class="cf">do</span></span>
-<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>    _, q, r <span class="op">=</span> <span class="fu">binary_split_1</span>(<span class="fu">big</span>(<span class="fl">1</span>), <span class="fu">big</span>(<span class="fl">2</span>))</span>
-<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>    (<span class="fl">426880</span> <span class="op">*</span> <span class="fu">sqrt</span>(<span class="fu">big</span>(<span class="fl">10005.0</span>)) <span class="op">*</span> q) <span class="op">/</span> (<span class="fl">13591409</span><span class="op">*</span>q <span class="op">+</span> r)</span>
-<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="cf">end</span></span>
-<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a></span>
-<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="co"># The last few digits are wrong... check</span></span>
-<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="fu">setprecision</span>(<span class="fl">20</span>, base<span class="op">=</span><span class="fl">30</span>) <span class="cf">do</span></span>
-<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a>    <span class="cn">π</span> <span class="op">|&gt;</span> <span class="dt">BigFloat</span></span>
-<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a><span class="cf">end</span></span>
-<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a></span>
-<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a><span class="co"># The algorithm refines by recursive binary splitting</span></span>
-<span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a><span class="co"># Recursion is fine here: we go 2logN deep.</span></span>
-<span id="cb12-20"><a href="#cb12-20" tabindex="-1"></a></span>
-<span id="cb12-21"><a href="#cb12-21" tabindex="-1"></a><span class="kw">function</span> <span class="fu">binary_split</span>(a, b)</span>
-<span id="cb12-22"><a href="#cb12-22" tabindex="-1"></a>    <span class="cf">if</span> b <span class="op">==</span> a <span class="op">+</span> <span class="fl">1</span></span>
-<span id="cb12-23"><a href="#cb12-23" tabindex="-1"></a>        <span class="fu">binary_split_1</span>(a, b)</span>
-<span id="cb12-24"><a href="#cb12-24" tabindex="-1"></a>    <span class="cf">else</span></span>
-<span id="cb12-25"><a href="#cb12-25" tabindex="-1"></a>        m <span class="op">=</span> <span class="fu">div</span>(a <span class="op">+</span> b, <span class="fl">2</span>)</span>
-<span id="cb12-26"><a href="#cb12-26" tabindex="-1"></a>        Pam, Qam, Ram <span class="op">=</span> <span class="fu">binary_split</span>(a, m)</span>
-<span id="cb12-27"><a href="#cb12-27" tabindex="-1"></a>        Pmb, Qmb, Rmb <span class="op">=</span> <span class="fu">binary_split</span>(m, b)</span>
-<span id="cb12-28"><a href="#cb12-28" tabindex="-1"></a>        </span>
-<span id="cb12-29"><a href="#cb12-29" tabindex="-1"></a>        Pab <span class="op">=</span> Pam <span class="op">*</span> Pmb</span>
-<span id="cb12-30"><a href="#cb12-30" tabindex="-1"></a>        Qab <span class="op">=</span> Qam <span class="op">*</span> Qmb</span>
-<span id="cb12-31"><a href="#cb12-31" tabindex="-1"></a>        Rab <span class="op">=</span> Qmb <span class="op">*</span> Ram <span class="op">+</span> Pam <span class="op">*</span> Rmb</span>
-<span id="cb12-32"><a href="#cb12-32" tabindex="-1"></a>        <span class="cf">return</span> Pab, Qab, Rab</span>
-<span id="cb12-33"><a href="#cb12-33" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb12-34"><a href="#cb12-34" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb12-35"><a href="#cb12-35" tabindex="-1"></a></span>
-<span id="cb12-36"><a href="#cb12-36" tabindex="-1"></a><span class="kw">function</span> <span class="fu">chudnovsky</span>(n)</span>
-<span id="cb12-37"><a href="#cb12-37" tabindex="-1"></a>    P1n, Q1n, R1n <span class="op">=</span> <span class="fu">binary_split</span>(<span class="fu">big</span>(<span class="fl">1</span>), n)</span>
-<span id="cb12-38"><a href="#cb12-38" tabindex="-1"></a>    <span class="cf">return</span> (<span class="fl">426880</span> <span class="op">*</span> <span class="fu">sqrt</span>(<span class="fu">big</span>(<span class="fl">10005.0</span>)) <span class="op">*</span> Q1n) <span class="op">/</span> (<span class="fl">13591409</span><span class="op">*</span>Q1n <span class="op">+</span> R1n)</span>
-<span id="cb12-39"><a href="#cb12-39" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb12-40"><a href="#cb12-40" tabindex="-1"></a></span>
-<span id="cb12-41"><a href="#cb12-41" tabindex="-1"></a><span class="fu">setprecision</span>(<span class="fl">10000</span>)</span>
-<span id="cb12-42"><a href="#cb12-42" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">chudnovsky</span>(<span class="fu">big</span>(<span class="fl">20000</span>))</span>
-<span id="cb12-43"><a href="#cb12-43" tabindex="-1"></a></span>
-<span id="cb12-44"><a href="#cb12-44" tabindex="-1"></a><span class="co"># We can create a parallel version by spawning jobs. These are green threads.</span></span>
-<span id="cb12-45"><a href="#cb12-45" tabindex="-1"></a></span>
-<span id="cb12-46"><a href="#cb12-46" tabindex="-1"></a><span class="kw">function</span> <span class="fu">binary_split_td</span>(a<span class="op">::</span><span class="dt">T</span>, b<span class="op">::</span><span class="dt">T</span>) <span class="kw">where</span> {T}</span>
-<span id="cb12-47"><a href="#cb12-47" tabindex="-1"></a>    <span class="cf">if</span> b <span class="op">==</span> a <span class="op">+</span> <span class="fl">1</span></span>
-<span id="cb12-48"><a href="#cb12-48" tabindex="-1"></a>        <span class="fu">binary_split_1</span>(a, b)</span>
-<span id="cb12-49"><a href="#cb12-49" tabindex="-1"></a>    <span class="cf">else</span></span>
-<span id="cb12-50"><a href="#cb12-50" tabindex="-1"></a>        m <span class="op">=</span> <span class="fu">div</span>(a <span class="op">+</span> b, <span class="fl">2</span>)</span>
-<span id="cb12-51"><a href="#cb12-51" tabindex="-1"></a>        t1 <span class="op">=</span> <span class="pp">@Threads</span>.spawn <span class="fu">binary_split_td</span>(a, m)</span>
-<span id="cb12-52"><a href="#cb12-52" tabindex="-1"></a>        t2 <span class="op">=</span> <span class="pp">@Threads</span>.spawn <span class="fu">binary_split_td</span>(m, b)</span>
-<span id="cb12-53"><a href="#cb12-53" tabindex="-1"></a></span>
-<span id="cb12-54"><a href="#cb12-54" tabindex="-1"></a>        Pam, Qam, Ram <span class="op">=</span> <span class="fu">fetch</span>(t1)</span>
-<span id="cb12-55"><a href="#cb12-55" tabindex="-1"></a>        Pmb, Qmb, Rmb <span class="op">=</span> <span class="fu">fetch</span>(t2)</span>
-<span id="cb12-56"><a href="#cb12-56" tabindex="-1"></a>        </span>
-<span id="cb12-57"><a href="#cb12-57" tabindex="-1"></a>        Pab <span class="op">=</span> Pam <span class="op">*</span> Pmb</span>
-<span id="cb12-58"><a href="#cb12-58" tabindex="-1"></a>        Qab <span class="op">=</span> Qam <span class="op">*</span> Qmb</span>
-<span id="cb12-59"><a href="#cb12-59" tabindex="-1"></a>        Rab <span class="op">=</span> Qmb <span class="op">*</span> Ram <span class="op">+</span> Pam <span class="op">*</span> Rmb</span>
-<span id="cb12-60"><a href="#cb12-60" tabindex="-1"></a>        <span class="cf">return</span> Pab, Qab, Rab</span>
-<span id="cb12-61"><a href="#cb12-61" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb12-62"><a href="#cb12-62" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb12-63"><a href="#cb12-63" tabindex="-1"></a></span>
-<span id="cb12-64"><a href="#cb12-64" tabindex="-1"></a><span class="kw">function</span> <span class="fu">chudnovsky_td</span>(n)</span>
-<span id="cb12-65"><a href="#cb12-65" tabindex="-1"></a>    P1n, Q1n, R1n <span class="op">=</span> <span class="fu">binary_split_td</span>(<span class="fu">big</span>(<span class="fl">1</span>), n)</span>
-<span id="cb12-66"><a href="#cb12-66" tabindex="-1"></a>    <span class="cf">return</span> (<span class="fl">426880</span> <span class="op">*</span> <span class="fu">sqrt</span>(<span class="fu">big</span>(<span class="fl">10005.0</span>)) <span class="op">*</span> Q1n) <span class="op">/</span> (<span class="fl">13591409</span><span class="op">*</span>Q1n <span class="op">+</span> R1n)</span>
-<span id="cb12-67"><a href="#cb12-67" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
-</div>
-<p>The following may show why the parallel code isn’t faster yet.</p>
-<div class="codewrapper sourceCode" id="cb13">
-<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">setprecision</span>(<span class="fl">10000</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="pp">@btime</span> <span class="fu">chudnovsky_td</span>(<span class="fu">big</span>(<span class="fl">20000</span>))</span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="pp">@profview</span> <span class="fu">chudnovsky_td</span>(<span class="fu">big</span>(<span class="fl">200000</span>))</span></code></pre>
-</div>
+<p>There are two techniques to fix this problem in this particular
+case.</p>
+</section><section><h2 class="section-heading" id="closures">Closures<a class="anchor" aria-label="anchor" href="#closures"></a></h2>
+<hr class="half-width"><p>Upto now we haven’t really made a distinction between plain functions
+and <strong>closures</strong>. A closure is a function that carries a
+reference to the scope it was defined in. Where we may think of a
+function as a black box machine, a closure is a box with some memory.
+This memory can be both mutable or immutable, but what we should make
+certain about is that the captured variables are type stable!</p>
+<p>In our example the closure stores a reference to the
+<code>LogisticModelUntyped</code> structure. The compiler has no way to
+infer the types of the <code>reproduction_rate</code> and
+<code>carrying_capacity</code> members. We can solve this one way by
+generating a closure that stores these individual numbers directly
+instead of looking them up in the <code>LogisticModelUntyped</code>
+struct. All we need to do is reverse the <code>let</code> binding and
+inner function definition in the implementation of ode:</p>
 <div class="codewrapper sourceCode" id="cb14">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="pp">@code_warntype</span> <span class="fu">chudnovsky_td</span>(<span class="fu">big</span>(<span class="fl">6</span>))</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">ode</span>(model<span class="op">::</span><span class="dt">LogisticModel</span>) <span class="op">=</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>    <span class="kw">let</span> r <span class="op">=</span> model.reproduction_factor,</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>        k <span class="op">=</span> model.carrying_capacity</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>        (x, _) <span class="op">-&gt;</span> x <span class="op">*</span> r <span class="op">*</span> (<span class="fl">1</span> <span class="op">-</span> x <span class="op">/</span> k)</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>    <span class="kw">end</span></span></code></pre>
 </div>
-<ul><li>The red areas in the flame graph show type unstable code (marked
-with <strong>run-time dispatch</strong>)</li>
-<li>Yellow regions are allocations.</li>
-<li>The same can be seen in the code, as a kind of histogram back
-drop.</li>
-</ul><p>The code is also inefficient because <code>poptask</code> is very
-prominent. We can make sure that each task is a bit beefier by reverting
-to the serial code at some point. Insert the following in
-<code>binary_split_td</code>:</p>
+<div id="discussion2" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div class="callout-inner">
+<div class="callout-content">
+<p>Which variables are in the closure of the anonymous function that’s
+being returned here? We have <code>x</code> as a parameter, and
+<code>r</code> and <code>k</code> are in the lexical scope of the
+closure. At the time when the function is created, the types of
+<code>k</code> and <code>r</code> are completely known.</p>
+</div>
+</div>
+</div>
+<div id="time-the-new-implementation" class="callout discussion">
+<div class="callout-square">
+<i class="callout-icon" data-feather="message-circle"></i>
+</div>
+<span class="callout-header">Discussion</span>
+<div id="time-the-new-implementation" class="callout-inner">
+<h3 class="callout-title">Time the new implementation</h3>
+<div class="callout-content">
+<p>Rerun
+<code>@code_warntype PopulationModel.ode(PopulationModel.LogisticModelUntyped(10.0, 1.0))(0.01, 0.0)</code>
+and benchmark the main function with the two versions.</p>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="generic-types">Generic types<a class="anchor" aria-label="anchor" href="#generic-types"></a></h2>
+<hr class="half-width"><p>The second and more generic method of solving the issue, is by using
+generic types.</p>
 <div class="codewrapper sourceCode" id="cb15">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>elseif b <span class="op">-</span> a <span class="op">&lt;=</span> <span class="fl">1024</span></span>
-<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>    <span class="fu">binary_split</span>(a, b)</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="kw">struct</span> LogisticModelGeneric{R, K} <span class="op">&lt;:</span><span class="dt"> LogisticModel</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>    reproduction_factor<span class="op">::</span><span class="dt">R</span></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>    carrying_capacity<span class="op">::</span><span class="dt">K</span></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
 </div>
-<p>We can limit the type instability by changing the <code>fetch</code>
-lines:</p>
-<div class="codewrapper sourceCode" id="cb16">
-<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>Pam<span class="op">::</span><span class="dt">T</span>, Qam<span class="op">::</span><span class="dt">T</span>, Ram<span class="op">::</span><span class="dt">T </span><span class="op">=</span> <span class="fu">fetch</span>(t1)</span>
-<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>Pmb<span class="op">::</span><span class="dt">T</span>, Qmb<span class="op">::</span><span class="dt">T</span>, Rmb<span class="op">::</span><span class="dt">T </span><span class="op">=</span> <span class="fu">fetch</span>(t2)</span></code></pre>
-</div>
-<div id="rerun-the-profiler" class="callout challenge">
+<div id="generic-types-1" class="callout discussion">
 <div class="callout-square">
-<i class="callout-icon" data-feather="zap"></i>
+<i class="callout-icon" data-feather="message-circle"></i>
 </div>
-<span class="callout-header">Challenge</span>
-<div id="rerun-the-profiler" class="callout-inner">
-<h3 class="callout-title">Rerun the profiler</h3>
+<span class="callout-header">Discussion</span>
+<div id="generic-types-1" class="callout-inner">
+<h3 class="callout-title">Generic Types</h3>
 <div class="callout-content">
-<p>Rerun the profiler and <code>@code_warntype</code>. Is the type
-instability gone?</p>
+<ol style="list-style-type: lower-alpha"><li>Create an instance of the <code>LogisticModelGeneric</code>. You can
+use the constructor without explicit type arguments as types are deduced
+from the constructor call.</li>
+<li>Check the types of the returned instance.</li>
+<li>Run the <code>forward_euler</code> method on
+<code>LogisticModelGeneric</code>; how does this perform?</li>
+<li>(optional) Try to use some units, say
+<code>LogisticModelGeneric(1.5u"1/d", 1.0u"dm^2")</code> to model the
+growth of mold on a piece of bread. Do the units affect
+performance?</li>
+</ol></div>
 </div>
 </div>
-</div>
-<div id="accordionSolution2" class="accordion challenge-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
-  <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
-</button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
-<div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb17">
-<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">binary_split_td</span>(a<span class="op">::</span><span class="dt">T</span>, b<span class="op">::</span><span class="dt">T</span>) <span class="kw">where</span> {T}</span>
-<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>    <span class="cf">if</span> b <span class="op">==</span> a <span class="op">+</span> <span class="fl">1</span></span>
-<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>        <span class="fu">binary_split_1</span>(a, b)</span>
-<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>    <span class="cf">elseif</span> b <span class="op">-</span> a <span class="op">&lt;=</span> <span class="fl">1024</span></span>
-<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>        <span class="fu">binary_split</span>(a, b)</span>
-<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>    <span class="cf">else</span></span>
-<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a>        m <span class="op">=</span> <span class="fu">div</span>(a <span class="op">+</span> b, <span class="fl">2</span>)</span>
-<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a>        t1 <span class="op">=</span> <span class="pp">@Threads</span>.spawn <span class="fu">binary_split_td</span>(a, m)</span>
-<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a>        t2 <span class="op">=</span> <span class="pp">@Threads</span>.spawn <span class="fu">binary_split_td</span>(m, b)</span>
-<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a></span>
-<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a>        Pam<span class="op">::</span><span class="dt">T</span>, Qam<span class="op">::</span><span class="dt">T</span>, Ram<span class="op">::</span><span class="dt">T </span><span class="op">=</span> <span class="fu">fetch</span>(t1)</span>
-<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a>        Pmb<span class="op">::</span><span class="dt">T</span>, Qmb<span class="op">::</span><span class="dt">T</span>, Rmb<span class="op">::</span><span class="dt">T </span><span class="op">=</span> <span class="fu">fetch</span>(t2)</span>
-<span id="cb17-13"><a href="#cb17-13" tabindex="-1"></a>        </span>
-<span id="cb17-14"><a href="#cb17-14" tabindex="-1"></a>        Pab <span class="op">=</span> Pam <span class="op">*</span> Pmb</span>
-<span id="cb17-15"><a href="#cb17-15" tabindex="-1"></a>        Qab <span class="op">=</span> Qam <span class="op">*</span> Qmb</span>
-<span id="cb17-16"><a href="#cb17-16" tabindex="-1"></a>        Rab <span class="op">=</span> Qmb <span class="op">*</span> Ram <span class="op">+</span> Pam <span class="op">*</span> Rmb</span>
-<span id="cb17-17"><a href="#cb17-17" tabindex="-1"></a>        <span class="cf">return</span> Pab, Qab, Rab</span>
-<span id="cb17-18"><a href="#cb17-18" tabindex="-1"></a>    <span class="cf">end</span></span>
-<span id="cb17-19"><a href="#cb17-19" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
-</div>
-<p>Yes!</p>
-</div>
-</div>
-</div>
-</div>
-<div id="callout1" class="callout">
+<div id="callout3" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
@@ -906,7 +865,7 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
 
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/" class="external-link">sandpaper (0.20.0)</a>, <a href="https://github.com/carpentries/pegboard/tree/" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/" class="external-link">varnish (1.0.9)</a></p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.20.0" class="external-link">sandpaper (0.20.0)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.9" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.9" class="external-link">varnish (1.0.9)</a></p>
 		</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -928,7 +887,7 @@ any links that you are not going to use.
   "url": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/100-introduction-performance.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/100-introduction-performance.html",
   "dateCreated": "2024-01-01",
-  "dateModified": "2026-01-26",
+  "dateModified": "2026-04-14",
   "datePublished": "2026-04-14"
 }
 
