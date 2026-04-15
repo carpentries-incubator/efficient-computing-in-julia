@@ -192,6 +192,69 @@ end
 ::::
 :::
 
+### Using `Adapt.jl`
+
+In practice, we will often group variables together in structs (for convenience) and may wish to pass these to our kernel function. However, the struct, and its contents, must be fully converted to a GPU form (as we did with the arrays earlier).
+
+Fortunately, we can do this easily using `Adapt.jl`:
+
+````julia
+import Adapt
+````
+
+So, let us say we change our earlier `VectorAdd` kernel to one that takes the vectors in a struct:
+
+````julia
+@kernel function vector_add_struct(s)
+    I = @index(Global)
+    s.c[I] = s.a[I] + s.b[I]
+end
+
+struct VectorAddStruct{T}
+    a::T
+    b::T
+    c::T
+end
+````
+
+We can then make a new `VectorAddStruct`:
+````julia
+v = VectorAddStruct(randn(Float32, 1024), randn(Float32, 1024), Vector{Float32}(undef, 1024))
+````
+
+But these types are all on the host and therefore the struct cannot be operated on by the GPU.
+
+Using Adapt's `@adapt_structure` macro, we can automatically create a conversion function for recrusively converting this `VectorAddStruct` to something using GPU types.
+
+````julia
+Adapt.@adapt_structure VectorAddStruct
+````
+
+Let's quickly look at the function that is being generated for us:
+
+````julia
+@macroexpand Adapt.@adapt_structure VectorAddStruct
+````
+
+So now, using this method, we can adapt our struct for use on (in this case) an Intel GPU:
+
+````julia
+v_dev = adapt(oneArray, v)
+v_dev
+````
+
+And run our struct kernel:
+
+````julia
+vector_add_struct(dev, 512)(v_dev, ndrange=1024)
+
+all(Array(v_dev.c) .== v.a .+ v.b)
+````
+
+
+
+### Generating the Julia Fractal on GPU
+
 ::: challenge
 ### Implement the Julia fractal
 
