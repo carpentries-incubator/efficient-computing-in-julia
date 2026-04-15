@@ -411,7 +411,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>GPU Programming</h1>
-        <p>Last updated on 2026-04-14 |
+        <p>Last updated on 2026-04-15 |
 
         <a href="https://github.com/esciencecenter-digital-skills/efficient-computing-in-julia/edit/main/episodes/170-gpu-programming.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -447,15 +447,15 @@
 <section><h2 class="section-heading" id="state-of-things">State of things<a class="anchor" aria-label="anchor" href="#state-of-things"></a></h2>
 <hr class="half-width"><p>There are separate packages for GPU computing, depending on the
 hardware you have.</p>
-<table class="table"><thead><tr class="header"><th>Brand</th>
+<table class="table"><thead><tr><th>Brand</th>
 <th>Lib</th>
-</tr></thead><tbody><tr class="odd"><td>NVidia</td>
+</tr></thead><tbody><tr><td>NVidia</td>
 <td><a href="https://github.com/JuliaGPU/CUDA.jl" class="external-link"><code>CUDA.jl</code></a></td>
-</tr><tr class="even"><td>AMD</td>
+</tr><tr><td>AMD</td>
 <td><a href="https://github.com/JuliaGPU/AMDGPU.jl" class="external-link"><code>AMDGPU.jl</code></a></td>
-</tr><tr class="odd"><td>Intel</td>
+</tr><tr><td>Intel</td>
 <td><a href="https://github.com/JuliaGPU/oneAPI.jl" class="external-link"><code>oneAPI.jl</code></a></td>
-</tr><tr class="even"><td>Apple</td>
+</tr><tr><td>Apple</td>
 <td><a href="https://github.com/JuliaGPU/Metal.jl" class="external-link"><code>Metal.jl</code></a></td>
 </tr></tbody></table><p>Each of these offer similar abstractions for dealing with array based
 computations, though each with slightly different names. CUDA by far has
@@ -727,6 +727,77 @@ results.</p>
 </div>
 </div>
 </div>
+<div class="section level3">
+<h3 id="using-adapt-jl">Using <code>Adapt.jl</code>
+<a class="anchor" aria-label="anchor" href="#using-adapt-jl"></a></h3>
+<p>In practice, we will often group variables together in structs (for
+convenience) and may wish to pass these to our kernel function. However,
+the struct, and its contents, must be fully converted to a GPU form (as
+we did with the arrays earlier).</p>
+<p>Fortunately, we can do this easily using <code>Adapt.jl</code>:</p>
+<div class="codewrapper sourceCode" id="cb15">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="im">import</span> <span class="bu">Adapt</span></span></code></pre>
+</div>
+<p>So, let us say we change our earlier <code>VectorAdd</code> kernel to
+one that takes the vectors in a struct:</p>
+<div class="codewrapper sourceCode" id="cb16">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="pp">@kernel</span> <span class="kw">function</span> <span class="fu">vector_add_struct</span>(s)</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>    I <span class="op">=</span> <span class="pp">@index</span>(Global)</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>    s.c[I] <span class="op">=</span> s.a[I] <span class="op">+</span> s.b[I]</span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="kw">struct</span> VectorAddStruct{T}</span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a>    a<span class="op">::</span><span class="dt">T</span></span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a>    b<span class="op">::</span><span class="dt">T</span></span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a>    c<span class="op">::</span><span class="dt">T</span></span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+</div>
+<p>We can then make a new <code>VectorAddStruct</code>:</p>
+<div class="codewrapper sourceCode" id="cb17">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>v <span class="op">=</span> <span class="fu">VectorAddStruct</span>(<span class="fu">randn</span>(<span class="dt">Float32</span>, <span class="fl">1024</span>), <span class="fu">randn</span>(<span class="dt">Float32</span>, <span class="fl">1024</span>), <span class="fu">Vector</span><span class="dt">{Float32}</span>(<span class="cn">undef</span>, <span class="fl">1024</span>))</span></code></pre>
+</div>
+<p>But these types are all on the host and therefore the struct cannot
+be operated on by the GPU.</p>
+<p>Using Adapt’s <code>@adapt_structure</code> macro, we can
+automatically create a conversion function for recrusively converting
+this <code>VectorAddStruct</code> to something using GPU types.</p>
+<div class="codewrapper sourceCode" id="cb18">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>Adapt.<span class="pp">@adapt_structure</span> VectorAddStruct</span></code></pre>
+</div>
+<p>Let’s quickly look at the function that is being generated for
+us:</p>
+<div class="codewrapper sourceCode" id="cb19">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="pp">@macroexpand</span> Adapt.<span class="pp">@adapt_structure</span> VectorAddStruct</span></code></pre>
+</div>
+<p>So now, using this method, we can adapt our struct for use on (in
+this case) an Intel GPU:</p>
+<div class="codewrapper sourceCode" id="cb20">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>v_dev <span class="op">=</span> <span class="fu">adapt</span>(oneArray, v)</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>v_dev</span></code></pre>
+</div>
+<p>And run our struct kernel:</p>
+<div class="codewrapper sourceCode" id="cb21">
+<h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="fu">vector_add_struct</span>(dev, <span class="fl">512</span>)(v_dev, ndrange<span class="op">=</span><span class="fl">1024</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">Array</span>(v_dev.c) <span class="op">.==</span> v.a <span class="op">.+</span> v.b)</span></code></pre>
+</div>
+</div>
+<div class="section level3">
+<h3 id="generating-the-julia-fractal-on-gpu">Generating the Julia Fractal on GPU<a class="anchor" aria-label="anchor" href="#generating-the-julia-fractal-on-gpu"></a></h3>
 <div id="implement-the-julia-fractal" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
@@ -737,41 +808,41 @@ results.</p>
 <div class="callout-content">
 <p>Use the GPU library that is appropriate for your laptop. Do you
 manage to get any speedup?</p>
-<div class="codewrapper sourceCode" id="cb15">
+<div class="codewrapper sourceCode" id="cb22">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">julia_host</span>(c<span class="op">::</span><span class="dt">ComplexF32</span>, s<span class="op">::</span><span class="dt">Float32</span>, maxit<span class="op">::</span><span class="dt">Int</span>, out<span class="op">::</span><span class="dt">AbstractMatrix{Int}</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>	w, h <span class="op">=</span> <span class="fu">size</span>(out)</span>
-<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>	<span class="bu">Threads</span>.<span class="pp">@threads</span> <span class="cf">for</span> idx <span class="kw">in</span> <span class="fu">CartesianIndices</span>(out)</span>
-<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>		x <span class="op">=</span> (idx[<span class="fl">1</span>] <span class="op">-</span> w <span class="op">÷</span> <span class="fl">2</span>) <span class="op">*</span> s</span>
-<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>		y <span class="op">=</span> (idx[<span class="fl">2</span>] <span class="op">-</span> h <span class="op">÷</span> <span class="fl">2</span>) <span class="op">*</span> s</span>
-<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a>		z <span class="op">=</span> x <span class="op">+</span> <span class="fl">1f0im</span> <span class="op">*</span> y</span>
-<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a></span>
-<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a>		out[idx] <span class="op">=</span> maxit</span>
-<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a>		<span class="cf">for</span> k <span class="op">=</span> <span class="fl">1</span><span class="op">:</span>maxit</span>
-<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a>			z <span class="op">=</span> z<span class="op">*</span>z <span class="op">+</span> c</span>
-<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a>			<span class="cf">if</span> <span class="fu">abs</span>(z) <span class="op">&gt;</span> <span class="fl">2f0</span></span>
-<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a>				out[idx] <span class="op">=</span> k</span>
-<span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a>				<span class="cf">break</span></span>
-<span id="cb15-14"><a href="#cb15-14" tabindex="-1"></a>			<span class="cf">end</span></span>
-<span id="cb15-15"><a href="#cb15-15" tabindex="-1"></a>		<span class="cf">end</span></span>
-<span id="cb15-16"><a href="#cb15-16" tabindex="-1"></a>	<span class="cf">end</span></span>
-<span id="cb15-17"><a href="#cb15-17" tabindex="-1"></a><span class="kw">end</span></span>
-<span id="cb15-18"><a href="#cb15-18" tabindex="-1"></a></span>
-<span id="cb15-19"><a href="#cb15-19" tabindex="-1"></a>c <span class="op">=</span> <span class="op">-</span><span class="fl">0.7269f0</span><span class="op">+</span><span class="fl">0.1889f0im</span></span>
-<span id="cb15-20"><a href="#cb15-20" tabindex="-1"></a>out_host <span class="op">=</span> <span class="fu">Matrix</span><span class="dt">{Int}</span>(<span class="cn">undef</span>, <span class="fl">1920</span>, <span class="fl">1080</span>)</span>
-<span id="cb15-21"><a href="#cb15-21" tabindex="-1"></a><span class="fu">julia_host</span>(c, <span class="fl">1f0</span><span class="op">/</span><span class="fl">600</span>, <span class="fl">1024</span>, out_host)</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="kw">function</span> <span class="fu">julia_host</span>(c<span class="op">::</span><span class="dt">ComplexF32</span>, s<span class="op">::</span><span class="dt">Float32</span>, maxit<span class="op">::</span><span class="dt">Int</span>, out<span class="op">::</span><span class="dt">AbstractMatrix{Int}</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>	w, h <span class="op">=</span> <span class="fu">size</span>(out)</span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>	<span class="bu">Threads</span>.<span class="pp">@threads</span> <span class="cf">for</span> idx <span class="kw">in</span> <span class="fu">CartesianIndices</span>(out)</span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>		x <span class="op">=</span> (idx[<span class="fl">1</span>] <span class="op">-</span> w <span class="op">÷</span> <span class="fl">2</span>) <span class="op">*</span> s</span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a>		y <span class="op">=</span> (idx[<span class="fl">2</span>] <span class="op">-</span> h <span class="op">÷</span> <span class="fl">2</span>) <span class="op">*</span> s</span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a>		z <span class="op">=</span> x <span class="op">+</span> <span class="fl">1f0im</span> <span class="op">*</span> y</span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a>		out[idx] <span class="op">=</span> maxit</span>
+<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a>		<span class="cf">for</span> k <span class="op">=</span> <span class="fl">1</span><span class="op">:</span>maxit</span>
+<span id="cb22-10"><a href="#cb22-10" tabindex="-1"></a>			z <span class="op">=</span> z<span class="op">*</span>z <span class="op">+</span> c</span>
+<span id="cb22-11"><a href="#cb22-11" tabindex="-1"></a>			<span class="cf">if</span> <span class="fu">abs</span>(z) <span class="op">&gt;</span> <span class="fl">2f0</span></span>
+<span id="cb22-12"><a href="#cb22-12" tabindex="-1"></a>				out[idx] <span class="op">=</span> k</span>
+<span id="cb22-13"><a href="#cb22-13" tabindex="-1"></a>				<span class="cf">break</span></span>
+<span id="cb22-14"><a href="#cb22-14" tabindex="-1"></a>			<span class="cf">end</span></span>
+<span id="cb22-15"><a href="#cb22-15" tabindex="-1"></a>		<span class="cf">end</span></span>
+<span id="cb22-16"><a href="#cb22-16" tabindex="-1"></a>	<span class="cf">end</span></span>
+<span id="cb22-17"><a href="#cb22-17" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb22-18"><a href="#cb22-18" tabindex="-1"></a></span>
+<span id="cb22-19"><a href="#cb22-19" tabindex="-1"></a>c <span class="op">=</span> <span class="op">-</span><span class="fl">0.7269f0</span><span class="op">+</span><span class="fl">0.1889f0im</span></span>
+<span id="cb22-20"><a href="#cb22-20" tabindex="-1"></a>out_host <span class="op">=</span> <span class="fu">Matrix</span><span class="dt">{Int}</span>(<span class="cn">undef</span>, <span class="fl">1920</span>, <span class="fl">1080</span>)</span>
+<span id="cb22-21"><a href="#cb22-21" tabindex="-1"></a><span class="fu">julia_host</span>(c, <span class="fl">1f0</span><span class="op">/</span><span class="fl">600</span>, <span class="fl">1024</span>, out_host)</span></code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb16">
+<div class="codewrapper sourceCode" id="cb23">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">GLMakie</span></span>
-<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="fu">heatmap</span>(out_host)</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="im">using</span> <span class="bu">GLMakie</span></span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a><span class="fu">heatmap</span>(out_host)</span></code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb17">
+<div class="codewrapper sourceCode" id="cb24">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="pp">@benchmark</span> <span class="fu">julia_host</span>(c, <span class="fl">1f0</span><span class="op">/</span><span class="fl">600</span>, <span class="fl">1024</span>, out_host)</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="pp">@benchmark</span> <span class="fu">julia_host</span>(c, <span class="fl">1f0</span><span class="op">/</span><span class="fl">600</span>, <span class="fl">1024</span>, out_host)</span></code></pre>
 </div>
 <p>Hint 1: There exists a <code>@index(Global, Cartesian)</code>
 macro.</p>
@@ -787,39 +858,39 @@ image, in this case <code>480</code> seemed to work.</p>
 </button>
 <div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb18">
+<div class="codewrapper sourceCode" id="cb25">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="pp">@kernel</span> <span class="kw">function</span> <span class="fu">julia_dev</span>(c<span class="op">::</span><span class="dt">ComplexF32</span>, s<span class="op">::</span><span class="dt">Float32</span>, maxit<span class="op">::</span><span class="dt">Int</span>, out)</span>
-<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>	w, h <span class="op">=</span> <span class="fu">size</span>(out)</span>
-<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>	idx <span class="op">=</span> <span class="pp">@index</span>(Global, Cartesian)</span>
-<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>	</span>
-<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>	x <span class="op">=</span> (idx[<span class="fl">1</span>] <span class="op">-</span> w <span class="op">÷</span> <span class="fl">2</span>) <span class="op">*</span> s</span>
-<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>	y <span class="op">=</span> (idx[<span class="fl">2</span>] <span class="op">-</span> h <span class="op">÷</span> <span class="fl">2</span>) <span class="op">*</span> s</span>
-<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>	z <span class="op">=</span> x <span class="op">+</span> <span class="fl">1f0im</span> <span class="op">*</span> y</span>
-<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a></span>
-<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>	out[idx] <span class="op">=</span> maxit</span>
-<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a>	<span class="cf">for</span> k <span class="op">=</span> <span class="fl">1</span><span class="op">:</span>maxit</span>
-<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a>		z <span class="op">=</span> z<span class="op">*</span>z <span class="op">+</span> c</span>
-<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a>		<span class="cf">if</span> <span class="fu">abs</span>(z) <span class="op">&gt;</span> <span class="fl">2f0</span></span>
-<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a>			out[idx] <span class="op">=</span> k</span>
-<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a>			<span class="cf">break</span></span>
-<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a>		<span class="cf">end</span></span>
-<span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a>	<span class="cf">end</span></span>
-<span id="cb18-17"><a href="#cb18-17" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="pp">@kernel</span> <span class="kw">function</span> <span class="fu">julia_dev</span>(c<span class="op">::</span><span class="dt">ComplexF32</span>, s<span class="op">::</span><span class="dt">Float32</span>, maxit<span class="op">::</span><span class="dt">Int</span>, out)</span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>	w, h <span class="op">=</span> <span class="fu">size</span>(out)</span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a>	idx <span class="op">=</span> <span class="pp">@index</span>(Global, Cartesian)</span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a>	</span>
+<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a>	x <span class="op">=</span> (idx[<span class="fl">1</span>] <span class="op">-</span> w <span class="op">÷</span> <span class="fl">2</span>) <span class="op">*</span> s</span>
+<span id="cb25-6"><a href="#cb25-6" tabindex="-1"></a>	y <span class="op">=</span> (idx[<span class="fl">2</span>] <span class="op">-</span> h <span class="op">÷</span> <span class="fl">2</span>) <span class="op">*</span> s</span>
+<span id="cb25-7"><a href="#cb25-7" tabindex="-1"></a>	z <span class="op">=</span> x <span class="op">+</span> <span class="fl">1f0im</span> <span class="op">*</span> y</span>
+<span id="cb25-8"><a href="#cb25-8" tabindex="-1"></a></span>
+<span id="cb25-9"><a href="#cb25-9" tabindex="-1"></a>	out[idx] <span class="op">=</span> maxit</span>
+<span id="cb25-10"><a href="#cb25-10" tabindex="-1"></a>	<span class="cf">for</span> k <span class="op">=</span> <span class="fl">1</span><span class="op">:</span>maxit</span>
+<span id="cb25-11"><a href="#cb25-11" tabindex="-1"></a>		z <span class="op">=</span> z<span class="op">*</span>z <span class="op">+</span> c</span>
+<span id="cb25-12"><a href="#cb25-12" tabindex="-1"></a>		<span class="cf">if</span> <span class="fu">abs</span>(z) <span class="op">&gt;</span> <span class="fl">2f0</span></span>
+<span id="cb25-13"><a href="#cb25-13" tabindex="-1"></a>			out[idx] <span class="op">=</span> k</span>
+<span id="cb25-14"><a href="#cb25-14" tabindex="-1"></a>			<span class="cf">break</span></span>
+<span id="cb25-15"><a href="#cb25-15" tabindex="-1"></a>		<span class="cf">end</span></span>
+<span id="cb25-16"><a href="#cb25-16" tabindex="-1"></a>	<span class="cf">end</span></span>
+<span id="cb25-17"><a href="#cb25-17" tabindex="-1"></a><span class="kw">end</span></span></code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb19">
+<div class="codewrapper sourceCode" id="cb26">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>out <span class="op">=</span> <span class="fu">oneArray</span>(<span class="fu">zeros</span>(<span class="dt">Int</span>, <span class="fl">1920</span>, <span class="fl">1080</span>))</span>
-<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>backend <span class="op">=</span> <span class="fu">get_backend</span>(out)</span>
-<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a><span class="fu">julia_dev</span>(backend, <span class="fl">480</span>)(c, <span class="fl">1f0</span><span class="op">/</span><span class="fl">600</span>, <span class="fl">1024</span>, out, ndrange<span class="op">=</span><span class="fu">size</span>(out))</span>
-<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">Array</span>(out) <span class="op">.==</span> out_host)</span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>out <span class="op">=</span> <span class="fu">oneArray</span>(<span class="fu">zeros</span>(<span class="dt">Int</span>, <span class="fl">1920</span>, <span class="fl">1080</span>))</span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a>backend <span class="op">=</span> <span class="fu">get_backend</span>(out)</span>
+<span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a><span class="fu">julia_dev</span>(backend, <span class="fl">480</span>)(c, <span class="fl">1f0</span><span class="op">/</span><span class="fl">600</span>, <span class="fl">1024</span>, out, ndrange<span class="op">=</span><span class="fu">size</span>(out))</span>
+<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">Array</span>(out) <span class="op">.==</span> out_host)</span></code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb20">
+<div class="codewrapper sourceCode" id="cb27">
 <h3 class="code-label">JULIA<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="pp">@benchmark</span> <span class="cf">begin</span> <span class="fu">julia_dev</span>(backend, <span class="fl">480</span>)(c, <span class="fl">1f0</span><span class="op">/</span><span class="fl">600</span>, <span class="fl">1024</span>, out, ndrange<span class="op">=</span><span class="fu">size</span>(out)); KernelAbstractions.<span class="fu">synchronize</span>(backend) <span class="cf">end</span></span></code></pre>
+<pre class="sourceCode julia" tabindex="0"><code class="sourceCode julia"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="pp">@benchmark</span> <span class="cf">begin</span> <span class="fu">julia_dev</span>(backend, <span class="fl">480</span>)(c, <span class="fl">1f0</span><span class="op">/</span><span class="fl">600</span>, <span class="fl">1024</span>, out, ndrange<span class="op">=</span><span class="fu">size</span>(out)); KernelAbstractions.<span class="fu">synchronize</span>(backend) <span class="cf">end</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -843,6 +914,7 @@ the right problem.</li>
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
+</div>
 </section></div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter"><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link" href="140-threads-async-and-tasks.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
@@ -881,7 +953,7 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
 
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.20.0" class="external-link">sandpaper (0.20.0)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.9" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.9" class="external-link">varnish (1.0.9)</a></p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/" class="external-link">sandpaper (0.20.0)</a>, <a href="https://github.com/carpentries/pegboard/tree/" class="external-link">pegboard (0.7.9)</a>, and <a href="https://github.com/carpentries/varnish/tree/" class="external-link">varnish (1.0.9)</a></p>
 		</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -903,8 +975,8 @@ any links that you are not going to use.
   "url": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/170-gpu-programming.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/efficient-computing-in-julia/170-gpu-programming.html",
   "dateCreated": "2024-01-01",
-  "dateModified": "2026-04-14",
-  "datePublished": "2026-04-14"
+  "dateModified": "2026-04-15",
+  "datePublished": "2026-04-15"
 }
 
   </script><script>
