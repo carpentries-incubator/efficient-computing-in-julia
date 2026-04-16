@@ -25,7 +25,7 @@ title: Package development
 
 This is the simplest, most minimalist way to generate a new Julia package. It is built in to the standard Julia package `pkg`.
 
-#### Generating the package
+Generate a fresh package with the name `Newton.jl`:
 
 ```shell
 julia> # press ]
@@ -53,8 +53,6 @@ pkg> add BestieTemplate
 This might take a couple of minutes to download.
 
 
-#### Generating the package
-
 We then use the `BestieTemplate` package to generate a new (empty) package at the specified path.
 
 ```shell
@@ -62,8 +60,6 @@ pkg> # Press backspace to get out of pkg mode
 julia> using BestieTemplate
 julia> BestieTemplate.generate("Newton.jl")
 ```
-
-#### Configuring the package
 
 You will now be presented with a series of questions, some required and some optional.
 
