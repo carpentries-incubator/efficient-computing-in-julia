@@ -110,7 +110,7 @@ Before trying it on GPU, we can first test out our new kernel function on the no
 
 ```julia
 dev = CPU()
-vector_add_kernel(dev, 512)(a, b, c, ndrange=size(a))
+vector_add(dev, 512)(a, b, c, ndrange=size(a))
 
 c # Print out c in the console
 ```
@@ -199,7 +199,7 @@ In practice, we will often group variables together in structs (for convenience)
 Fortunately, we can do this easily using `Adapt.jl`:
 
 ````julia
-import Adapt
+using Adapt
 ````
 
 So, let us say we change our earlier `VectorAdd` kernel to one that takes the vectors in a struct:
@@ -250,7 +250,6 @@ vector_add_struct(dev, 512)(v_dev, ndrange=1024)
 
 all(Array(v_dev.c) .== v.a .+ v.b)
 ````
-
 
 
 ### Generating the Julia Fractal on GPU
