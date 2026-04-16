@@ -391,7 +391,7 @@ While `Revise` does its best to track any changes made, there are some limits to
 
 
 :::callout
-The `Revise` package also has a version of Julia's `include()` method, called `includet()`. It performs the same function but additionally with tracking of revisions.
+The `Revise` package also has a version of Julia's `include()` method, called `includet()`. This is useful if you are not developing a package but rather wish to manually load a source file, still withthe tracking of revisions that `Revise` provides.
 :::
 
 
