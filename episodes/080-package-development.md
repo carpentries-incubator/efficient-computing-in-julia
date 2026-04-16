@@ -390,6 +390,10 @@ While `Revise` does its best to track any changes made, there are some limits to
 :::
 
 
+:::callout
+The `Revise` package also has a version of Julia's `include()` method, called `includet()`. It performs the same function but additionally with tracking of revisions.
+:::
+
 
 ::: keypoints
 - You can use either the built-in `Pkg.generate` function or a third party template (such as the `BestieTemplate`) to generate a new package structure.
