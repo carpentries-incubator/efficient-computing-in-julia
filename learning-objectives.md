@@ -1,0 +1,29 @@
+- Obtain a comfortable workflow developing Julia code
+- Navigate the Julia REPL
+- Understand and write basic Julia expressions, including broadcasting
+- Use control-flow: functions, loops and conditionals
+- Understand variable scoping rules
+- Know the most important primitive data types
+- Create compound data structures
+- Use function dispatch to create interfaces
+- Use value types to force dispatch
+- Manage environments with `Pkg`
+- Develop packages with `Pkg`
+- Write documentation with `Documenter`
+- Test code with `Test`
+- Create basic visualisations with `Makie`
+
+- Understand the difference between an interpreter and a compiler
+- Understand the concept of just-in-time compilation
+- Have an overview of how Julia code is evaluated
+- Be able to benchmark code with `BenchmarkTools`
+- Be able to profile code with `ProfileView`
+- Knows how to read a flame graph
+- Understand the concept of type instability
+- Apply techniques to prevent type instability
+- Understand the work of the garbage collector
+- Apply techniques to reduce memory allocations
+- Roughly understand the difference between a CPU and GPU
+- Offload compute-intensive tasks to the GPU
+- Understand how global mutability is detrimental to performance in a jit-compiled language
+- Understand the importance of functions as a compilation unit
