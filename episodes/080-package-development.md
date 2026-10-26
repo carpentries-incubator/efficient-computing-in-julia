@@ -25,7 +25,7 @@ title: Package development
 
 This is the simplest, most minimalist way to generate a new Julia package. It is built in to the standard Julia package `pkg`.
 
-#### Generating the package
+Generate a fresh package with the name `Newton.jl`:
 
 ```shell
 julia> # press ]
@@ -53,8 +53,6 @@ pkg> add BestieTemplate
 This might take a couple of minutes to download.
 
 
-#### Generating the package
-
 We then use the `BestieTemplate` package to generate a new (empty) package at the specified path.
 
 ```shell
@@ -62,8 +60,6 @@ pkg> # Press backspace to get out of pkg mode
 julia> using BestieTemplate
 julia> BestieTemplate.generate("Newton.jl")
 ```
-
-#### Configuring the package
 
 You will now be presented with a series of questions, some required and some optional.
 
@@ -393,6 +389,10 @@ Now, thanks to `Revise`, the change to the package's code was being tracked and 
 While `Revise` does its best to track any changes made, there are some limits to what can be done in a single Julia session. For example, changes to type definitions or `const`s (among others) will probably still necessitate restarting your Julia session.
 :::
 
+
+:::callout
+The `Revise` package also has a version of Julia's `include()` method, called `includet()`. This is useful if you are not developing a package but rather wish to manually load a source file, still withthe tracking of revisions that `Revise` provides.
+:::
 
 
 ::: keypoints

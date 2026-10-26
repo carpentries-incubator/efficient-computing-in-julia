@@ -151,6 +151,11 @@ end
 @profview for _=1:100000; iterated_fn(logistic_map(3.5), 0.5, 1000); end
 ```
 
+:::callout
+There can be issues with using `@profview` in vscode due to a built-in version. If there is a conflict, try using `@ProfileView.profview` instead.
+:::
+
+
 We can do better if we don't need to allocate:
 
 ```julia
